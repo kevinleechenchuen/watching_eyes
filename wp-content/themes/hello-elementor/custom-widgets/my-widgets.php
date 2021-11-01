@@ -13,7 +13,6 @@ class My_Elementor_Widgets {
 	}
 
 	protected function __construct() {
-		require_once('widget1.php');
 		require_once('login-widget.php');
 		require_once('search-widget.php');
 		require_once('menu-search-widget.php');
@@ -25,7 +24,6 @@ class My_Elementor_Widgets {
 	}
 
 	public function register_widgets() {
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\My_Widget_1() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Login_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Search_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Menu_Search_Widget() );
