@@ -1,0 +1,2 @@
+<?php
+// generic send email
