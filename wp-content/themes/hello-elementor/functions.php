@@ -218,3 +218,6 @@ if ( ! function_exists( 'hello_elementor_body_open' ) ) {
 }
 
 require_once('custom-widgets/my-widgets.php');
+
+wp_register_script('custom_script', '/wp-content/themes/hello-elementor/assets/js/custom-script.js', array('jquery'),'1.1', true);
+wp_enqueue_script('custom_script');

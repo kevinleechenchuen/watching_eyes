@@ -14,19 +14,21 @@
         $modelHTML = '';
         $sourceHTML = '';
         foreach ($filter->brands as $brand) {
-            $brandHTML = "$brandHTML<div><input type=\"checkbox\" id=$brand name=\"brandCheckbox\" value=$brand><label for=$brand> $brand</label></div>";
+            $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value='$brand'><input type=\"checkbox\" id='$brand' name=\"brandCheckbox\" value='$brand'><label for='$brand'>$brand</label></div>";
         }
         foreach ($filter->models as $model) {
-            $modelHTML = "$modelHTML<div><input type=\"checkbox\" id=$model name=\"modelCheckbox\" value=$model><label for=$model> $model</label></div>";
+            $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model'><input type=\"checkbox\" id='$model' name=\"modelCheckbox\" value='$model'><label for='$model'>$model</label></div>";
         }
         foreach ($filter->sources as $source) {
-            $sourceHTML = "$sourceHTML<div><input type=\"checkbox\" id=$source name=\"sourceCheckbox\" value=$source><label for=$source> $source</label></div>";
+            $sourceHTML = "$sourceHTML<div class=\"sourceCheckbox\" value='$source'><input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source'><label for='$source'>$source</label></div>";
         }
         echo "<h4>BRAND</h4>
+            <input type='text' id='brandFilterSearch' placeholder='Enter brand name here...'>
             <div class='filter-section-container'>
                 $brandHTML
             </div>";
         echo "<h4>MODEL</h4>
+            <input type='text' id='modelFilterSearch' placeholder='Enter model here...'>
             <div class='filter-section-container'>
                 $modelHTML
             </div>";
@@ -35,48 +37,6 @@
                 $sourceHTML
             </div>";
         echo "  
-        <script>
-        function applyFilter(){
-            var brandCheckedBoxes = document.querySelectorAll('input[name=brandCheckbox]:checked');
-            var modelCheckedBoxes = document.querySelectorAll('input[name=modelCheckbox]:checked');
-            var sourceCheckedBoxes = document.querySelectorAll('input[name=sourceCheckbox]:checked');
-
-            var brandList = [];
-            var modelList = [];
-            var sourceList = [];
-            for(var i=0; brandCheckedBoxes[i]; ++i){
-                brandList.push(brandCheckedBoxes[i].value);
-            }
-            for(var i=0; modelCheckedBoxes[i]; ++i){
-                modelList.push(modelCheckedBoxes[i].value);
-            }
-            for(var i=0; sourceCheckedBoxes[i]; ++i){
-                sourceList.push(sourceCheckedBoxes[i].value);
-            }
-
-            var brandsParams = brandList.length > 0 ? '&brand='+brandList.join(',') : '';
-            var modelsParams = modelList.length > 0 ? '&model='+modelList.join(',') : '';
-            var sourceParams = sourceList.length > 0 ? '&sourceName='+sourceList.join(',') : '';
-
-            window.location.href = '/search?'+brandsParams+modelsParams+sourceParams;
-        }
-
-        function clearFilter(){
-            var brandCheckedBoxes = document.querySelectorAll('input[name=brandCheckbox]:checked');
-            var modelCheckedBoxes = document.querySelectorAll('input[name=modelCheckbox]:checked');
-            var sourceCheckedBoxes = document.querySelectorAll('input[name=sourceCheckbox]:checked');
-
-            for(var i=0; brandCheckedBoxes[i]; ++i){
-                brandCheckedBoxes[i].checked = false;
-            }
-            for(var i=0; modelCheckedBoxes[i]; ++i){
-                modelCheckedBoxes[i].checked = false;
-            }
-            for(var i=0; sourceCheckedBoxes[i]; ++i){
-                sourceCheckedBoxes[i].checked = false;
-            }
-        }
-        </script>
         <button onclick=\"clearFilter()\">CLEAR ALL FILTERS</button>
         <button onclick=\"applyFilter()\">APPLY FILTER</button>
         ";
