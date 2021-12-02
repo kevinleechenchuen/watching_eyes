@@ -36,7 +36,7 @@ class Menu_Search_Widget extends Widget_Base {
                         var sourceParams = sourceTypes.length > 0 ? '&sourceType='+sourceTypes.join(',') : '';
 
                         console.log(JSON.stringify(sourceTypes));
-                        window.location.href = '/search?brand='+searchParam+sourceParams;
+                        window.location.href = '/search?q='+searchParam+sourceParams;
                     }
                 </script>
                 <button class='header-search-button' onClick='search()'>SEARCH</button>

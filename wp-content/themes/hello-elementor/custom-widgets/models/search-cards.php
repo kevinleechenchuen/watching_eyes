@@ -14,25 +14,28 @@
         $modelHTML = '';
         $sourceHTML = '';
         foreach ($filter->brands as $brand) {
-            $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value='$brand'><input type=\"checkbox\" id='$brand' name=\"brandCheckbox\" value='$brand'><label for='$brand'>$brand</label></div>";
+            $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value='$brand'><input type=\"checkbox\" id='$brand' name=\"brandCheckbox\" value='$brand'><label class='filterLabel' for='$brand'>$brand</label></div>";
         }
         foreach ($filter->models as $model) {
-            $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model'><input type=\"checkbox\" id='$model' name=\"modelCheckbox\" value='$model'><label for='$model'>$model</label></div>";
+            $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model'><input type=\"checkbox\" id='$model' name=\"modelCheckbox\" value='$model'><label class='filterLabel' for='$model'>$model</label></div>";
         }
         foreach ($filter->sources as $source) {
-            $sourceHTML = "$sourceHTML<div class=\"sourceCheckbox\" value='$source'><input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source'><label for='$source'>$source</label></div>";
+            $sourceHTML = "$sourceHTML<div class=\"sourceCheckbox\" value='$source'><input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source'><label class='filterLabel' for='$source'>$source</label></div>";
         }
         echo "<h4>BRAND</h4>
+            <a href='#' onclick=\"clearSpecificFilter('brandCheckbox');\">CLEAR</a>
             <input type='text' id='brandFilterSearch' placeholder='Enter brand name here...'>
             <div class='filter-section-container'>
                 $brandHTML
             </div>";
         echo "<h4>MODEL</h4>
+            <a href='#' onclick=\"clearSpecificFilter('modelCheckbox');\">CLEAR</a>
             <input type='text' id='modelFilterSearch' placeholder='Enter model here...'>
             <div class='filter-section-container'>
                 $modelHTML
             </div>";
         echo "<h4>SOURCE</h4>
+            <a href='#' onclick=\"clearSpecificFilter('sourceCheckbox');\">CLEAR</a>
             <div class='filter-section-container'> 
                 $sourceHTML
             </div>";

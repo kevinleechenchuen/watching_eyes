@@ -216,8 +216,14 @@ if ( ! function_exists( 'hello_elementor_body_open' ) ) {
 		}
 	}
 }
+function year_shortcode() {
+	$year = date('Y');
+	return $year;
+}
+add_shortcode('year', 'year_shortcode');
 
 require_once('custom-widgets/my-widgets.php');
+require_once('custom-widgets/utils/save-search.php');
 
 wp_register_script('custom_script', '/wp-content/themes/hello-elementor/assets/js/custom-script.js', array('jquery'),'1.1', true);
 wp_enqueue_script('custom_script');
