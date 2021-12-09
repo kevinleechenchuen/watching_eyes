@@ -23,6 +23,13 @@ class Top_10_Watches_Widget extends Widget_Base {
 
 	
 	protected function render() {
+		echo "<div class='flex-container'>
+				<h2>Top 10 Retail Watches​</h2>
+				<div class='flex-to-right'>
+					<button class='scroll-arrow-left scroll-button'><</button>
+					<button class='scroll-arrow-right scroll-button'>></button>
+				</div>
+			</div>";
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches/retail/top";
         echo $url;
         
@@ -33,8 +40,7 @@ class Top_10_Watches_Widget extends Widget_Base {
             echo 'something went wrong!';
             return null;
         }
-        // echo json_encode($body->topWatches);
-        renderHorizontalListing($body->topWatches);
+        renderHorizontalListing($body->topWatches, 'top-10-watches');
 	}
 	
 	protected function _content_template() {

@@ -34,6 +34,13 @@ jQuery(document).ready(function () {
             });
         }
     });
+
+    jQuery(".scroll-arrow-left").click(function () {
+        jQuery(".home-listing-container").animate({ scrollLeft: "-=" + 400 });
+    });
+    jQuery(".scroll-arrow-right").click(function () {
+        jQuery(".home-listing-container").animate({ scrollLeft: "+=" + 400 });
+    });
 });
 
 function applyFilter() {
@@ -87,3 +94,12 @@ function clearSpecificFilter(name) {
         checkedBoxes[i].checked = false;
     }
 }
+
+// function scrollContainer(container, direction) {
+//     console.log(container, direction);
+//     if (direction === 'left') {
+//         jQuery(container).animate({ scrollRight: "+=" + 500 });
+//     } else {
+//         jQuery(container).animate({ scrollRight: "-=" + 500 });
+//     }
+// }

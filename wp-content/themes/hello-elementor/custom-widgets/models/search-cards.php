@@ -57,8 +57,8 @@
         echo "</div>";
     }
 
-    function renderHorizontalListing($data){
-        echo "<div class='home-listing-container'>";
+    function renderHorizontalListing($data, $class){
+        echo "<div class='home-listing-container $class'>";
         foreach ($data as $item) {
             renderCard($item);
         }

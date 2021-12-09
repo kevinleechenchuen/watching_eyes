@@ -23,6 +23,13 @@ class Latest_Forum_Widget extends Widget_Base {
 
 	
 	protected function render() {
+		echo "<div class='flex-container'>
+				<h2>Latest Forum Listing​</h2>
+				<div class='flex-to-right'>
+					<button class='scroll-arrow-left scroll-button'><</button>
+					<button class='scroll-arrow-right scroll-button'>></button>
+				</div>
+			</div>";
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?source_type__in=Forum";
         echo $url;
         
@@ -33,7 +40,7 @@ class Latest_Forum_Widget extends Widget_Base {
             echo 'something went wrong!';
             return null;
         }
-        renderHorizontalListing($body->forumWatches);
+        renderHorizontalListing($body->forumWatches, 'latest-forum');
 	}
 	
 	protected function _content_template() {
