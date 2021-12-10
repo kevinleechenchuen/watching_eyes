@@ -1,5 +1,5 @@
 <?php
-
+    include(get_template_directory() . '/custom-widgets/utils/currencyChecker.php');
     function renderSearchResultsWithFilter($data, $filter)
     {
         if(count($data) == 0)
@@ -76,12 +76,14 @@
     }
 
     function renderCard($item){
+        $currency = convertCurrency($item->currency);
         echo "
             <div class='item-card'>
-                <a href='$item->post_link' target='_blank'>
-                    <div class='item-card-image-container'>
-                        <img class='item-card-img-top' src='$item->main_img_url' alt=''>
-                    </div>
+                    <a href='$item->post_link' target='_blank'>
+                        <div class='item-card-image-container'>
+                            <img class='item-card-img-top' src='$item->main_img_url' alt=''>
+                        </div>
+                    </a>
                     <div class='item-card-desc'>
                         <div class='item-card-desc-brand'>
                             <h6>
@@ -89,18 +91,19 @@
                             </h6>
                         </div>
                         <div class='item-card-desc-title'>
-                            <h5>
-                                $item->post_title
-                            </h5>
+                            <a href='$item->post_link' target='_blank'>
+                                <h5>
+                                    $item->post_title
+                                </h5>
+                            </a>
                         </div>
                         <h5 class='item-card-price'>
-                            $item->product_price
+                            $currency$item->product_price
                         </h5>
                         <h7 class='item-card-source'>
                             $item->original_poster on $item->forum_name
                         </h7>
                     </div>
-                </a>
             </div>
         ";
     }

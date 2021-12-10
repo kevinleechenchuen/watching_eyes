@@ -31,7 +31,6 @@ class Top_10_Watches_Widget extends Widget_Base {
 				</div>
 			</div>";
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches/retail/top";
-        echo $url;
         
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {

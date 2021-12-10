@@ -32,7 +32,6 @@ class Upcoming_Auction_Widget extends Widget_Base {
 		$startDate = date("Y-m-d");
 		$endDate = date("Y-m-d", strtotime('+ 1 month'));
         $url = "http://128.199.148.89:8000/api/v1/auction/?auction_start_date__gte=$startDate&auction_end_date__gte=$endDate";
-        echo $url;
         
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {

@@ -67,7 +67,6 @@ class Search_Widget extends Widget_Base {
 
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam";
         // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
-        echo $url;
         
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {

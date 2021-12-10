@@ -31,7 +31,6 @@ class Latest_Forum_Widget extends Widget_Base {
 				</div>
 			</div>";
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?source_type__in=Forum";
-        echo $url;
         
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
