@@ -22,6 +22,8 @@ class Search_Widget extends Widget_Base {
 
 	
 	protected function render() {
+        wp_register_script('slider', '/wp-content/themes/hello-elementor/assets/js/slider.js', array('jquery'),'1.1', true);
+        wp_enqueue_script('slider');
         $current_user = wp_get_current_user();
 
         $q_query = $_GET['q'];
@@ -31,6 +33,7 @@ class Search_Widget extends Widget_Base {
         $q_sourceType = $_GET['sourceType'];
         $q_priceFrom = $_GET['priceFrom'];
         $q_priceTo = $_GET['priceTo'];
+        $q_page = $_GET['page'];
 
         $queryParam = $q_query == '' ? '' : "&q=$q_query";
         $brandQueryParam = $q_brand == '' ? '' : "&brand__in=$q_brand";
@@ -39,9 +42,10 @@ class Search_Widget extends Widget_Base {
         $sourceTypeQueryParam = $q_sourceType == '' ? '' : "&source_type__in=$q_sourceType";
         $priceFromQueryParam = $q_priceFrom == '' ? '' : "&product_price__gte=$q_priceFrom";
         $priceToQueryParam = $q_priceTo == '' ? '' : "&product_price__lte=$q_priceTo";
+        $pageQueryParam = $q_page == '' ? '' : "page=$q_page";
 
-        echo "<h4>Seach result for '$q_query'</h4>";
-        echo "<div>
+        echo "<div class='search-result-label'>
+                <h1>Results For '$q_query'</h1>
                 <script>
                     function saveSearchWithoutQuery(){
                         jQuery.ajax({
@@ -75,6 +79,10 @@ class Search_Widget extends Widget_Base {
             echo 'something went wrong!';
             return null;
         }
+        
+        echo "<div class='item-card-desc-title'>
+                <h5>Filters</h5>
+            </div>";
         renderSearchResultsWithFilter($body->forumWatches, $body->filters);
 	}
 	

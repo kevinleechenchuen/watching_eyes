@@ -41,7 +41,18 @@ jQuery(document).ready(function () {
     jQuery(".scroll-arrow-right").click(function () {
         jQuery(".home-listing-container").animate({ scrollLeft: "+=" + 400 });
     });
+
+    jQuery('#forum-search-checkbox').on('change', function () {
+        jQuery('#all-search-checkbox').prop('checked', false);
+    });
+    jQuery('#auction-search-checkbox').on('change', function () {
+        jQuery('#all-search-checkbox').prop('checked', false);
+    });
+    jQuery('#dealers-search-checkbox').on('change', function () {
+        jQuery('#all-search-checkbox').prop('checked', false);
+    });
 });
+
 
 function applyFilter() {
     var brandCheckedBoxes = document.querySelectorAll('input[name=brandCheckbox]:checked');

@@ -21,8 +21,9 @@ class Menu_Search_Widget extends Widget_Base {
 
 	
 	protected function render() {
+        $q_query = $_GET['q'];
         echo "<div class='header-search-container'>
-                <input type='text' class='header-search-textbox' name='header-search-textbox' placeholder='Search for...'>
+                <input type='text' class='header-search-textbox' name='header-search-textbox' placeholder='Search for...' value='$q_query'>
                 <script>
                     function search(){
                         var searchParam = document.getElementsByName('header-search-textbox')[0].value;
@@ -43,7 +44,7 @@ class Menu_Search_Widget extends Widget_Base {
             </div>
             <div>
             <label class=\"container\">All Watches
-                <input type=\"checkbox\" checked=\"checked\">
+                <input type=\"checkbox\" id=\"all-search-checkbox\" checked=\"checked\">
                 <span class=\"checkmark\"></span>
             </label>
             <label class=\"container\">Forums

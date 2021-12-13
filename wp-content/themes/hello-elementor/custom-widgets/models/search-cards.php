@@ -13,35 +13,74 @@
         $brandHTML = '';
         $modelHTML = '';
         $sourceHTML = '';
+
         foreach ($filter->brands as $brand) {
-            $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value='$brand'><input type=\"checkbox\" id='$brand' name=\"brandCheckbox\" value='$brand'><label class='filterLabel' for='$brand'>$brand</label></div>";
+            $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value='$brand'><label class=\"container\">$brand
+                <input type=\"checkbox\" id='$brand' name=\"brandCheckbox\" value='$brand'>
+                <span class=\"checkmark\"></span>
+            </label></div>";
         }
         foreach ($filter->models as $model) {
-            $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model'><input type=\"checkbox\" id='$model' name=\"modelCheckbox\" value='$model'><label class='filterLabel' for='$model'>$model</label></div>";
+            $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model'><label class=\"container\">$model
+                <input type=\"checkbox\" id='$model' name=\"modelCheckbox\" value='$model'>
+                <span class=\"checkmark\"></span>
+            </label></div>";
         }
         foreach ($filter->sources as $source) {
-            $sourceHTML = "$sourceHTML<div class=\"sourceCheckbox\" value='$source'><input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source'><label class='filterLabel' for='$source'>$source</label></div>";
+            $sourceHTML = "$sourceHTML<div class=\"sourceCheckbox\" value='$source'><label class=\"container\">$source
+                <input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source'>
+                <span class=\"checkmark\"></span>
+            </label></div>";
         }
-        echo "<h4>BRAND</h4>
-            <a href='#' onclick=\"clearSpecificFilter('brandCheckbox');\">CLEAR</a>
-            <input type='text' id='brandFilterSearch' placeholder='Enter brand name here...'>
+        echo "
+        <div class='filter-title'>
+            <h4>PRICES RANGE</h4>
+        </div>      
+        <div class='slider'>
+            <div class='progress'></div>
+        </div>
+        <div class='range-input'>
+            <input type='range' class='range-min' min='0' max='100000' value='0' step='500'>
+            <input type='range' class='range-max' min='0' max='100000' value='100000' step='500'>
+        </div>
+         <div class='price-input'>
+            <div class='field'>
+                <input type='number' class='input-min' value='0' >
+            </div>
+            <div class='field'>
+                <input type='number' class='input-max' value='100000' >
+            </div>
+        </div>
+        <script src='/wp-content/themes/hello-elementor/assets/js/slider.js'></script>";
+        echo " <div class='filter-divider'></div>";
+        echo " <div class='filter-title'>
+                <h4>BRAND</h4>
+                <h4><a href='#' onclick=\"clearSpecificFilter('brandCheckbox');\">Clear</a></h4>
+            </div>
+            <input type='text' id='brandFilterSearch' class='filterSearch' placeholder='Enter brand name here...'>
             <div class='filter-section-container'>
                 $brandHTML
             </div>";
-        echo "<h4>MODEL</h4>
-            <a href='#' onclick=\"clearSpecificFilter('modelCheckbox');\">CLEAR</a>
-            <input type='text' id='modelFilterSearch' placeholder='Enter model here...'>
+        echo " <div class='filter-divider'></div>";
+        echo "<div class='filter-title'>
+                <h4>MODEL</h4>
+                <h4><a href='#' onclick=\"clearSpecificFilter('modelCheckbox');\">Clear</a></h4>
+            </div>
+            <input type='text' id='modelFilterSearch' class='filterSearch' placeholder='Enter model here...'>
             <div class='filter-section-container'>
                 $modelHTML
             </div>";
-        echo "<h4>SOURCE</h4>
-            <a href='#' onclick=\"clearSpecificFilter('sourceCheckbox');\">CLEAR</a>
+        echo " <div class='filter-divider'></div>";
+        echo "<div class='filter-title'>
+                <h4 style='font-size:24px;'>Source</h4>
+                <h4><a href='#' onclick=\"clearSpecificFilter('sourceCheckbox');\">Clear</a></h4>
+            </div>
             <div class='filter-section-container'> 
                 $sourceHTML
             </div>";
         echo "  
-        <button onclick=\"clearFilter()\">CLEAR ALL FILTERS</button>
-        <button onclick=\"applyFilter()\">APPLY FILTER</button>
+            <button onclick=\"clearFilter()\" style='margin-bottom: 20px;'>CLEAR ALL FILTERS</button>
+            <button onclick=\"applyFilter()\" style='background-color: #2255FB;'>APPLY FILTER</button>
         ";
         echo "</div>";
         echo "<div class='search-results'>";
@@ -52,9 +91,10 @@
             } else {
                 renderCard($item);
             }
-        }
+        }   
         echo "</div>";
         echo "</div>";
+        echo "<div class='search-pagination'>Page 1 2 3 4 5 6 7 8 9 ...</div>";
     }
 
     function renderHorizontalListing($data, $class){
@@ -80,8 +120,11 @@
         echo "
             <div class='item-card'>
                     <a href='$item->post_link' target='_blank'>
-                        <div class='item-card-image-container'>
-                            <img class='item-card-img-top' src='$item->main_img_url' alt=''>
+                        <div>
+                            <div class='item-card-status'>$item->status</div>
+                            <div class='item-card-image-container'>
+                                <img class='item-card-img-top' src='$item->main_img_url' alt=''>
+                            </div>
                         </div>
                     </a>
                     <div class='item-card-desc'>
