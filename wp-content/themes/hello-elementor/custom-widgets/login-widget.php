@@ -22,17 +22,19 @@ class Login_Widget extends Widget_Base {
 
 	
 	protected function render() {
+		echo  "<div class='login-profile-mini'>";
             if (is_user_logged_in()) {
                 $current_user = wp_get_current_user();
-                echo  "<a href='/my-account'>
+                echo  "<a href='/profile'>
                             <div>$current_user->display_name</div>
                         </a>";
             } else {
                 $login_url = site_url( 'wp-login.php', 'login' );
                 $signup_url = wp_registration_url();
 
-                echo "<a href='$login_url'>Login</a> | <a href='$signup_url'>Signup</a>";
-            }
+                echo "<a href='/log-in'>Login</a> | <a href='/register'>Signup</a>";
+			}
+		echo  "</div>";
 	}
 	
 	protected function _content_template() {

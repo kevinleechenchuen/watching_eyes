@@ -82,6 +82,25 @@ function applyFilter() {
     window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams;
 }
 
+function applyAuctionFilter() {
+    var auctionTypeCheckBoxes = document.querySelectorAll('input[name=auctionTypeCheckbox]:checked');
+    var auctionName = document.getElementById("filter-auction-name").value;
+    var auctionDateFrom = document.getElementById("auctionStartDate").value;
+    var auctionDateTo = document.getElementById("auctionEndDate").value;
+
+    var auctionTypeList = [];
+    for (var i = 0; auctionTypeCheckBoxes[i]; ++i) {
+        auctionTypeList.push(auctionTypeCheckBoxes[i].value);
+    }
+
+    var auctionTypeParams = auctionTypeList.length > 0 ? '&auctionType=' + auctionTypeList.join(',') : '';
+    var auctionNameParams = '&auctionName=' + auctionName;
+    var auctionDateFromParams = '&auctionStartDate=' + auctionDateFrom;
+    var auctionDateToParams = '&auctionEndDate=' + auctionDateTo;
+
+    window.location.href = '/auction-calendar?' + auctionTypeParams + auctionNameParams + auctionDateFromParams + auctionDateToParams;
+}
+
 function clearFilter() {
     var brandCheckedBoxes = document.querySelectorAll('input[name=brandCheckbox]:checked');
     var modelCheckedBoxes = document.querySelectorAll('input[name=modelCheckbox]:checked');

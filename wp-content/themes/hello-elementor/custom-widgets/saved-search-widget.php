@@ -63,12 +63,12 @@ class Saved_Search_Widget extends Widget_Base {
                 echo "<div class='save-search-container'>";
                 foreach ($results as $item) {
                     echo "<div class='save-search-item'>
-                            <a id='delete-saved-search' href='https://{$_SERVER['HTTP_HOST']}/search?q=$item->Name'>
+                            <a class='saved-search' href='https://{$_SERVER['HTTP_HOST']}/search?q=$item->Name'>
                                 <div class='save-search-item-name'>
                                     $item->Name
                                 </div>
                             </a>
-                            <a id='delete-saved-search' href='#' onclick='removeSaveSearch($item->ID);'>x</a>
+                            <a class='delete-saved-search' href='#' onclick='removeSaveSearch($item->ID);'>x</a>
                         </div>";
                 }
                 echo "</div>

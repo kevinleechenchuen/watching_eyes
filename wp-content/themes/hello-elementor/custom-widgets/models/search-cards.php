@@ -34,7 +34,7 @@
         }
         echo "
         <div class='filter-title'>
-            <h4>PRICES RANGE</h4>
+            <h4>AUCTION TYPE</h4>
         </div>      
         <div class='slider'>
             <div class='progress'></div>
@@ -97,6 +97,75 @@
         echo "<div class='search-pagination'>Page 1 2 3 4 5 6 7 8 9 ...</div>";
     }
 
+    function renderAuctionResultsWithFilter($data, $filter)
+    {
+        $auctionList=array();
+        foreach ($data as $item) {
+            if (!in_array($item->auction_name, $auctionList)) {
+                array_push($auctionList,$item->auction_name);
+            }
+        }
+
+        $auctionListHTML = "<option value='' selected='selected'>Please Select</option>";
+        foreach ($auctionList as $auction) {
+            $auctionListHTML = "$auctionListHTML<option value='$auction'>$auction</option>";
+        }
+        if(count($data) == 0)
+        {
+            echo "<div class='search-results'>no results found!</div>";
+            return;
+        }
+
+        echo "<div class='search-result-container'>";
+        echo "<div id='search-result-filter' class='auction'>";  
+        echo "
+        <div class='filter-title'>
+            <h4>AUCTION TYPE</h4>
+        </div>  
+        <div class='filter-section-container'>
+            <div class=\"modelCheckbox\" value='Online Auction'><label class=\"container\">Online Auction
+                <input type=\"checkbox\" id='Online Auction' name=\"auctionTypeCheckbox\" value='Online Auction'>
+                <span class=\"checkmark\"></span>
+            </label></div>
+            <div class=\"modelCheckbox\" value='Live Auction'><label class=\"container\">Live Auction
+                <input type=\"checkbox\" id='Live Auction' name=\"auctionTypeCheckbox\" value='Live Auction'>
+                <span class=\"checkmark\"></span>
+            </label></div>
+        </div>
+        ";
+        echo " <div class='filter-divider'></div>";
+        echo " <div class='filter-title'>
+                <h4>SEARCH</h4>
+                </div>
+                <div class='filter-section-container'>
+                    <label class='filter-auction-label' for='auctionEndDate'>Auction name</label>
+                    <select name='filter-auction-name' id='filter-auction-name'>
+                        $auctionListHTML
+                    </select>
+                </div>   
+                <div class='filter-section-container'>
+                    <label class='filter-auction-label' for='auctionStartDate'>Start Date</label>
+                    <input type='date' class='datePicker' id='auctionStartDate' name='auctionStartDate'>
+                </div>
+                <div class='filter-section-container'>
+                    <label class='filter-auction-label' for='auctionEndDate'>End date</label>
+                    <input type='date' class='datePicker' id='auctionEndDate' name='auctionEndDate'>
+                </div>    
+            ";
+        echo "  
+            <button onclick=\"clearAuctionFilter()\" style='margin-bottom: 20px;'>CLEAR ALL FILTERS</button>
+            <button onclick=\"applyAuctionFilter()\" style='background-color: #2255FB;'>APPLY FILTER</button>
+        ";
+        echo "</div>";
+        echo "<div class='search-results'>";
+        foreach ($data as $item) {
+            renderAuctionCard($item);
+        }   
+        echo "</div>";
+        echo "</div>";
+        echo "<div class='search-pagination'>Page 1 2 3 4 5 6 7 8 9 ...</div>";
+    }
+
     function renderHorizontalListing($data, $class){
         echo "<div class='home-listing-container $class'>";
         foreach ($data as $item) {
@@ -152,12 +221,26 @@
     }
 
     function renderAuctionCard($item){
+        $startDate    = new DateTime($item->auction_start_date);
+        $endDate    = new DateTime($item->auction_end_date);
+        $stringStartDate = $startDate->format('d M Y');
+        $stringEndDate = $endDate->format('d M Y');
+
+        $liveAuctionClass = '';
+        if($item->auction_type == 'Live Auction')
+        {
+            $liveAuctionClass = 'live-auction';
+        }
         echo "
-                <div class='item-card'>
-                <a href='$item->auction_link' target='_blank'>
-                    <div class='item-card-image-container'>
-                        <img class='item-card-img-top' src='$item->main_img_url' alt=''>
-                    </div>
+                <div class='item-card'> 
+                    <a href='$item->auction_link' target='_blank'>
+                        <div>
+                            <div class='item-card-status $liveAuctionClass'>$item->auction_type</div>
+                            <div class='item-card-image-container'>
+                                <img class='item-card-img-top' src='$item->main_img_url' alt=''>
+                            </div>
+                        </div>
+                    </a>
                     <div class='item-card-desc'>
                         <div class='item-card-desc-brand'>
                             <h6>
@@ -170,9 +253,15 @@
                             </h5>
                         </div>
                     </div>
-                    <div>
-                        <button onclick=\"window.location.href = '$item->auction_link';\">BID</button>
-                    </div>
-                </a>
+                    <h7 class='item-card-source'>
+                        Start date: $stringStartDate <br>
+                        End date: $stringEndDate
+                    </h7>
+                    <a href='$item->post_link' target='_blank'>
+                                <h5>
+                                    $item->post_title
+                                </h5>
+                    </a>
+                    <button onclick=\"window.location.href = '$item->auction_link';\">BID</button>
             </div>";
     }

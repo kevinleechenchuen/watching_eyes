@@ -21,6 +21,7 @@ class My_Elementor_Widgets {
 		require_once('latest-forum-widget.php');
 		require_once('upcoming-auction-widget.php');
 		require_once('saved-search-widget.php');
+		require_once('auction-widget.php');
 		add_action( 'elementor/widgets/widgets_registered', [ $this, 'register_widgets' ] );
 	}
 
@@ -33,6 +34,7 @@ class My_Elementor_Widgets {
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Latest_Forum_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Upcoming_Auction_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Saved_Search_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Auction_Widget() );
 	}
 
 }
