@@ -33,12 +33,12 @@ class Search_Widget extends Widget_Base {
         $q_sourceType = explode(",", $_GET['sourceType']);
         $q_priceFrom = $_GET['priceFrom'];
         $q_priceTo = $_GET['priceTo'];
-        $q_page = $_GET['page'];
+        $q_page = $_GET['pg'] == '' ? 1 : $_GET['pg'];
 
         $queryParam = $q_query == '' ? '' : "&q=$q_query";
         $priceFromQueryParam = $q_priceFrom == '' ? '' : "&product_price__gte=$q_priceFrom";
         $priceToQueryParam = $q_priceTo == '' ? '' : "&product_price__lte=$q_priceTo";
-        $pageQueryParam = $q_page == '' ? '' : "page=$q_page";
+        $pageQueryParam = $q_page == '' ? '' : "&page=$q_page";
 
         $brandQueryParam = "";
         foreach ($q_brand as $brand) {
@@ -91,7 +91,7 @@ class Search_Widget extends Widget_Base {
             </div>";
         }
 
-        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam";
+        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$pageQueryParam";
         // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
@@ -104,7 +104,7 @@ class Search_Widget extends Widget_Base {
         echo "<div class='item-card-desc-title'>
                 <h5>Filters</h5>
             </div>";
-        renderSearchResultsWithFilter($body->forumWatches, $body->filters);
+        renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page);
 	}
 	
 	protected function _content_template() {

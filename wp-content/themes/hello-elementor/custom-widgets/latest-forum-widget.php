@@ -23,7 +23,7 @@ class Latest_Forum_Widget extends Widget_Base {
 
 	
 	protected function render() {
-		echo "<div class='flex-container'>
+		echo "<div class='flex-container home-section-heading'>
 				<h2>Latest Forum Listing​</h2>
 				<div class='flex-to-right'>
 					<button class='scroll-arrow-left scroll-button'><</button>

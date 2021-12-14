@@ -1,6 +1,6 @@
 <?php
     include(get_template_directory() . '/custom-widgets/utils/currencyChecker.php');
-    function renderSearchResultsWithFilter($data, $filter)
+    function renderSearchResultsWithFilter($data, $filter, $page)
     {
         if(count($data) == 0)
         {
@@ -94,7 +94,41 @@
         }   
         echo "</div>";
         echo "</div>";
-        echo "<div class='search-pagination'>Page 1 2 3 4 5 6 7 8 9 ...</div>";
+        echo "<div class='search-pagination'>Page: ";
+        $domain = $_SERVER['HTTP_HOST'];
+        $paginateUrl = "https://" . $domain . $_SERVER['REQUEST_URI'];
+        $paginateUrl = str_replace("&pg=$page","",$paginateUrl);
+
+        if($page <= 3)
+        {
+            for ($i = 1; $i <= 7; $i++) {
+                if($i == $page)
+                {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
+                } else {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number'>$i</a>";
+                }
+            } 
+        } else {
+            for ($i = $page-3; $i <= $page; $i++) {
+                if($i == $page)
+                {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
+                } else {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number'>$i</a>";
+                }
+            } 
+
+            for ($i = $page+1; $i <= $page+3; $i++) {
+                if($i == $page)
+                {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
+                } else {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number'>$i</a>";
+                }
+            } 
+        }
+        echo "</div>";
     }
 
     function renderAuctionResultsWithFilter($data, $filter)
@@ -163,10 +197,9 @@
         }   
         echo "</div>";
         echo "</div>";
-        echo "<div class='search-pagination'>Page 1 2 3 4 5 6 7 8 9 ...</div>";
     }
 
-    function renderAuctionWatchesResultsWithFilter($data, $filter)
+    function renderAuctionWatchesResultsWithFilter($data, $page)
     {
         $auctionList=array();
         foreach ($data as $item) {
@@ -192,11 +225,11 @@
             <h4>ESTIMATE PRICE</h4>
         </div>  
         <div class='filter-section-container'>
-            <label class='filter-auction-label' for='auctionStartDate'>CUSTOM</label>
+            <label class='filter-auction-label' for='auctionStartDate'>Custom</label>
             <div class='filter-auction-watches-range'>
-                <input type='text' id='estMinPriceFilter' class='filterSearch' placeholder='Low'>
+                <input type='text' id='estMinPriceFilter' class='filterSearch price-range' placeholder='Low'>
                 to
-                <input type='text' id='estMaxPriceFilter' class='filterSearch' placeholder='High'>
+                <input type='text' id='estMaxPriceFilter' class='filterSearch price-range' placeholder='High'>
             </div>
         </div>
         ";
@@ -206,11 +239,11 @@
             <h4>CURRENT BID</h4>
         </div>  
         <div class='filter-section-container'>
-            <label class='filter-auction-label'>CUSTOM</label>
+            <label class='filter-auction-label'>Custom</label>
             <div class='filter-auction-watches-range'>
-                <input type='text' id='minCurrentBidFilter' class='filterSearch' placeholder='Low'>
+                <input type='text' id='minCurrentBidFilter' class='filterSearch price-range' placeholder='Low'>
                 to
-                <input type='text' id='maxCurrentBidFilter' class='filterSearch' placeholder='High'>
+                <input type='text' id='maxCurrentBidFilter' class='filterSearch price-range' placeholder='High'>
             </div>
         </div>
         ";
@@ -244,7 +277,40 @@
         }   
         echo "</div>";
         echo "</div>";
-        echo "<div class='search-pagination'>Page 1 2 3 4 5 6 7 8 9 ...</div>";
+        echo "<div class='search-pagination'>Page: ";
+        $domain = $_SERVER['HTTP_HOST'];
+        $paginateUrl = "https://" . $domain . $_SERVER['REQUEST_URI'];
+        $paginateUrl = str_replace("&pg=$page","",$paginateUrl);
+        if($page <= 3)
+        {
+            for ($i = 1; $i <= 7; $i++) {
+                if($i == $page)
+                {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
+                } else {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number'>$i</a>";
+                }
+            } 
+        } else {
+            for ($i = $page-3; $i <= $page; $i++) {
+                if($i == $page)
+                {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
+                } else {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number'>$i</a>";
+                }
+            } 
+
+            for ($i = $page+1; $i <= $page+3; $i++) {
+                if($i == $page)
+                {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
+                } else {
+                    echo "<a href='$paginateUrl&pg=$i' class='pagination-number'>$i</a>";
+                }
+            } 
+        }
+        echo "</div>";
     }
 
     function renderHorizontalListing($data, $class){

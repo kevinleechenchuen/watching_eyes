@@ -23,7 +23,7 @@ class Upcoming_Auction_Widget extends Widget_Base {
 
 	
 	protected function render() {
-		echo "<div class='flex-container'>
+		echo "<div class='flex-container home-section-heading'>
 				<h2>Upcoming Auctions</h2>
 				<div class='flex-to-right'>
 					<button class='orange-button' onclick=\"location.href='/auction-calendar'\">VIEW ALL</button>
