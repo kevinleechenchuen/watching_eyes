@@ -27,7 +27,7 @@ class Auction_Widget extends Widget_Base {
         $current_user = wp_get_current_user();
 
         $q_auction_name = $_GET['auctionName'];
-        $q_auction_type = $_GET['auctionType'];
+        $q_auction_type = explode(",", $_GET['auctionType']);
         $q_auction_start_date = $_GET['auctionStartDate'];
         $q_auction_end_date = $_GET['auctionEndDate'];
 
@@ -35,10 +35,13 @@ class Auction_Widget extends Widget_Base {
 		$emptyEndDate = date("Y-m-d", strtotime('+ 6 month'));
 
         $auctionNameParam = $q_auction_name == '' ? '' : "&auction_name__in=$q_auction_name";
-        $auctionTypeQueryParam = $q_auction_type == '' ? '' : "&auction_type__in=$q_auction_type";
         $auctionStartQueryParam = $q_auction_start_date == '' ? "" : "&auction_start_date__gte=$q_auction_start_date";
         $auctionEndQueryParam = $q_auction_end_date == '' ? "" : "&auction_end_date__gte=$q_auction_end_date";
         
+        $auctionTypeQueryParam = "";
+        foreach ($q_auction_type as $type) {
+            $auctionTypeQueryParam = $type == '' ? "$auctionTypeQueryParam" : "$auctionTypeQueryParam&auction_type__in=$type";
+        }
         // $auctionStartQueryParam = $q_auction_start_date == '' ? "&auction_start_date__gte=$emptyStartDate" : "&auction_start_date__gte=$q_auction_start_date";
         // $auctionEndQueryParam = $q_auction_end_date == '' ? "&auction_end_date__gte=$emptyEndDate" : "&auction_end_date__gte=$q_auction_end_date";
 
@@ -47,7 +50,6 @@ class Auction_Widget extends Widget_Base {
             </div>";
 
         $url = "http://128.199.148.89:8000/api/v1/auction?$auctionNameParam$auctionTypeQueryParam$auctionStartQueryParam$auctionEndQueryParam";
-        echo $url;
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);

@@ -55,6 +55,8 @@ jQuery(document).ready(function () {
 
 
 function applyFilter() {
+    var minPrice = document.getElementById("search-filter-price-range-min").value;
+    var maxPrice = document.getElementById("search-filter-price-range-max").value;
     var brandCheckedBoxes = document.querySelectorAll('input[name=brandCheckbox]:checked');
     var modelCheckedBoxes = document.querySelectorAll('input[name=modelCheckbox]:checked');
     var sourceCheckedBoxes = document.querySelectorAll('input[name=sourceCheckbox]:checked');
@@ -75,11 +77,14 @@ function applyFilter() {
     const params = new URLSearchParams(window.location.search)
     var q = params.get('q');
     var queryParams = '&q=' + q;
+
+    var minPriceParams = minPrice > 0 ? '&priceFrom=' + minPrice : '';
+    var maxPriceParams = maxPrice < 1000000 ? '&priceTo=' + maxPrice : '';
     var brandsParams = brandList.length > 0 ? '&brand=' + brandList.join(',') : '';
     var modelsParams = modelList.length > 0 ? '&model=' + modelList.join(',') : '';
     var sourceParams = sourceList.length > 0 ? '&sourceName=' + sourceList.join(',') : '';
 
-    window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams;
+    window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams;
 }
 
 function applyAuctionFilter() {
@@ -99,6 +104,43 @@ function applyAuctionFilter() {
     var auctionDateToParams = '&auctionEndDate=' + auctionDateTo;
 
     window.location.href = '/auction-calendar?' + auctionTypeParams + auctionNameParams + auctionDateFromParams + auctionDateToParams;
+}
+
+function applyAuctionWatchFilter() {
+    const params = new URLSearchParams(window.location.search)
+    var auctionStatusCheckBoxes = document.querySelectorAll('input[name=auctionStatusCheckbox]:checked');
+    var estMinPriceFilter = document.getElementById("estMinPriceFilter").value;
+    var estMaxPriceFilter = document.getElementById("estMaxPriceFilter").value;
+    var minCurrentBidFilter = document.getElementById("minCurrentBidFilter").value;
+    var maxCurrentBidFilter = document.getElementById("maxCurrentBidFilter").value;
+
+    var auctionStatusList = [];
+    for (var i = 0; auctionStatusCheckBoxes[i]; ++i) {
+        auctionStatusList.push(auctionStatusCheckBoxes[i].value);
+    }
+
+    var auctionName = encodeURIComponent(params.get('auctionName'));
+    var auctionType = encodeURIComponent(params.get('auctionType'));
+    var auctionTitle = encodeURIComponent(params.get('auctionTitle'));
+
+    var auctionStatusParams = auctionStatusList.length > 0 ? '&auctionStatus=' + auctionStatusList.join(',') : '';
+    var auctionNameParams = '&auctionName=' + auctionName;
+    var auctionTypeParams = '&auctionType=' + auctionType;
+    var auctionTitleToParams = '&auctionTitle=' + auctionTitle;
+    var auctionMinEstPriceParams = '&auctionMinEstPrice=' + estMinPriceFilter;
+    var auctionMaxEstPriceParams = '&auctionMaxEstPrice=' + estMaxPriceFilter;
+    var auctionMinBidParams = '&auctionMinBid=' + minCurrentBidFilter;
+    var auctionMaxBidParams = '&auctionMaxBid=' + maxCurrentBidFilter;
+
+    window.location.href = '/auction-watches?'
+        + auctionStatusParams
+        + auctionNameParams
+        + auctionTypeParams
+        + auctionTitleToParams
+        + auctionMinEstPriceParams
+        + auctionMaxEstPriceParams
+        + auctionMinBidParams
+        + auctionMaxBidParams;
 }
 
 function clearFilter() {

@@ -34,7 +34,7 @@
         }
         echo "
         <div class='filter-title'>
-            <h4>AUCTION TYPE</h4>
+            <h4>PRICES RANGE</h4>
         </div>      
         <div class='slider'>
             <div class='progress'></div>
@@ -45,10 +45,10 @@
         </div>
          <div class='price-input'>
             <div class='field'>
-                <input type='number' class='input-min' value='0' >
+                <input type='number' id='search-filter-price-range-min' class='input-min' value='0' >
             </div>
             <div class='field'>
-                <input type='number' class='input-max' value='100000' >
+                <input type='number' id='search-filter-price-range-max' class='input-max' value='100000' >
             </div>
         </div>
         <script src='/wp-content/themes/hello-elementor/assets/js/slider.js'></script>";
@@ -166,6 +166,87 @@
         echo "<div class='search-pagination'>Page 1 2 3 4 5 6 7 8 9 ...</div>";
     }
 
+    function renderAuctionWatchesResultsWithFilter($data, $filter)
+    {
+        $auctionList=array();
+        foreach ($data as $item) {
+            if (!in_array($item->auction_name, $auctionList)) {
+                array_push($auctionList,$item->auction_name);
+            }
+        }
+
+        $auctionListHTML = "<option value='' selected='selected'>Please Select</option>";
+        foreach ($auctionList as $auction) {
+            $auctionListHTML = "$auctionListHTML<option value='$auction'>$auction</option>";
+        }
+        if(count($data) == 0)
+        {
+            echo "<div class='search-results'>no results found!</div>";
+            return;
+        }
+
+        echo "<div class='search-result-container'>";
+        echo "<div id='search-result-filter' class='auction'>";  
+        echo "
+        <div class='filter-title'>
+            <h4>ESTIMATE PRICE</h4>
+        </div>  
+        <div class='filter-section-container'>
+            <label class='filter-auction-label' for='auctionStartDate'>CUSTOM</label>
+            <div class='filter-auction-watches-range'>
+                <input type='text' id='estMinPriceFilter' class='filterSearch' placeholder='Low'>
+                to
+                <input type='text' id='estMaxPriceFilter' class='filterSearch' placeholder='High'>
+            </div>
+        </div>
+        ";
+        echo " <div class='filter-divider'></div>";
+        echo "
+        <div class='filter-title'>
+            <h4>CURRENT BID</h4>
+        </div>  
+        <div class='filter-section-container'>
+            <label class='filter-auction-label'>CUSTOM</label>
+            <div class='filter-auction-watches-range'>
+                <input type='text' id='minCurrentBidFilter' class='filterSearch' placeholder='Low'>
+                to
+                <input type='text' id='maxCurrentBidFilter' class='filterSearch' placeholder='High'>
+            </div>
+        </div>
+        ";
+        echo " <div class='filter-divider'></div>";
+        echo " <div class='filter-title'>
+            <h4>STATUS</h4>
+            </div>  
+            <div class='filter-section-container'>
+                <div class=\"modelCheckbox\" value='Open Bid'><label class=\"container\">Open Bid
+                    <input type=\"checkbox\" id='Open Bid' name=\"auctionStatusCheckbox\" value='Open Bid'>
+                    <span class=\"checkmark\"></span>
+                </label></div>
+                <div class=\"modelCheckbox\" value='Closed Bid'><label class=\"container\">Closed Bid
+                    <input type=\"checkbox\" id='Closed Bid' name=\"auctionStatusCheckbox\" value='Closed Bid'>
+                    <span class=\"checkmark\"></span>
+                </label></div>
+                <div class=\"modelCheckbox\" value='Unsold'><label class=\"container\">Unsold
+                    <input type=\"checkbox\" id='Unsold' name=\"auctionStatusCheckbox\" value='Unsold'>
+                    <span class=\"checkmark\"></span>
+                </label></div>
+            </div>  
+            ";
+        echo "  
+            <button onclick=\"clearAuctionWatchFilter()\" style='margin-bottom: 20px;'>CLEAR ALL FILTERS</button>
+            <button onclick=\"applyAuctionWatchFilter()\" style='background-color: #2255FB;'>APPLY FILTER</button>
+        ";
+        echo "</div>";
+        echo "<div class='search-results'>";
+        foreach ($data as $item) {
+            renderAuctionWatchesCard($item);
+        }   
+        echo "</div>";
+        echo "</div>";
+        echo "<div class='search-pagination'>Page 1 2 3 4 5 6 7 8 9 ...</div>";
+    }
+
     function renderHorizontalListing($data, $class){
         echo "<div class='home-listing-container $class'>";
         foreach ($data as $item) {
@@ -226,6 +307,9 @@
         $stringStartDate = $startDate->format('d M Y');
         $stringEndDate = $endDate->format('d M Y');
 
+        $cleanAuctionName = encodeURIComponent($item->auction_name);
+        $cleanAuctionTitle = encodeURIComponent($item->auction_title);
+
         $liveAuctionClass = '';
         if($item->auction_type == 'Live Auction')
         {
@@ -233,7 +317,7 @@
         }
         echo "
                 <div class='item-card'> 
-                    <a href='$item->auction_link' target='_blank'>
+                    <a href='/auction-watches?auctionStartDate=$stringStartDate&auctionEndDate=$stringEndDate&auctionName=$cleanAuctionName&auctionType=$item->auction_type&auctionTitle=$cleanAuctionTitle'>
                         <div>
                             <div class='item-card-status $liveAuctionClass'>$item->auction_type</div>
                             <div class='item-card-image-container'>
@@ -262,6 +346,85 @@
                                     $item->post_title
                                 </h5>
                     </a>
-                    <button onclick=\"window.location.href = '$item->auction_link';\">BID</button>
+                    <a href='/auction-watches?auctionStartDate=$stringStartDate&auctionEndDate=$stringEndDate&auctionName=$cleanAuctionName&auctionType=$item->auction_type&auctionTitle=$cleanAuctionTitle'>
+                        <button>BID</button>
+                    </a>
             </div>";
+    }
+
+    function renderAuctionWatchesCard($item){
+        $currency = convertCurrency($item->currency);
+        $startDate    = new DateTime($item->auction_start_date);
+        $endDate    = new DateTime($item->auction_end_date);
+        $stringStartDate = $startDate->format('d M Y');
+        $stringEndDate = $endDate->format('d M Y');
+
+        $auctionStatus = '';
+        if($item->status == 'Open Bid')
+        {
+            $auctionStatus = 'open-bid';
+        } else if ($item->status == 'Closed Bid') {
+            $auctionStatus = 'closed-bid';
+        }
+
+        $priceHTML = '';
+        if($item->sold_price != null) {
+            $priceHTML = "
+                        <h7>
+                            Sold Price:  
+                        </h7>
+                        <h5 class='item-card-price auction'>
+                             $currency$item->sold_price
+                        </h5>";
+        } else if($item->current_bid != null) {
+            $priceHTML = "
+                        <h7>
+                            Current Bid:  
+                        </h7>
+                        <h5 class='item-card-price auction'>
+                             $currency$item->current_bid
+                        </h5>";
+        }
+        echo "
+                <div class='item-card'> 
+                    <a href='$item->watch_link' target='_blank'>
+                        <div>
+                            <div class='item-card-status $auctionStatus'>$item->status</div>
+                            <div class='item-card-image-container'>
+                                <img class='item-card-img-top' src='$item->main_img_url' alt=''>
+                            </div>
+                        </div>
+                    </a>
+                    <div class='item-card-desc'>
+                        <div class='item-card-desc-brand'>
+                            <h6>
+                                $item->brand
+                            </h6>
+                        </div>
+                        <div class='item-card-desc-title'>
+                            <h5>
+                                $item->model
+                            </h5>
+                        </div>
+                    </div>
+                    <h7 class='item-card-source'>
+                        Estimate Pricing: $currency$item->min_estimate_price - $currency$item->max_estimate_price <br>
+                        Start date: $stringStartDate
+                    </h7>
+                    <div class='auction-watches'>
+                        $priceHTML
+                    </div>
+                    <a href='$item->post_link' target='_blank'>
+                                <h5>
+                                    $item->post_title
+                                </h5>
+                    </a>
+                    <a href='$item->watch_link' target='_blank'>
+                        <button>PLACE BID</button>
+                    </a>
+            </div>";
+    }
+
+    function encodeURIComponent($str) {
+        return str_replace('&', '%26', $str);
     }
