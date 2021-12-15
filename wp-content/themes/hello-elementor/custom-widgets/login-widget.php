@@ -23,6 +23,9 @@ class Login_Widget extends Widget_Base {
 	
 	protected function render() {
 		echo  "<div class='login-profile-mini'>";
+		echo  "<div class='login-profile-mini flex-to-right'>
+					<img src='https://watching.mydemobb.com/wp-content/themes/hello-elementor/assets/images/material-person.svg' alt='profile-image' />
+				<div>";
             if (is_user_logged_in()) {
                 $current_user = wp_get_current_user();
                 echo  "<a href='/profile'>

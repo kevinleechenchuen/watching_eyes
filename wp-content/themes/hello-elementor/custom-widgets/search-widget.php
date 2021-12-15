@@ -50,34 +50,21 @@ class Search_Widget extends Widget_Base {
         }
         $sourceNameQueryParam = "";
         foreach ($q_sourceName as $sourceName) {
-            $sourceNameQueryParam = ($sourceName == '') ? "$sourceNameQueryParam" : "$sourceNameQueryParam&forum_name__in=$sourceName";
+            $sourceNameQueryParam = ($sourceName == '') ? "$sourceNameQueryParam" : "$sourceNameQueryParam&source__in=$sourceName";
         }
         $sourceTypeQueryParam = "";
         foreach ($q_sourceType as $sourceType) {
             $sourceTypeQueryParam = ($sourceType == '') ? "$sourceTypeQueryParam" : "$sourceTypeQueryParam&source_type__in=$sourceType";
         }
 
-        $saveSearchHTML = "<script>
-                    function saveSearchWithoutQuery(){
-                        jQuery.ajax({
-                            type: 'POST',
-                            url: 'https://{$_SERVER['HTTP_HOST']}/wp-json/custom/v1/save_search',
-                            dataType: 'jsonp',
-                            data: { userid: {$current_user->ID}, query: '$q_query', name: '$q_query'},
-
-                            success: function (data) {
-                                console.log(data);
-                                if(data == 'success') { 
-                                    location.reload(); 
-                                }    
-                            }
-                        });
-                        // window.location.href = 'https://{$_SERVER['HTTP_HOST']}/profile-saved-search/';
-                        // location.reload();   
-                        alert('Successful!');
-                    }
-                </script>
-                <button class='button-main-1' onClick='saveSearchWithoutQuery()'>SAVE THIS SEARCH</button> ";
+        $saveSearchHTML = "";
+        if(is_user_logged_in()){
+            $saveSearchHTML = "
+                <button class='button-main-1' onClick='saveSearchWithoutQuery($current_user->ID)'>SAVE THIS SEARCH</button> ";
+        } else {
+            $saveSearchHTML = "
+                <button class='button-main-1' onClick=\"window.location.href = '/log-in'\">SAVE THIS SEARCH</button> ";
+        }
         
         if($q_query == ''){
             echo "<div class='search-result-label'>
@@ -93,6 +80,7 @@ class Search_Widget extends Widget_Base {
 
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$pageQueryParam";
         // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
+        echo $url;
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);

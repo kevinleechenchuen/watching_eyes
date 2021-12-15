@@ -1,4 +1,19 @@
 jQuery(document).ready(function () {
+    const params = new URLSearchParams(window.location.search)
+    var sourceTypes = params.get('sourceType');
+    if (sourceTypes) {
+        var sourceTypesList = sourceTypes.split(',');
+        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-search-checkbox]');
+        jQuery('#all-search-checkbox').prop('checked', false);
+        sourceTypeCheckedBoxes.forEach((checkbox) => {
+            if (sourceTypesList.includes(checkbox.value)) {
+                checkbox.checked = true;    
+            } else {
+                checkbox.checked = false;
+            }
+        });
+    }
+    
     jQuery('#brandFilterSearch').on('input', function () {
         let filter = jQuery(this).val();
         if (filter === '') {
@@ -77,6 +92,8 @@ function applyFilter() {
     const params = new URLSearchParams(window.location.search)
     var q = params.get('q');
     var queryParams = '&q=' + q;
+    var sourceType = params.get('sourceType');
+    var sourceTypeParams = '&sourceType=' + sourceType;
 
     var minPriceParams = minPrice > 0 ? '&priceFrom=' + minPrice : '';
     var maxPriceParams = maxPrice < 1000000 ? '&priceTo=' + maxPrice : '';
@@ -84,7 +101,7 @@ function applyFilter() {
     var modelsParams = modelList.length > 0 ? '&model=' + modelList.join(',') : '';
     var sourceParams = sourceList.length > 0 ? '&sourceName=' + sourceList.join(',') : '';
 
-    window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams;
+    window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
 }
 
 function applyAuctionFilter() {
@@ -165,6 +182,66 @@ function clearSpecificFilter(name) {
     for (var i = 0; checkedBoxes[i]; ++i) {
         checkedBoxes[i].checked = false;
     }
+}
+function removeSaveSearch(id, name) {
+
+    if (confirm(`Are you sure you want to remove ${name} from your saved search?`)) {
+        jQuery.ajax({
+            type: 'DELETE',
+            url: `https://${window.location.hostname}/wp-json/custom/v1/save_search/` + id,
+            data: { id: id },
+
+            success: function (data) {
+                console.log(data);
+                if (data == 'success') {
+                    location.reload();
+                } else {
+                    jQuery('#save-search-textbox-error').html('Something went wrong! Please try again.');
+                }
+            }
+        });
+    }
+}
+function saveSearch(userId) {
+    var saveQuery = document.getElementsByName('save-search-textbox')[0].value;
+
+    if (saveQuery === '') {
+        jQuery('#save-search-textbox-error').html('Keyword cannot be empty!');
+        return null;
+    } else {
+        jQuery.ajax({
+            type: 'POST',
+            url: `https://${window.location.hostname}/wp-json/custom/v1/save_search`,
+            data: { userid: userId, query: saveQuery, name: saveQuery },
+
+            success: function (data) {
+                console.log(data);
+                if (data == 'success') {
+                    location.reload();
+                } else {
+                    jQuery('#save-search-textbox-error').html('Something went wrong! Please try again.');
+                }
+            }
+        });
+        jQuery('#save-search-textbox-error').html('');
+    }
+}
+
+function saveSearchWithoutQuery(userId) {
+    var query = document.getElementsByName('header-search-textbox')[0].value;
+
+    jQuery.ajax({
+        type: 'POST',
+        url: `https://${window.location.hostname}/wp-json/custom/v1/save_search`,
+        data: { userid: userId, query: query, name: query },
+
+        success: function (data) {
+            console.log(data);
+            if (data == 'success') {
+                window.location.href = `https://${window.location.hostname}/profile-saved-search/`;
+            }
+        }
+    });
 }
 
 // function scrollContainer(container, direction) {

@@ -24,34 +24,7 @@ class Saved_Search_Widget extends Widget_Base {
                 $current_user = wp_get_current_user();
                 echo "<div class='header-search-container' style='width=70%;'>
                 <input type='text' class='save-search-textbox' name='save-search-textbox' placeholder='Enter keyword...'>
-                <script>
-                    function saveSearch(){
-                        var saveQuery = document.getElementsByName('save-search-textbox')[0].value;
-
-                        if(saveQuery === ''){
-                            jQuery('#save-search-textbox-error').html('Keyword cannot be empty!');
-                            return null;
-                        } else {
-                            jQuery.ajax({
-                            type: 'POST',
-                            url: 'https://{$domain}/wp-json/custom/v1/save_search',
-                            dataType: 'jsonp',
-                            data: {userid: {$current_user->ID}, query: saveQuery, name: saveQuery},
-
-                            success: function (data) {
-                                console.log(data);
-                                if(data == 'success') { 
-                                    location.reload(); 
-                                }    
-                            }
-                            });
-                            jQuery('#save-search-textbox-error').html('');
-                        }
-
-                        
-                    }
-                </script>
-                <button class='header-search-button' onClick='saveSearch()'>SAVE</button>
+                <button class='header-search-button' onClick='saveSearch($current_user->ID)'>SAVE</button>
                 </div>
                 <div>
                     <label id='save-search-textbox-error' class='error-msg'></label>
@@ -68,27 +41,10 @@ class Saved_Search_Widget extends Widget_Base {
                                     $item->Name
                                 </div>
                             </a>
-                            <a class='delete-saved-search' href='#' onclick='removeSaveSearch($item->ID);'>x</a>
+                            <a class='delete-saved-search' onclick='removeSaveSearch($item->ID, \"$item->Name\");'>x</a>
                         </div>";
                 }
-                echo "</div>
-                <script>
-                    function removeSaveSearch(id){
-                            jQuery.ajax({
-                                type: 'DELETE',
-                                url: 'https://{$domain}/wp-json/custom/v1/save_search/'+id,
-                                dataType: 'jsonp',
-                                data: {id: id},
-
-                                success: function (data) {
-                                    console.log(data);
-                                    if(data == 'success') { 
-                                        location.reload(); 
-                                    }    
-                                }
-                            });
-                    }
-                </script>";
+                echo "</div>";
             } else {
                 echo "not signed in";
             }

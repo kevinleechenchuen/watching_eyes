@@ -4,7 +4,7 @@
     {
         if(count($data) == 0)
         {
-            echo "<div class='search-results'>no results found!</div>";
+            echo "<div class='search-results-no-result'>no results found!</div>";
             return;
         }
 
@@ -79,8 +79,10 @@
                 $sourceHTML
             </div>";
         echo "  
-            <button onclick=\"clearFilter()\" style='margin-bottom: 20px;'>CLEAR ALL FILTERS</button>
-            <button onclick=\"applyFilter()\" style='background-color: #2255FB;'>APPLY FILTER</button>
+        <div class='filter-button-container'>
+            <button class='button-main-1' onclick=\"clearFilter()\" style='margin-bottom: 10px; width:100%;'>CLEAR ALL FILTERS</button>
+            <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
+        </div>
         ";
         echo "</div>";
         echo "<div class='search-results'>";
@@ -187,8 +189,10 @@
                 </div>    
             ";
         echo "  
-            <button onclick=\"clearAuctionFilter()\" style='margin-bottom: 20px;'>CLEAR ALL FILTERS</button>
-            <button onclick=\"applyAuctionFilter()\" style='background-color: #2255FB;'>APPLY FILTER</button>
+        <div class='filter-button-container'>
+            <button class='button-main-1' onclick=\"clearAuctionFilter()\" style='margin-bottom: 10px; width:100%;'>CLEAR ALL FILTERS</button>
+            <button class='button-main-2' onclick=\"applyAuctionFilter()\" style='width:100%;'>APPLY FILTER</button>
+        </div>
         ";
         echo "</div>";
         echo "<div class='search-results'>";
@@ -267,8 +271,10 @@
             </div>  
             ";
         echo "  
-            <button onclick=\"clearAuctionWatchFilter()\" style='margin-bottom: 20px;'>CLEAR ALL FILTERS</button>
-            <button onclick=\"applyAuctionWatchFilter()\" style='background-color: #2255FB;'>APPLY FILTER</button>
+        <div class='filter-button-container'>
+            <button class='button-main-1' onclick=\"clearAuctionWatchFilter()\" style='margin-bottom: 10px; width:100%;'>CLEAR ALL FILTERS</button>
+            <button class='button-main-2' onclick=\"applyAuctionWatchFilter()\" style='width:100%;'>APPLY FILTER</button>
+        </div>
         ";
         echo "</div>";
         echo "<div class='search-results'>";
@@ -333,38 +339,74 @@
 
     function renderCard($item){
         $currency = convertCurrency($item->currency);
-        echo "
-            <div class='item-card'>
-                    <a href='$item->post_link' target='_blank'>
-                        <div>
-                            <div class='item-card-status'>$item->status</div>
-                            <div class='item-card-image-container'>
-                                <img class='item-card-img-top' src='$item->main_img_url' alt=''>
+        $price = ($item->current_bid == null) ? $item->sold_price : $item->current_bid;
+        if($item->source_type != 'Auction') {
+            echo "
+                <div class='item-card'>
+                        <a href='$item->post_link' target='_blank'>
+                            <div>
+                                <div class='item-card-status'>$item->status</div>
+                                <div class='item-card-image-container'>
+                                    <img class='item-card-img-top' src='$item->main_img_url' alt=''>
+                                </div>
                             </div>
+                        </a>
+                        <div class='item-card-desc'>
+                            <div class='item-card-desc-brand'>
+                                <h6>
+                                    $item->brand
+                                </h6>
+                            </div>
+                            <div class='item-card-desc-title'>
+                                <a href='$item->post_link' target='_blank'>
+                                    <h5>
+                                        $item->post_title
+                                    </h5>
+                                </a>
+                            </div>
+                            <h5 class='item-card-price'>
+                                $currency$item->product_price
+                            </h5>
+                            <h7 class='item-card-source'>
+                                $item->original_poster on $item->forum_name
+                            </h7>
                         </div>
-                    </a>
-                    <div class='item-card-desc'>
-                        <div class='item-card-desc-brand'>
-                            <h6>
-                                $item->brand
-                            </h6>
+                </div>
+            ";
+        } else {
+            echo "
+                <div class='item-card'>
+                        <a href='$item->watch_link' target='_blank'>
+                            <div>
+                                <div class='item-card-status'>$item->status</div>
+                                <div class='item-card-image-container'>
+                                    <img class='item-card-img-top' src='$item->main_img_url' alt=''>
+                                </div>
+                            </div>
+                        </a>
+                        <div class='item-card-desc'>
+                            <div class='item-card-desc-brand'>
+                                <h6>
+                                    $item->brand
+                                </h6>
+                            </div>
+                            <div class='item-card-desc-title'>
+                                <a href='$item->watch_link' target='_blank'>
+                                    <h5>
+                                        $item->auction_title
+                                    </h5>
+                                </a>
+                            </div>
+                            <h5 class='item-card-price'>
+                                $currency$price
+                            </h5>
+                            <h7 class='item-card-source'>
+                                $item->auction_name
+                            </h7>
                         </div>
-                        <div class='item-card-desc-title'>
-                            <a href='$item->post_link' target='_blank'>
-                                <h5>
-                                    $item->post_title
-                                </h5>
-                            </a>
-                        </div>
-                        <h5 class='item-card-price'>
-                            $currency$item->product_price
-                        </h5>
-                        <h7 class='item-card-source'>
-                            $item->original_poster on $item->forum_name
-                        </h7>
-                    </div>
-            </div>
-        ";
+                </div>
+            ";
+        }   
     }
 
     function renderAuctionCard($item){
@@ -413,7 +455,7 @@
                                 </h5>
                     </a>
                     <a href='/auction-watches?auctionStartDate=$stringStartDate&auctionEndDate=$stringEndDate&auctionName=$cleanAuctionName&auctionType=$item->auction_type&auctionTitle=$cleanAuctionTitle'>
-                        <button>BID</button>
+                        <button class='button-main-1'>BID</button>
                     </a>
             </div>";
     }
@@ -474,7 +516,7 @@
                         </div>
                     </div>
                     <h7 class='item-card-source'>
-                        Estimate Pricing: $currency$item->min_estimate_price - $currency$item->max_estimate_price <br>
+                        Estimate Pricing: <br>$currency$item->min_estimate_price - $currency$item->max_estimate_price <br>
                         Start date: $stringStartDate
                     </h7>
                     <div class='auction-watches'>
@@ -486,7 +528,7 @@
                                 </h5>
                     </a>
                     <a href='$item->watch_link' target='_blank'>
-                        <button>PLACE BID</button>
+                        <button class='button-main-1'>PLACE BID</button>
                     </a>
             </div>";
     }

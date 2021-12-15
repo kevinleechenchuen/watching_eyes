@@ -39,7 +39,7 @@ class Latest_Forum_Widget extends Widget_Base {
             echo 'something went wrong!';
             return null;
         }
-        renderHorizontalListing($body->forumWatches, 'latest-forum');
+        renderHorizontalListing(array_slice($body->forumWatches, 0, 10), 'latest-forum');
 	}
 	
 	protected function _content_template() {
