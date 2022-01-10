@@ -13,6 +13,45 @@ jQuery(document).ready(function () {
             }
         });
     }
+
+    var brandsInParams = params.get('brand');
+    if (brandsInParams) {
+        var brandsInParamsList = brandsInParams.split(',');
+        var brandCheckedBoxes = document.querySelectorAll('input[name=brandCheckbox]');
+        brandCheckedBoxes.forEach((checkbox) => {
+            if (brandsInParamsList.includes(checkbox.value)) {
+                checkbox.checked = true;
+            } else {
+                checkbox.checked = false;
+            }
+        });
+    }
+
+    var modelsInParams = params.get('model');
+    if (modelsInParams) {
+        var modelsInParamsList = modelsInParams.split(',');
+        var modelCheckedBoxes = document.querySelectorAll('input[name=modelCheckbox]');
+        modelCheckedBoxes.forEach((checkbox) => {
+            if (modelsInParamsList.includes(checkbox.value)) {
+                checkbox.checked = true;
+            } else {
+                checkbox.checked = false;
+            }
+        });
+    }
+
+    var sourceInParams = params.get('sourceName');
+    if (sourceInParams) {
+        var sourceInParamsList = sourceInParams.split(',');
+        var sourceCheckedBoxes = document.querySelectorAll('input[name=sourceCheckbox]');
+        sourceCheckedBoxes.forEach((checkbox) => {
+            if (sourceInParamsList.includes(checkbox.value)) {
+                checkbox.checked = true;
+            } else {
+                checkbox.checked = false;
+            }
+        });
+    }
     
     jQuery('#brandFilterSearch').on('input', function () {
         let filter = jQuery(this).val();
