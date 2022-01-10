@@ -91,15 +91,19 @@ function applyFilter() {
 
     const params = new URLSearchParams(window.location.search)
     var q = params.get('q');
-    var queryParams = '&q=' + q;
+    var queryParams = '&q=' + encodeURIComponent(q);
     var sourceType = params.get('sourceType');
-    var sourceTypeParams = '&sourceType=' + sourceType;
+    let sourceTypeParams = '';
+
+    if (sourceType) {
+        sourceTypeParams = '&sourceType=' + encodeURIComponent(sourceType);  
+    }
 
     var minPriceParams = minPrice > 0 ? '&priceFrom=' + minPrice : '';
     var maxPriceParams = maxPrice < 1000000 ? '&priceTo=' + maxPrice : '';
-    var brandsParams = brandList.length > 0 ? '&brand=' + brandList.join(',') : '';
-    var modelsParams = modelList.length > 0 ? '&model=' + modelList.join(',') : '';
-    var sourceParams = sourceList.length > 0 ? '&sourceName=' + sourceList.join(',') : '';
+    var brandsParams = brandList.length > 0 ? '&brand=' + encodeURIComponent(brandList.join(',')) : '';
+    var modelsParams = modelList.length > 0 ? '&model=' + encodeURIComponent(modelList.join(',')) : '';
+    var sourceParams = sourceList.length > 0 ? '&sourceName=' + encodeURIComponent(sourceList.join(',')) : '';
 
     window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
 }

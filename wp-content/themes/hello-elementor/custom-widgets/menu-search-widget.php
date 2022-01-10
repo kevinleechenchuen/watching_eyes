@@ -33,7 +33,7 @@ class Menu_Search_Widget extends Widget_Base {
                     }
                     });
                     function search(){
-                        var searchParam = document.getElementsByName('header-search-textbox')[0].value;
+                        var searchParam = encodeURIComponent(document.getElementsByName('header-search-textbox')[0].value);
                         var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-search-checkbox]:checked');
                         var sourceTypes = [];
 
@@ -41,7 +41,7 @@ class Menu_Search_Widget extends Widget_Base {
                             sourceTypes.push(sourceTypeCheckedBoxes[i].value);
                         }
 
-                        var sourceParams = sourceTypes.length > 0 ? '&sourceType='+sourceTypes.join(',') : '';
+                        var sourceParams = sourceTypes.length > 0 ? '&sourceType='+encodeURIComponent(sourceTypes.join(',')) : '';
 
                         window.location.href = '/search?q='+searchParam+sourceParams;
                     }
