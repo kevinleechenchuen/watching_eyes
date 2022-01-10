@@ -100,7 +100,7 @@ function applyFilter() {
     }
 
     var minPriceParams = minPrice > 0 ? '&priceFrom=' + minPrice : '';
-    var maxPriceParams = maxPrice < 1000000 ? '&priceTo=' + maxPrice : '';
+    var maxPriceParams = maxPrice <= 10000000 ? '&priceTo=' + maxPrice : '';
     var brandsParams = brandList.length > 0 ? '&brand=' + encodeURIComponent(brandList.join(',')) : '';
     var modelsParams = modelList.length > 0 ? '&model=' + encodeURIComponent(modelList.join(',')) : '';
     var sourceParams = sourceList.length > 0 ? '&sourceName=' + encodeURIComponent(sourceList.join(',')) : '';

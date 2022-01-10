@@ -40,15 +40,15 @@
             <div class='progress'></div>
         </div>
         <div class='range-input'>
-            <input type='range' class='range-min' min='0' max='100000' value='0' step='500'>
-            <input type='range' class='range-max' min='0' max='100000' value='100000' step='500'>
+            <input type='range' class='range-min' min='0' max='1000000' value='0' step='1000'>
+            <input type='range' class='range-max' min='0' max='1000000' value='1000000' step='1000'>
         </div>
          <div class='price-input'>
             <div class='field'>
                 <input type='number' id='search-filter-price-range-min' class='input-min' value='0' >
             </div>
             <div class='field'>
-                <input type='number' id='search-filter-price-range-max' class='input-max' value='100000' >
+                <input type='number' id='search-filter-price-range-max' class='input-max' value='1000000' >
             </div>
         </div>
         <script src='/wp-content/themes/hello-elementor/assets/js/slider.js'></script>";
