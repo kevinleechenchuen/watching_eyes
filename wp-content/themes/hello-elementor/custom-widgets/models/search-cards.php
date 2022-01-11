@@ -359,14 +359,14 @@
                             </div>
                             <div class='item-card-desc-title'>
                                 <a href='$item->post_link' target='_blank'>
-                                    <h5>
+                                    <h3>
                                         $item->post_title
-                                    </h5>
+                                    </h3>
                                 </a>
                             </div>
-                            <h5 class='item-card-price'>
+                            <h3 class='item-card-price'>
                                 $currency$item->product_price
-                            </h5>
+                            </h3>
                             <h7 class='item-card-source'>
                                 $item->original_poster on $item->forum_name
                             </h7>
@@ -392,14 +392,14 @@
                             </div>
                             <div class='item-card-desc-title'>
                                 <a href='$item->watch_link' target='_blank'>
-                                    <h5>
+                                    <h3>
                                         $item->auction_title
-                                    </h5>
+                                    </h3>
                                 </a>
                             </div>
-                            <h5 class='item-card-price'>
+                            <h3 class='item-card-price'>
                                 $currency$price
-                            </h5>
+                            </h3>
                             <h7 class='item-card-source'>
                                 $item->auction_name
                             </h7>
@@ -440,9 +440,9 @@
                             </h6>
                         </div>
                         <div class='item-card-desc-title'>
-                            <h5>
+                            <h3>
                                 $item->auction_title
-                            </h5>
+                            </h3>
                         </div>
                     </div>
                     <h7 class='item-card-source'>
@@ -450,9 +450,9 @@
                         End date: $stringEndDate
                     </h7>
                     <a href='$item->post_link' target='_blank'>
-                                <h5>
+                                <h3>
                                     $item->post_title
-                                </h5>
+                                </h3>
                     </a>
                     <a href='/auction-watches?auctionStartDate=$stringStartDate&auctionEndDate=$stringEndDate&auctionName=$cleanAuctionName&auctionType=$item->auction_type&auctionTitle=$cleanAuctionTitle'>
                         <button class='button-main-1'>BID</button>
