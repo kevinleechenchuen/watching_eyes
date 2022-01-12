@@ -65,18 +65,25 @@ class Search_Widget extends Widget_Base {
             $saveSearchHTML = "
                 <button class='button-main-1' onClick=\"window.location.href = '/log-in'\">SAVE THIS SEARCH</button> ";
         }
-        
+        echo "<div class='search-result-label'>";
         if($q_query == ''){
-            echo "<div class='search-result-label'>
-                <h1>Results</h1>
-            </div>";
+            
+            echo "<h1>Results</h1>";
             
         } else {
-            echo "<div class='search-result-label'>
-                <h1>Results For '$q_query'</h1>
-                $saveSearchHTML
-            </div>";
+            echo "<h1>Results For '$q_query'</h1>
+                $saveSearchHTML";
         }
+        echo "<div class='search-result-filters'>";
+        if($q_query != '') echo "<div><h7>Query: $q_query</h7></div>";
+        if($_GET['brand'] != '') echo "<div><h7>Brand: ".$_GET['brand']."</h7></div>";
+        if($_GET['model'] != '') echo "<div><h7>Model: ".$_GET['model']."</h7></div>";
+        if($_GET['sourceName'] != '') echo "<div><h7>Source: ".$_GET['sourceName']."</h7></div>";
+        if($_GET['sourceType'] != '') echo "<div><h7>Source type: ".$_GET['sourceType']."</h7></div>";
+        if($_GET['priceFrom'] != '') echo "<div><h7>Price from: ".$_GET['priceFrom']."</h7></div>";
+        if($_GET['priceTo'] != '') echo "<div><h7>Price to: ".$_GET['priceTo']."</h7></div>";
+        echo "</div>";
+        echo "</div>"; 
 
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$pageQueryParam";
         // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
@@ -90,7 +97,7 @@ class Search_Widget extends Widget_Base {
         }
         
         echo "<div class='item-card-desc-title'>
-                <h5>Filters</h5>
+                <h2>Filters</h2>
             </div>";
         renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page);
 	}
