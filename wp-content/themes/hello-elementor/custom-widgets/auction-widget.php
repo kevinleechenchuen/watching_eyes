@@ -59,7 +59,7 @@ class Auction_Widget extends Widget_Base {
         }
         
         echo "<div class='item-card-desc-title'>
-                <h5>Filters</h5>
+                <h2>Filters</h2>
             </div>";
         renderAuctionResultsWithFilter($body->auctions);
 	}

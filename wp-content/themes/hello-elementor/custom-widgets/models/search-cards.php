@@ -510,9 +510,9 @@
                             </h6>
                         </div>
                         <div class='item-card-desc-title'>
-                            <h5>
+                            <h3>
                                 $item->model
-                            </h5>
+                            </h3>
                         </div>
                     </div>
                     <h7 class='item-card-source'>

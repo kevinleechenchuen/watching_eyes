@@ -46,9 +46,9 @@ class Menu_Search_Widget extends Widget_Base {
                         window.location.href = '/search?q='+searchParam+sourceParams;
                     }
                 </script>
-                <button id='header-menu-search' class='header-search-button' onClick='search()'>SEARCH</button>
+                <button id='header-menu-search' class='header-search-button' onClick='search()'></button>
             </div>
-            <div>
+            <div class='header-menu-filter'>
             <label class=\"container\">All Watches
                 <input type=\"checkbox\" id=\"all-search-checkbox\" checked=\"checked\">
                 <span class=\"checkmark\"></span>
