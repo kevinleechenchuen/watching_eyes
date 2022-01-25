@@ -16,19 +16,19 @@
 
         foreach ($filter->brands as $brand) {
             $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value='$brand'><label class=\"container\">$brand
-                <input type=\"checkbox\" id='$brand' name=\"brandCheckbox\" value='$brand'>
+                <input type=\"checkbox\" id='$brand' name=\"brandCheckbox\" value='$brand' onclick='filterCheckboxOnClick(\"brand\", \"$brand\")'>
                 <span class=\"checkmark\"></span>
             </label></div>";
         }
         foreach ($filter->models as $model) {
             $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model'><label class=\"container\">$model
-                <input type=\"checkbox\" id='$model' name=\"modelCheckbox\" value='$model'>
+                <input type=\"checkbox\" id='$model' name=\"modelCheckbox\" value='$model' onclick='filterCheckboxOnClick(\"model\", \"$model\")'>
                 <span class=\"checkmark\"></span>
             </label></div>";
         }
         foreach ($filter->sources as $source) {
             $sourceHTML = "$sourceHTML<div class=\"sourceCheckbox\" value='$source'><label class=\"container\">$source
-                <input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source'>
+                <input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source' onclick='filterCheckboxOnClick(\"source\", \"$source\")'>
                 <span class=\"checkmark\"></span>
             </label></div>";
         }
@@ -78,12 +78,12 @@
             <div class='filter-section-container'> 
                 $sourceHTML
             </div>";
-        echo "  
-        <div class='filter-button-container'>
-            <button class='button-main-1' onclick=\"clearFilter()\" style='margin-bottom: 10px; width:100%;'>CLEAR ALL FILTERS</button>
-            <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
-        </div>
-        ";
+        // echo "  
+        // <div class='filter-button-container'>
+        //     <button class='button-main-1' onclick=\"clearFilter()\" style='margin-bottom: 10px; width:100%;'>CLEAR ALL FILTERS</button>
+        //     <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
+        // </div>
+        // ";
         echo "</div>";
         echo "<div class='search-results'>";
         foreach ($data as $item) {

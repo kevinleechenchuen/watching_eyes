@@ -75,13 +75,45 @@ class Search_Widget extends Widget_Base {
                 $saveSearchHTML";
         }
         echo "<div class='search-result-filters'>";
-        if($q_query != '') echo "<div><h7>Query: $q_query</h7></div>";
-        if($_GET['brand'] != '') echo "<div><h7>Brand: ".$_GET['brand']."</h7></div>";
-        if($_GET['model'] != '') echo "<div><h7>Model: ".$_GET['model']."</h7></div>";
-        if($_GET['sourceName'] != '') echo "<div><h7>Source: ".$_GET['sourceName']."</h7></div>";
-        if($_GET['sourceType'] != '') echo "<div><h7>Source type: ".$_GET['sourceType']."</h7></div>";
-        if($_GET['priceFrom'] != '') echo "<div><h7>Price from: ".$_GET['priceFrom']."</h7></div>";
-        if($_GET['priceTo'] != '') echo "<div><h7>Price to: ".$_GET['priceTo']."</h7></div>";
+        if($_GET['brand'] != '') {
+            $asdasd = explode(",", $_GET['brand']);
+            foreach ($asdasd as $item) {
+                echo "<div class='search-result-filters-card'>
+                            <div class='search-result-filters-card-name'>
+                                $item
+                            </div>
+                            <a class='remove-search-result-filters-card' onclick='removeSearchFilter(\"brand\", \"$item\");'>x
+                            </a>
+                        </div>";
+            }
+        }
+        if($_GET['model'] != '') {
+            $asdasd = explode(",", $_GET['model']);
+            foreach ($asdasd as $item) {
+                echo "<div class='search-result-filters-card'>
+                            <div class='search-result-filters-card-name'>
+                                $item
+                            </div>
+                            <a class='remove-search-result-filters-card' onclick='removeSearchFilter(\"model\", \"$item\");'>x
+                            </a>
+                        </div>";
+            }
+        }
+        if($_GET['sourceName'] != '') {
+            $asdasd = explode(",", $_GET['sourceName']);
+            foreach ($asdasd as $item) {
+                echo "<div class='search-result-filters-card'>
+                            <div class='search-result-filters-card-name'>
+                                $item
+                            </div>
+                            <a class='remove-search-result-filters-card' onclick='removeSearchFilter(\"source\", \"$item\");'>x
+                            </a>
+                        </div>";
+            }
+        }
+        // if($_GET['sourceType'] != '') echo "<div><h7>Source type: ".$_GET['sourceType']."</h7></div>";
+        // if($_GET['priceFrom'] != '') echo "<div><h7>Price from: ".$_GET['priceFrom']."</h7></div>";
+        // if($_GET['priceTo'] != '') echo "<div><h7>Price to: ".$_GET['priceTo']."</h7></div>";
         echo "</div>";
         echo "</div>"; 
 

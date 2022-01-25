@@ -107,6 +107,148 @@ jQuery(document).ready(function () {
     });
 });
 
+function filterCheckboxOnClick(type, value) {
+    const params = new URLSearchParams(window.location.search);
+    var sourceType = params.get('sourceType');
+    var q = params.get('q');
+    let queryParams;
+    if (q) {
+        queryParams = '&q=' + encodeURIComponent(q);
+    }
+    if (type === 'brand') {
+        var brandCheckedBox = document.getElementById(value);
+        let brandsParams;
+        if (brandCheckedBox.checked) {
+            const brands = params.get('brand');
+            if (brands !== '' || brands !== null) {
+                brandsParams = '&brand=' + encodeURIComponent(brands) + `,${value}`;
+            } else {
+                brandsParams = '&brand=' + encodeURIComponent(value);
+            }
+        } else {
+            let brands;
+            if (params.get('brand').indexOf(',') > 0) {
+                brands = params.get('brand').replace(`,${value}`, '');
+            } else {
+                brands = params.get('brand').replace(`${value}`, '');
+            }
+            brandsParams = '&brand=' + encodeURIComponent(brands);
+        }
+        console.log(brandsParams);
+        let sourceTypeParams = '';
+        if (sourceType) {
+            sourceTypeParams = '&sourceType=' + encodeURIComponent(sourceType);
+        }
+        var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
+        var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
+        var modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
+        var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
+
+        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
+    } else if (type === 'model') {
+        var modelCheckedBox = document.getElementById(value);
+        let modelsParams;
+        if (modelCheckedBox.checked) {
+            const models = params.get('model');
+            if (models !== '' || models !== null) {
+                modelsParams = '&model=' + encodeURIComponent(models) + `,${value}`;
+            } else {
+                modelsParams = '&model=' + encodeURIComponent(value);
+            }
+        } else {
+            let models;
+            if (params.get('model').indexOf(',') > 0) {
+                models = params.get('model').replace(`,${value}`, '');
+            } else {
+                models = params.get('model').replace(`${value}`, '');
+            }
+            modelsParams = '&model=' + encodeURIComponent(models);
+        }
+        let sourceTypeParams = '';
+        if (sourceType) {
+            sourceTypeParams = '&sourceType=' + encodeURIComponent(sourceType);
+        }
+        var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
+        var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
+        var brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
+        var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
+
+        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
+    } else if (type === 'source') {
+        var sourceCheckedBox = document.getElementById(value);
+        let sourceParams;
+        if (sourceCheckedBox.checked) {
+            const source = params.get('sourceName');
+            if (source !== '' || source !== null) {
+                sourceParams = '&sourceName=' + encodeURIComponent(source) + `,${value}`;
+            } else {
+                sourceParams = '&sourceName=' + encodeURIComponent(value);
+            }
+        } else {
+            let source;
+            if (params.get('sourceName').indexOf(',') > 0) {
+                source = params.get('sourceName').replace(`,${value}`, '');
+            } else {
+                source = params.get('sourceName').replace(`${value}`, '');
+            }
+            sourceParams = '&sourceName=' + encodeURIComponent(source);
+        }
+        let sourceTypeParams = '';
+        if (sourceType) {
+            sourceTypeParams = '&sourceType=' + encodeURIComponent(sourceType);
+        }
+        var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
+        var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
+        var brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
+        var modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
+
+        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
+    }
+}
+
+function removeSearchFilter(type, value) {
+    let brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
+    let modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
+    let sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
+    if (type === 'brand') {
+        let brands;
+        if (params.get('brand').indexOf(',') > 0) {
+            brands = params.get('brand').replace(`,${value}`, '');
+        } else {
+            brands = params.get('brand').replace(`${value}`, '');
+        }
+        brandsParams = '&brand=' + encodeURIComponent(brands);
+    } else if (type === 'model') {
+        let models;
+        if (params.get('model').indexOf(',') > 0) {
+            models = params.get('model').replace(`,${value}`, '');
+        } else {
+            models = params.get('model').replace(`${value}`, '');
+        }
+        modelsParams = '&model=' + encodeURIComponent(models);
+    } else if (type === 'source') {
+        let sources;
+        if (params.get('sourceName').indexOf(',') > 0) {
+            sources = params.get('source').replace(`,${value}`, '');
+        } else {
+            sources = params.get('source').replace(`${value}`, '');
+        }
+        modelsParams = '&sourceName=' + encodeURIComponent(sources);
+    }
+    var q = params.get('q');
+    let queryParams;
+    if (q) {
+        queryParams = '&q=' + encodeURIComponent(q);
+    }
+    let sourceTypeParams = '';
+    if (sourceType) {
+        sourceTypeParams = '&sourceType=' + encodeURIComponent(sourceType);
+    }
+    var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
+    var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
+    window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
+
+}
 
 function applyFilter() {
     var minPrice = document.getElementById("search-filter-price-range-min").value;
