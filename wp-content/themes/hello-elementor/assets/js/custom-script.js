@@ -120,10 +120,10 @@ function filterCheckboxOnClick(type, value) {
         let brandsParams;
         if (brandCheckedBox.checked) {
             const brands = params.get('brand');
-            if (brands !== '' || brands !== null) {
-                brandsParams = '&brand=' + encodeURIComponent(brands) + `,${value}`;
-            } else {
+            if (brands == null || brands === '') {
                 brandsParams = '&brand=' + encodeURIComponent(value);
+            } else {
+                brandsParams = '&brand=' + encodeURIComponent(brands) + `,${value}`;
             }
         } else {
             let brands;
@@ -150,10 +150,10 @@ function filterCheckboxOnClick(type, value) {
         let modelsParams;
         if (modelCheckedBox.checked) {
             const models = params.get('model');
-            if (models !== '' || models !== null) {
-                modelsParams = '&model=' + encodeURIComponent(models) + `,${value}`;
+            if (models == null || brands === '') {
+                modelsParams = '&model=' + encodeURIComponent(value); 
             } else {
-                modelsParams = '&model=' + encodeURIComponent(value);
+                modelsParams = '&model=' + encodeURIComponent(models) + `,${value}`;
             }
         } else {
             let models;
@@ -179,10 +179,10 @@ function filterCheckboxOnClick(type, value) {
         let sourceParams;
         if (sourceCheckedBox.checked) {
             const source = params.get('sourceName');
-            if (source !== '' || source !== null) {
-                sourceParams = '&sourceName=' + encodeURIComponent(source) + `,${value}`;
-            } else {
+            if (source == null || source === '') {
                 sourceParams = '&sourceName=' + encodeURIComponent(value);
+            } else {
+                sourceParams = '&sourceName=' + encodeURIComponent(source) + `,${value}`;
             }
         } else {
             let source;
@@ -207,6 +207,7 @@ function filterCheckboxOnClick(type, value) {
 }
 
 function removeSearchFilter(type, value) {
+    const params = new URLSearchParams(window.location.search);
     let brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
     let modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
     let sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
@@ -229,13 +230,14 @@ function removeSearchFilter(type, value) {
     } else if (type === 'source') {
         let sources;
         if (params.get('sourceName').indexOf(',') > 0) {
-            sources = params.get('source').replace(`,${value}`, '');
+            sources = params.get('sourceName').replace(`,${value}`, '');
         } else {
-            sources = params.get('source').replace(`${value}`, '');
+            sources = params.get('sourceName').replace(`${value}`, '');
         }
-        modelsParams = '&sourceName=' + encodeURIComponent(sources);
+        sourceParams = '&sourceName=' + encodeURIComponent(sources);
     }
     var q = params.get('q');
+    var sourceType = params.get('sourceType');
     let queryParams;
     if (q) {
         queryParams = '&q=' + encodeURIComponent(q);
