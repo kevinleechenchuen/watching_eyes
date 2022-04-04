@@ -14,15 +14,19 @@
         $modelHTML = '';
         $sourceHTML = '';
 
-        foreach ($filter->brands as $brand) {
-            $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value='$brand'><label class=\"container\">$brand
-                <input type=\"checkbox\" id='$brand' name=\"brandCheckbox\" value='$brand' onclick='filterCheckboxOnClick(\"brand\", \"$brand\")'>
+        global $wpdb;
+        $brands = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}watching_brands", OBJECT );
+        $models = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}watching_models", OBJECT );
+
+        foreach ($brands as $brand) {
+            $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value='$brand->Name'><label class=\"container\">$brand->Name
+                <input type=\"checkbox\" id='$brand->Name' name=\"brandCheckbox\" value='$brand->Name' onclick='filterCheckboxOnClick(\"brand\", \"$brand->Name\")'>
                 <span class=\"checkmark\"></span>
             </label></div>";
         }
-        foreach ($filter->models as $model) {
-            $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model'><label class=\"container\">$model
-                <input type=\"checkbox\" id='$model' name=\"modelCheckbox\" value='$model' onclick='filterCheckboxOnClick(\"model\", \"$model\")'>
+        foreach ($models as $model) {
+            $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model->Name'><label class=\"container\">$model->Name
+                <input type=\"checkbox\" id='$model->Name' name=\"modelCheckbox\" value='$model->Name' onclick='filterCheckboxOnClick(\"model\", \"$model->Name\")'>
                 <span class=\"checkmark\"></span>
             </label></div>";
         }
