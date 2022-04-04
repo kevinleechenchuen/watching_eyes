@@ -111,7 +111,7 @@ function filterCheckboxOnClick(type, value) {
     const params = new URLSearchParams(window.location.search);
     var sourceType = params.get('sourceType');
     var q = params.get('q');
-    let queryParams;
+    let queryParams = '';
     if (q) {
         queryParams = '&q=' + encodeURIComponent(q);
     }
@@ -144,13 +144,21 @@ function filterCheckboxOnClick(type, value) {
         var modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
         var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
 
+        console.log('brandsParams',brandsParams);
+        console.log('modelsParams',modelsParams);
+        console.log('sourceParams',sourceParams);
+        console.log('queryParams',queryParams);
+        console.log('minPriceParams',minPriceParams);
+        console.log('maxPriceParams',maxPriceParams);
+        console.log('sourceTypeParams',sourceTypeParams);
+
         window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
     } else if (type === 'model') {
         var modelCheckedBox = document.getElementById(value);
         let modelsParams;
         if (modelCheckedBox.checked) {
             const models = params.get('model');
-            if (models == null || brands === '') {
+            if (models == null || models === '') {
                 modelsParams = '&model=' + encodeURIComponent(value); 
             } else {
                 modelsParams = '&model=' + encodeURIComponent(models) + `,${value}`;
@@ -172,6 +180,14 @@ function filterCheckboxOnClick(type, value) {
         var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
         var brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
         var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
+
+        console.log('brandsParams',brandsParams);
+        console.log('modelsParams',modelsParams);
+        console.log('sourceParams',sourceParams);
+        console.log('queryParams',queryParams);
+        console.log('minPriceParams',minPriceParams);
+        console.log('maxPriceParams',maxPriceParams);
+        console.log('sourceTypeParams',sourceTypeParams);
 
         window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
     } else if (type === 'source') {
@@ -202,6 +218,14 @@ function filterCheckboxOnClick(type, value) {
         var brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
         var modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
 
+        console.log('brandsParams',brandsParams);
+        console.log('modelsParams',modelsParams);
+        console.log('sourceParams',sourceParams);
+        console.log('queryParams',queryParams);
+        console.log('minPriceParams',minPriceParams);
+        console.log('maxPriceParams',maxPriceParams);
+        console.log('sourceTypeParams',sourceTypeParams);
+
         window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
     }
 }
@@ -211,6 +235,7 @@ function removeSearchFilter(type, value) {
     let brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
     let modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
     let sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
+
     if (type === 'brand') {
         let brands;
         if (params.get('brand').indexOf(',') > 0) {
@@ -238,7 +263,8 @@ function removeSearchFilter(type, value) {
     }
     var q = params.get('q');
     var sourceType = params.get('sourceType');
-    let queryParams;
+
+    let queryParams = '';
     if (q) {
         queryParams = '&q=' + encodeURIComponent(q);
     }
@@ -248,6 +274,13 @@ function removeSearchFilter(type, value) {
     }
     var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
     var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
+    console.log('brandsParams',brandsParams);
+    console.log('modelsParams',modelsParams);
+    console.log('sourceParams',sourceParams);
+    console.log('queryParams',queryParams);
+    console.log('minPriceParams',minPriceParams);
+    console.log('maxPriceParams',maxPriceParams);
+    console.log('sourceTypeParams',sourceTypeParams);
     window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
 
 }

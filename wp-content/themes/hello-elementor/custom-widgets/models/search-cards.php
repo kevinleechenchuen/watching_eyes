@@ -14,9 +14,11 @@
         $modelHTML = '';
         $sourceHTML = '';
 
+        
+
+
         global $wpdb;
         $brands = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}watching_brands", OBJECT );
-        $models = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}watching_models", OBJECT );
 
         foreach ($brands as $brand) {
             $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value='$brand->Name'><label class=\"container\">$brand->Name
@@ -24,6 +26,20 @@
                 <span class=\"checkmark\"></span>
             </label></div>";
         }
+
+        if($_GET['brand'] != ''){
+            $q_brand = explode(",", $_GET['brand']);
+            $selectedBrands = array_map( 'esc_sql', (array) $q_brand );
+            $selectedBrands_string = "'" . implode( "', '", $selectedBrands ) . "'";
+
+            $models = $wpdb->get_results( "SELECT m.Name FROM {$wpdb->prefix}watching_models m
+            INNER JOIN {$wpdb->prefix}watching_brands b
+            ON b.ID = m.BrandID
+            WHERE b.Name IN ($selectedBrands_string)", OBJECT );
+        } else {
+            $models = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}watching_models", OBJECT );
+        }
+
         foreach ($models as $model) {
             $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model->Name'><label class=\"container\">$model->Name
                 <input type=\"checkbox\" id='$model->Name' name=\"modelCheckbox\" value='$model->Name' onclick='filterCheckboxOnClick(\"model\", \"$model->Name\")'>
