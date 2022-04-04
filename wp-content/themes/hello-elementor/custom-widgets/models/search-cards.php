@@ -1,6 +1,6 @@
 <?php
     include(get_template_directory() . '/custom-widgets/utils/currencyChecker.php');
-    function renderSearchResultsWithFilter($data, $filter, $page)
+    function renderSearchResultsWithFilter($data, $filter, $page, $maxPage)
     {
         if(count($data) == 0)
         {
@@ -121,7 +121,7 @@
 
         if($page <= 3)
         {
-            for ($i = 1; $i <= 7; $i++) {
+            for ($i = 1; $i <= $maxPage; $i++) {
                 if($i == $page)
                 {
                     echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
@@ -130,7 +130,7 @@
                 }
             } 
         } else {
-            for ($i = $page-3; $i <= $page; $i++) {
+            for ($i = $page-3; $i <= $maxPage; $i++) {
                 if($i == $page)
                 {
                     echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
@@ -139,7 +139,7 @@
                 }
             } 
 
-            for ($i = $page+1; $i <= $page+3; $i++) {
+            for ($i = $page+1; $i <= $page+3 && $i <= $maxPage; $i++) {
                 if($i == $page)
                 {
                     echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
