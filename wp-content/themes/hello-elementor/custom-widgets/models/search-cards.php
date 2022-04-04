@@ -14,9 +14,6 @@
         $modelHTML = '';
         $sourceHTML = '';
 
-        
-
-
         global $wpdb;
         $brands = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}watching_brands", OBJECT );
 
@@ -35,9 +32,10 @@
             $models = $wpdb->get_results( "SELECT m.Name FROM {$wpdb->prefix}watching_models m
             INNER JOIN {$wpdb->prefix}watching_brands b
             ON b.ID = m.BrandID
-            WHERE b.Name IN ($selectedBrands_string)", OBJECT );
+            WHERE b.Name IN ($selectedBrands_string)
+            ORDER BY m.Name ASC", OBJECT );
         } else {
-            $models = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}watching_models", OBJECT );
+            $models = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}watching_models ORDER BY Name ASC", OBJECT );
         }
 
         foreach ($models as $model) {
