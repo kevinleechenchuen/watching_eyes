@@ -139,7 +139,7 @@
                 }
             } 
 
-            for ($i = $page+1; $i <= $page+3 && $i <= $maxPage; $i++) {
+            for ($i = $page+1; $i <= $page+3 && $i < $maxPage; $i++) {
                 if($i == $page)
                 {
                     echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
