@@ -42,18 +42,22 @@ class Search_Widget extends Widget_Base {
 
         $brandQueryParam = "";
         foreach ($q_brand as $brand) {
+            $brand = encodeURIComponent($brand);
             $brandQueryParam = ($brand == '') ? "$brandQueryParam" : "$brandQueryParam&brand__in=$brand";
         }
         $modelQueryParam = "";
         foreach ($q_model as $model) {
+            $model = encodeURIComponent($model);
             $modelQueryParam = ($model == '') ? "$modelQueryParam" : "$modelQueryParam&model__in=$model";
         }
         $sourceNameQueryParam = "";
         foreach ($q_sourceName as $sourceName) {
+            $sourceName = encodeURIComponent($sourceName);
             $sourceNameQueryParam = ($sourceName == '') ? "$sourceNameQueryParam" : "$sourceNameQueryParam&source__in=$sourceName";
         }
         $sourceTypeQueryParam = "";
         foreach ($q_sourceType as $sourceType) {
+            $sourceType = encodeURIComponent($sourceType);
             $sourceTypeQueryParam = ($sourceType == '') ? "$sourceTypeQueryParam" : "$sourceTypeQueryParam&source_type__in=$sourceType";
         }
 
@@ -119,6 +123,7 @@ class Search_Widget extends Widget_Base {
 
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$pageQueryParam";
         // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
+        echo $url;
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);
@@ -140,7 +145,7 @@ class Search_Widget extends Widget_Base {
 
     }
 
-    
-	
-	
+    function encodeURIComponent($str) {
+        return str_replace('&', '%26', $str);
+    }
 }
