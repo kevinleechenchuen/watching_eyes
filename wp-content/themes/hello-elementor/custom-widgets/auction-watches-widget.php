@@ -77,7 +77,7 @@ class Auction_Watches_Widget extends Widget_Base {
         echo "<div class='item-card-desc-title'>
                 <h2>Filters</h2>
             </div>";
-        renderAuctionWatchesResultsWithFilter($body->auctionWatches, (int)$q_page);
+        renderAuctionWatchesResultsWithFilter($body->auctionWatches, (int)$q_page, $body->pages);
 	}
 	
 	protected function _content_template() {

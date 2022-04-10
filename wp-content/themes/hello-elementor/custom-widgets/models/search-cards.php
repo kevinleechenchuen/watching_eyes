@@ -106,7 +106,7 @@
         echo "<div class='search-results'>";
         foreach ($data as $item) {
 
-            if($item->source_type == 'auction'){
+            if(strcasecmp($item->source_type, 'Auction') == 0){
                 renderAuctionCard($item);
             } else {
                 renderCard($item);
@@ -117,11 +117,11 @@
         echo "<div class='search-pagination'>Page: ";
         $domain = $_SERVER['HTTP_HOST'];
         $paginateUrl = "https://" . $domain . $_SERVER['REQUEST_URI'];
-        $paginateUrl = str_replace("&pg=$page","",$paginateUrl);
+        $paginateUrl = str_replace("pg=$page","",$paginateUrl);
 
         if($page <= 3)
         {
-            for ($i = 1; $i <= $maxPage; $i++) {
+            for ($i = 1; $i <= $maxPage && $i <= 7; $i++) {
                 if($i == $page)
                 {
                     echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
@@ -130,7 +130,7 @@
                 }
             } 
         } else {
-            for ($i = $page-3; $i <= $maxPage; $i++) {
+            for ($i = $page-3; $i <= $page; $i++) {
                 if($i == $page)
                 {
                     echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
@@ -221,7 +221,7 @@
         echo "</div>";
     }
 
-    function renderAuctionWatchesResultsWithFilter($data, $page)
+    function renderAuctionWatchesResultsWithFilter($data, $page, $maxPage)
     {
         $auctionList=array();
         foreach ($data as $item) {
@@ -304,10 +304,10 @@
         echo "<div class='search-pagination'>Page: ";
         $domain = $_SERVER['HTTP_HOST'];
         $paginateUrl = "https://" . $domain . $_SERVER['REQUEST_URI'];
-        $paginateUrl = str_replace("&pg=$page","",$paginateUrl);
+        $paginateUrl = str_replace("pg=$page","",$paginateUrl);
         if($page <= 3)
         {
-            for ($i = 1; $i <= 7; $i++) {
+            for ($i = 1; $i <= $maxPage && $i <= 7; $i++) {
                 if($i == $page)
                 {
                     echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
@@ -325,7 +325,7 @@
                 }
             } 
 
-            for ($i = $page+1; $i <= $page+3; $i++) {
+            for ($i = $page+1; $i <= $page+3 && $i < $maxPage; $i++) {
                 if($i == $page)
                 {
                     echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
@@ -441,6 +441,8 @@
         {
             $liveAuctionClass = 'live-auction';
         }
+
+        $buttonText = ($endDate < new DateTime()) ? 'CLOSED' : 'BID';
         echo "
                 <div class='item-card'> 
                     <a href='/auction-watches?auctionStartDate=$stringStartDate&auctionEndDate=$stringEndDate&auctionName=$cleanAuctionName&auctionType=$item->auction_type&auctionTitle=$cleanAuctionTitle'>
@@ -458,9 +460,11 @@
                             </h6>
                         </div>
                         <div class='item-card-desc-title'>
-                            <h3>
-                                $item->auction_title
-                            </h3>
+                            <a href='/auction-watches?auctionStartDate=$stringStartDate&auctionEndDate=$stringEndDate&auctionName=$cleanAuctionName&auctionType=$item->auction_type&auctionTitle=$cleanAuctionTitle'>
+                                <h3>
+                                    $item->auction_title
+                                </h3>
+                            </a>
                         </div>
                     </div>
                     <h7 class='item-card-source'>
@@ -473,7 +477,7 @@
                                 </h3>
                     </a>
                     <a href='/auction-watches?auctionStartDate=$stringStartDate&auctionEndDate=$stringEndDate&auctionName=$cleanAuctionName&auctionType=$item->auction_type&auctionTitle=$cleanAuctionTitle'>
-                        <button class='button-main-1'>BID</button>
+                        <button class='button-main-1'>$buttonText</button>
                     </a>
             </div>";
     }
