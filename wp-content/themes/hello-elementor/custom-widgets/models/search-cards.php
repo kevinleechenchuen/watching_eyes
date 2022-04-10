@@ -304,7 +304,7 @@
         echo "<div class='search-pagination'>Page: ";
         $domain = $_SERVER['HTTP_HOST'];
         $paginateUrl = "https://" . $domain . $_SERVER['REQUEST_URI'];
-        $paginateUrl = str_replace("pg=$page","",$paginateUrl);
+        $paginateUrl = str_replace("&pg=$page","",$paginateUrl);
         if($page <= 3)
         {
             for ($i = 1; $i <= $maxPage && $i <= 7; $i++) {
