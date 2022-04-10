@@ -50,7 +50,23 @@
                 <span class=\"checkmark\"></span>
             </label></div>";
         }
+        $sortByHTML = "<option value='' selected='selected'>Latest</option>";
+        foreach ($auctionList as $auction) {
+            $sortByHTML = "$sortByHTML<option value='$auction'>$auction</option>";
+        }
         echo "
+        <div class='filter-title' style='margin-bottom: 5px;'>
+            <h4>SORT BY</h4>
+        </div>      
+        <div style='margin-bottom: 10px;'>
+            <select name='filter-sortby' id='filter-sortby'>
+                <option value='created_at' selected='selected'>Latest created</option>
+                <option value='updated_at'>Latest updated</option>
+                <option value='price_asc'>Price lowest to highest</option>
+                <option value='price_desc'>Price highest to lowest</option>
+            </select>
+        </div>
+        <div class='filter-divider'></div>
         <div class='filter-title'>
             <h4>PRICES RANGE</h4>
         </div>      

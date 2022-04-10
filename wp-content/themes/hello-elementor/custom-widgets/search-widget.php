@@ -34,11 +34,13 @@ class Search_Widget extends Widget_Base {
         $q_priceFrom = $_GET['priceFrom'];
         $q_priceTo = $_GET['priceTo'];
         $q_page = $_GET['pg'] == '' ? 1 : $_GET['pg'];
+        $q_sortby = $_GET['sort'] == '' ? 0 : $_GET['sort'];
 
         $queryParam = $q_query == '' ? '' : "&q=$q_query";
         $priceFromQueryParam = $q_priceFrom == '' ? '' : "&product_price__gte=$q_priceFrom";
         $priceToQueryParam = $q_priceTo == '' ? '' : "&product_price__lte=$q_priceTo";
         $pageQueryParam = $q_page == '' ? '' : "&page=$q_page";
+        $sortQueryParam = $q_sortby == '' ? '' : "&sort_by=$q_sortby";
 
         $brandQueryParam = "";
         foreach ($q_brand as $brand) {
@@ -121,9 +123,9 @@ class Search_Widget extends Widget_Base {
         echo "</div>";
         echo "</div>"; 
 
-        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$pageQueryParam";
+        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$sortQueryParam$pageQueryParam";
         // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
-        // echo $url;
+        echo $url;
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);

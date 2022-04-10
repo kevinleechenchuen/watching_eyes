@@ -52,6 +52,14 @@ jQuery(document).ready(function () {
             }
         });
     }
+
+    var sortInParam = params.get('sort');
+    if (sortInParam) {
+        var sortCheckedBoxes = document.querySelectorAll('option[value='+sortInParam+']');
+        sortCheckedBoxes.forEach((checkbox) => {
+            checkbox.selected = 'selected'
+        });
+    }
     
     jQuery('#brandFilterSearch').on('input', function () {
         let filter = jQuery(this).val();
@@ -104,6 +112,12 @@ jQuery(document).ready(function () {
     });
     jQuery('#dealers-search-checkbox').on('change', function () {
         jQuery('#all-search-checkbox').prop('checked', false);
+    });
+    jQuery( "#filter-sortby" ).change(function() {
+        var sort = jQuery('#filter-sortby').find(":selected").val();
+        var url = new URL(window.location.href);
+        url.searchParams.set("sort", sort);
+        window.location.href = url.href;
     });
 });
 
