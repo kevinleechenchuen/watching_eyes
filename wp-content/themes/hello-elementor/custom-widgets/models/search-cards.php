@@ -1,6 +1,6 @@
 <?php
     include(get_template_directory() . '/custom-widgets/utils/currencyChecker.php');
-    function renderSearchResultsWithFilter($data, $filter, $page, $maxPage)
+    function renderSearchResultsWithFilter($data, $filter, $page, $maxPage, $maxPrice)
     {
         if(count($data) == 0)
         {
@@ -74,16 +74,19 @@
             <div class='progress'></div>
         </div>
         <div class='range-input'>
-            <input type='range' class='range-min' min='0' max='1000000' value='0' step='1000'>
-            <input type='range' class='range-max' min='0' max='1000000' value='1000000' step='1000'>
+            <input type='range' class='range-min' min='0' max='$maxPrice' value='0' step='10000'>
+            <input type='range' class='range-max' min='0' max='$maxPrice' value='$maxPrice' step='10000'>
         </div>
          <div class='price-input'>
             <div class='field'>
                 <input type='number' id='search-filter-price-range-min' class='input-min' value='0' >
             </div>
             <div class='field'>
-                <input type='number' id='search-filter-price-range-max' class='input-max' value='1000000' >
+                <input type='number' id='search-filter-price-range-max' class='input-max' value='$maxPrice' >
             </div>
+        </div>
+        <div class='filter-button-container'>
+            <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
         </div>
         <script src='/wp-content/themes/hello-elementor/assets/js/slider.js'></script>";
         echo " <div class='filter-divider'></div>";
@@ -374,6 +377,13 @@
     function renderCard($item){
         $currency = convertCurrency($item->currency);
         $price = ($item->current_bid == null) ? $item->sold_price : $item->current_bid;
+
+        $sourceText = '';
+        if(strcasecmp($item->source_type, 'Retail') == 0){
+            $sourceText = $item->original_poster;
+        } else {
+            $sourceText = "$item->original_poster on $item->forum_name";
+        }
         if($item->source_type != 'Auction') {
             echo "
                 <div class='item-card'>
@@ -402,7 +412,7 @@
                                 $currency$item->product_price
                             </h3>
                             <h7 class='item-card-source'>
-                                $item->original_poster on $item->forum_name
+                                $sourceText
                             </h7>
                         </div>
                 </div>

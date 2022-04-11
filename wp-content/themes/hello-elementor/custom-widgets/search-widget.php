@@ -136,11 +136,8 @@ class Search_Widget extends Widget_Base {
         
         echo "<div class='item-card-desc-title'>
                 <h2>Filters</h2>
-            </div>
-            <div>
-                <div>Sort by</div>
             </div>";
-        renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page, (int)$body->pages);
+        renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page, (int)$body->pages, $body->filters->price->maxPrice);
 	}
 	
 	protected function _content_template() {
