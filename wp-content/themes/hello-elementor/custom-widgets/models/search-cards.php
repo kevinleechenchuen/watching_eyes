@@ -379,8 +379,9 @@
             $sourceText = $item->original_poster;
         } else {
             $sourceText = "$item->original_poster on $item->forum_name";
-        }
+        }   
 
+        $formattedPriced = number_format((int)$item->product_price);
         $itemStatusHTML = "";
         if(strcasecmp($item->source_type, 'Forum') != 0) {
             $itemStatusHTML = "<div class='item-card-status'>$item->status</div>";
@@ -413,7 +414,7 @@
                                 </h7>
                             </div>
                             <h3 class='item-card-price'>
-                                $currency$item->product_price
+                                $currency$formattedPriced
                             </h3>
                             <h7 class='item-card-source'>
                                 $sourceText
