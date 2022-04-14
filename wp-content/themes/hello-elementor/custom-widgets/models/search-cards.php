@@ -380,29 +380,37 @@
         } else {
             $sourceText = "$item->original_poster on $item->forum_name";
         }
-        if($item->source_type != 'Auction') {
+
+        $itemStatusHTML = "";
+        if(strcasecmp($item->source_type, 'Forum') != 0) {
+            $itemStatusHTML = "<div class='item-card-status'>$item->status</div>";
+        }
+        if(strcasecmp($item->source_type, 'Auction') != 0) {
             echo "
                 <div class='item-card'>
                         <a href='$item->post_link' target='_blank'>
                             <div>
-                                <div class='item-card-status'>$item->status</div>
+                                $itemStatusHTML
                                 <div class='item-card-image-container'>
                                     <img class='item-card-img-top' src='$item->main_img_url' alt=''>
                                 </div>
                             </div>
                         </a>
                         <div class='item-card-desc'>
-                            <div class='item-card-desc-brand'>
-                                <h6>
-                                    $item->brand
-                                </h6>
-                            </div>
                             <div class='item-card-desc-title'>
                                 <a href='$item->post_link' target='_blank'>
                                     <h3>
                                         $item->post_title
                                     </h3>
                                 </a>
+                            </div>
+                            <div class='item-card-desc-brand'>
+                                <h6>
+                                    $item->brand
+                                </h6>
+                                <h7 class='item-card-source'>
+                                    $item->model
+                                </h7>
                             </div>
                             <h3 class='item-card-price'>
                                 $currency$item->product_price
