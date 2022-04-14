@@ -1,6 +1,6 @@
 <?php
     include(get_template_directory() . '/custom-widgets/utils/currencyChecker.php');
-    function renderSearchResultsWithFilter($data, $filter, $page, $maxPage, $maxPrice)
+    function renderSearchResultsWithFilter($data, $filter, $page, $maxPage, $minPrice, $maxPrice)
     {
         if(count($data) == 0)
         {
@@ -70,25 +70,21 @@
         <div class='filter-title'>
             <h4>PRICES RANGE</h4>
         </div>      
-        <div class='slider'>
-            <div class='progress'></div>
-        </div>
-        <div class='range-input'>
-            <input type='range' class='range-min' min='0' max='$maxPrice' value='0' step='10000'>
-            <input type='range' class='range-max' min='0' max='$maxPrice' value='$maxPrice' step='10000'>
-        </div>
          <div class='price-input'>
             <div class='field'>
-                <input type='number' id='search-filter-price-range-min' class='input-min' value='0' >
+                <input type='number' id='search-filter-price-range-min' class='input-min' pattern='[0-9]+' value='$minPrice'>
+            </div>
+            <div style='display: flex;'>
+                <p style='margin-bottom: 0px !important; align-self: center;'>~</p>
             </div>
             <div class='field'>
-                <input type='number' id='search-filter-price-range-max' class='input-max' value='$maxPrice' >
+                <input type='number' id='search-filter-price-range-max' class='input-max' pattern='[0-9]+' value='$maxPrice'>
             </div>
         </div>
-        <div class='filter-button-container'>
+        <div>
             <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
-        </div>
-        <script src='/wp-content/themes/hello-elementor/assets/js/slider.js'></script>";
+        </div>     
+        ";
         echo " <div class='filter-divider'></div>";
         echo " <div class='filter-title'>
                 <h4>BRAND</h4>
@@ -471,14 +467,6 @@
         $buttonText = ($endDate < new DateTime()) ? 'CLOSED' : 'BID';
         echo "
                 <div class='item-card'> 
-                    <a href='/auction-watches?auctionStartDate=$stringStartDate&auctionEndDate=$stringEndDate&auctionName=$cleanAuctionName&auctionType=$item->auction_type&auctionTitle=$cleanAuctionTitle'>
-                        <div>
-                            <div class='item-card-status $liveAuctionClass'>$item->auction_type</div>
-                            <div class='item-card-image-container'>
-                                <img class='item-card-img-top' src='$item->main_img_url' alt=''>
-                            </div>
-                        </div>
-                    </a>
                     <div class='item-card-desc'>
                         <div class='item-card-desc-brand'>
                             <h6>

@@ -321,7 +321,10 @@ function applyFilter() {
 
     const params = new URLSearchParams(window.location.search)
     var q = params.get('q');
-    var queryParams = '&q=' + encodeURIComponent(q);
+    var queryParams = '';
+    if (q) {
+        queryParams = '&q=' + encodeURIComponent(q);
+    }
     var sourceType = params.get('sourceType');
     let sourceTypeParams = '';
 

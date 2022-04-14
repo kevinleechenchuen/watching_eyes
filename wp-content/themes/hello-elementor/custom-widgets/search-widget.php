@@ -22,7 +22,6 @@ class Search_Widget extends Widget_Base {
 
 	
 	protected function render() {
-        wp_register_script('slider', '/wp-content/themes/hello-elementor/assets/js/slider.js', array('jquery'),'1.1', true);
         wp_enqueue_script('slider');
         $current_user = wp_get_current_user();
 
@@ -137,7 +136,7 @@ class Search_Widget extends Widget_Base {
         echo "<div class='item-card-desc-title'>
                 <h2>Filters</h2>
             </div>";
-        renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page, (int)$body->pages, $body->filters->price->maxPrice);
+        renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page, (int)$body->pages, $q_priceFrom, $q_priceTo);
 	}
 	
 	protected function _content_template() {
