@@ -24,7 +24,7 @@ class Top_10_Watches_Widget extends Widget_Base {
 	
 	protected function render() {
 		echo "<div class='flex-container home-section-heading'>
-				<h2>Top 10 Retail Watches​</h2>
+				<h2>Latest Retail Watches</h2>
 				<div class='flex-to-right'>
 					<button class='orange-button' onclick=\"location.href='/search?q=&sourceType=Retail'\">VIEW ALL</button>
 				</div>

@@ -1,4 +1,17 @@
 jQuery(document).ready(function () {
+    var input = document.getElementById('header-search-textbox');
+    var isMobile = false
+    if(window.matchMedia("(max-width: 600px)").matches){
+        jQuery('#header-search-textbox').removeAttr('id');
+        isMobile = true;
+    }
+    input.addEventListener('keyup', function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById('header-menu-search').click();
+    }
+    });
+    
     const params = new URLSearchParams(window.location.search)
     var sourceTypes = params.get('sourceType');
     if (sourceTypes) {
@@ -53,13 +66,33 @@ jQuery(document).ready(function () {
         });
     }
 
-    var sortInParam = params.get('sort');
-    if (sortInParam) {
-        var sortCheckedBoxes = document.querySelectorAll('option[value='+sortInParam+']');
-        sortCheckedBoxes.forEach((checkbox) => {
-            checkbox.selected = 'selected'
-        });
-    }
+    jQuery(".filter-brand-expandable").on('click', function(){
+        if(jQuery(".filter-collapsible.brand").css("max-height") === "0px"){
+            jQuery(".filter-brand-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.brand").css("max-height", "250px");
+        } else {
+            jQuery(".filter-brand-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.brand").css("max-height", "0px");
+        }
+    });
+    jQuery(".filter-model-expandable").on('click', function(){
+        if(jQuery(".filter-collapsible.model").css("max-height") === "0px"){
+            jQuery(".filter-model-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.model").css("max-height", "250px");
+        } else {
+            jQuery(".filter-model-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.model").css("max-height", "0px");
+        }
+    });
+    jQuery(".filter-source-expandable").on('click', function(){
+        if(jQuery(".filter-collapsible.source").css("max-height") === "0px"){
+            jQuery(".filter-source-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.source").css("max-height", "250px");
+        } else {
+            jQuery(".filter-source-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.source").css("max-height", "0px");
+        }
+    });
     
     jQuery('#brandFilterSearch').on('input', function () {
         let filter = jQuery(this).val();
@@ -113,10 +146,47 @@ jQuery(document).ready(function () {
     jQuery('#dealers-search-checkbox').on('change', function () {
         jQuery('#all-search-checkbox').prop('checked', false);
     });
+
+    var sortInParam = params.get('sort');
+    if (sortInParam) {
+        var sortCheckedBoxes = document.querySelectorAll('#filter-sortby option[value='+sortInParam+']');
+        sortCheckedBoxes.forEach((checkbox) => {
+            checkbox.selected = 'selected'
+        });
+    }
+
+    var accInParam = params.get('acc');
+    if (accInParam) {
+        var accCheckedBoxes = document.querySelectorAll('#filter-acc option[value='+accInParam+']');
+        accCheckedBoxes.forEach((checkbox) => {
+            checkbox.selected = 'selected'
+        });
+    }
+
+    var lastUpdatedInParam = params.get('lastUpdated');
+    if (lastUpdatedInParam) {
+        var lastUpdatedCheckedBoxes = document.querySelectorAll('#filter-last-updated option[value='+lastUpdatedInParam+']');
+        lastUpdatedCheckedBoxes.forEach((checkbox) => {
+            checkbox.selected = 'selected'
+        });
+    }
+
     jQuery( "#filter-sortby" ).change(function() {
         var sort = jQuery('#filter-sortby').find(":selected").val();
         var url = new URL(window.location.href);
         url.searchParams.set("sort", sort);
+        window.location.href = url.href;
+    });
+    jQuery( "#filter-acc" ).change(function() {
+        var acc = jQuery('#filter-acc').find(":selected").val();
+        var url = new URL(window.location.href);
+        url.searchParams.set("acc", acc);
+        window.location.href = url.href;
+    });
+    jQuery( "#filter-last-updated" ).change(function() {
+        var lastUpdated = jQuery('#filter-last-updated').find(":selected").val();
+        var url = new URL(window.location.href);
+        url.searchParams.set("lastUpdated", lastUpdated);
         window.location.href = url.href;
     });
 });
@@ -274,7 +344,7 @@ function removeSearchFilter(type, value) {
             sources = params.get('sourceName').replace(`${value}`, '');
         }
         sourceParams = '&sourceName=' + encodeURIComponent(sources);
-    }
+    } 
     var q = params.get('q');
     var sourceType = params.get('sourceType');
 
@@ -282,6 +352,11 @@ function removeSearchFilter(type, value) {
     if (q) {
         queryParams = '&q=' + encodeURIComponent(q);
     }
+
+    if (type === 'query') {
+        queryParams = '&q=';
+    }
+
     let sourceTypeParams = '';
     if (sourceType) {
         sourceTypeParams = '&sourceType=' + encodeURIComponent(sourceType);
@@ -411,6 +486,22 @@ function clearFilter() {
     for (var i = 0; sourceCheckedBoxes[i]; ++i) {
         sourceCheckedBoxes[i].checked = false;
     }
+}
+
+
+function search(){
+    var searchParam = encodeURIComponent(document.getElementById('header-search-textbox').value);
+    var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-search-checkbox]:checked');
+    var sourceTypes = [];
+
+    for(var i=0; sourceTypeCheckedBoxes[i]; ++i){
+        sourceTypes.push(sourceTypeCheckedBoxes[i].value);
+    }
+
+    var sourceParams = sourceTypes.length > 0 ? '&sourceType='+encodeURIComponent(sourceTypes.join(',')) : '';
+
+    console.log('/search?q='+searchParam+sourceParams);
+    window.location.href = '/search?q='+searchParam+sourceParams;
 }
 
 function clearSpecificFilter(name) {

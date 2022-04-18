@@ -9,6 +9,7 @@
         }
 
         echo "<div class='search-result-container'>";
+        echo "<div class='filter-sticky'>";
         echo "<div id='search-result-filter'>";
         $brandHTML = '';
         $modelHTML = '';
@@ -67,49 +68,79 @@
             </select>
         </div>
         <div class='filter-divider'></div>
-        <div class='filter-title'>
-            <h4>PRICES RANGE</h4>
+        <div class='filter-title' style='margin-bottom: 5px;'>
+            <h4>ACCESSORIES</h4>
         </div>      
-         <div class='price-input'>
-            <div class='field'>
-                <input type='number' id='search-filter-price-range-min' class='input-min' pattern='[0-9]+' value='$minPrice'>
-            </div>
-            <div style='display: flex;'>
-                <p style='margin-bottom: 0px !important; align-self: center;'>~</p>
-            </div>
-            <div class='field'>
-                <input type='number' id='search-filter-price-range-max' class='input-max' pattern='[0-9]+' value='$maxPrice'>
-            </div>
+        <div style='margin-bottom: 10px;'>
+            <select name='filter-acc' id='filter-acc'>
+                <option value='false' selected='selected'>ALL</option>
+                <option value='true'>Only Accessory</option>
+            </select>
         </div>
-        <div>
-            <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
-        </div>     
+        <div class='filter-divider'></div>
+        <div class='filter-title' style='margin-bottom: 5px;'>
+            <h4>Last Updated</h4>
+        </div>      
+        <div style='margin-bottom: 10px;'>
+            <select name='filter-last-updated' id='filter-last-updated'>
+                <option value='m_6' selected='selected'>6 Months</option>
+                <option value='m_3'>3 Months</option>
+                <option value='m_1'>1 Months</option>
+                <option value='w_1'>1 Week</option>
+            </select>
+        </div>
+        <div class='filter-divider'></div>
         ";
-        echo " <div class='filter-divider'></div>";
+    //     echo "<div class='filter-title'>
+    //     <h4>PRICES RANGE</h4>
+    // </div>      
+    //  <div class='price-input'>
+    //     <div class='field'>
+    //         <input type='number' id='search-filter-price-range-min' class='input-min' pattern='[0-9]+' value='$minPrice'>
+    //     </div>
+    //     <div style='display: flex;'>
+    //         <p style='margin-bottom: 0px !important; align-self: center;'>~</p>
+    //     </div>
+    //     <div class='field'>
+    //         <input type='number' id='search-filter-price-range-max' class='input-max' pattern='[0-9]+' value='$maxPrice'>
+    //     </div>
+    // </div>
+    // <div>
+    //     <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
+    // </div>
+    // <div class='filter-divider'></div>";
         echo " <div class='filter-title'>
                 <h4>BRAND</h4>
-                <h4><a href='#' onclick=\"clearSpecificFilter('brandCheckbox');\">Clear</a></h4>
+                <i class='clickable material-icons filter-brand-expandable'>&#xE5CE;</i>
             </div>
-            <input type='text' id='brandFilterSearch' class='filterSearch' placeholder='Enter brand name here...'>
-            <div class='filter-section-container'>
-                $brandHTML
+            <div class='filter-collapsible brand'>
+                <input type='text' id='brandFilterSearch' class='filterSearch' placeholder='Enter brand name here...'>
+                <div class='filter-section-container'>
+                    $brandHTML
+                </div>
             </div>";
         echo " <div class='filter-divider'></div>";
-        echo "<div class='filter-title'>
+        if($_GET['brand'] != ''){
+            echo "<div class='filter-title'>
                 <h4>MODEL</h4>
-                <h4><a href='#' onclick=\"clearSpecificFilter('modelCheckbox');\">Clear</a></h4>
+                <i class='clickable material-icons filter-model-expandable'>&#xE5CE;</i>
             </div>
-            <input type='text' id='modelFilterSearch' class='filterSearch' placeholder='Enter model here...'>
-            <div class='filter-section-container'>
-                $modelHTML
+            <div class='filter-collapsible model'>
+                <input type='text' id='modelFilterSearch' class='filterSearch' placeholder='Enter model here...'>
+                <div class='filter-section-container'>
+                    $modelHTML
+                </div>
             </div>";
         echo " <div class='filter-divider'></div>";
+        } 
         echo "<div class='filter-title'>
-                <h4 style='font-size:24px;'>Source</h4>
-                <h4><a href='#' onclick=\"clearSpecificFilter('sourceCheckbox');\">Clear</a></h4>
+                <h4>SOURCE</h4>
+                <i class='clickable material-icons filter-source-expandable'>&#xE5CE;</i>
             </div>
-            <div class='filter-section-container'> 
-                $sourceHTML
+            <div class='filter-collapsible source'>
+                <div class='filter-section-container'> 
+                    $sourceHTML
+                </div>
             </div>";
         // echo "  
         // <div class='filter-button-container'>
@@ -118,11 +149,12 @@
         // </div>
         // ";
         echo "</div>";
+        echo "</div>";
         echo "<div class='search-results'>";
         foreach ($data as $item) {
 
             if(strcasecmp($item->source_type, 'Auction') == 0){
-                renderAuctionCard($item);
+                renderAuctionWatchesCard($item);
             } else {
                 renderCard($item);
             }
@@ -186,6 +218,7 @@
         }
 
         echo "<div class='search-result-container'>";
+        echo "<div class='filter-sticky'>";
         echo "<div id='search-result-filter' class='auction'>";  
         echo "
         <div class='filter-title'>
@@ -228,6 +261,7 @@
         </div>
         ";
         echo "</div>";
+        echo "</div>";
         echo "<div class='search-results'>";
         foreach ($data as $item) {
             renderAuctionCard($item);
@@ -256,6 +290,7 @@
         }
 
         echo "<div class='search-result-container'>";
+        echo "<div class='filter-sticky'>";
         echo "<div id='search-result-filter' class='auction'>";  
         echo "
         <div class='filter-title'>
@@ -309,6 +344,7 @@
             <button class='button-main-2' onclick=\"applyAuctionWatchFilter()\" style='width:100%;'>APPLY FILTER</button>
         </div>
         ";
+        echo "</div>";
         echo "</div>";
         echo "<div class='search-results'>";
         foreach ($data as $item) {
@@ -375,13 +411,16 @@
         $price = ($item->current_bid == null) ? $item->sold_price : $item->current_bid;
 
         $sourceText = '';
+        $formattedCreatedAt = date_format(date_create($item->created_at), 'd/m/y');
         if(strcasecmp($item->source_type, 'Retail') == 0){
             $sourceText = $item->original_poster;
         } else {
-            $sourceText = "$item->original_poster on $item->forum_name";
-        }   
+            $sourceText = "$item->original_poster on $item->forum_name $formattedCreatedAt";
+            $formattedUpdatedAt = date_format(date_create($item->last_post_date), 'd/m/y');
+            $updatedAtText = "Last post date: $formattedUpdatedAt";
+        }
 
-        $formattedPriced = number_format((int)$item->product_price);
+        $formattedPrice = number_format((int)$item->product_price);
         $itemStatusHTML = "";
         if(strcasecmp($item->source_type, 'Forum') != 0) {
             $itemStatusHTML = "<div class='item-card-status'>$item->status</div>";
@@ -409,13 +448,16 @@
                                 <h6>
                                     $item->brand
                                 </h6>
-                                <h7 class='item-card-source'>
+                                <h7 class='item-card-model'>
                                     $item->model
                                 </h7>
                             </div>
                             <h3 class='item-card-price'>
-                                $currency$formattedPriced
+                                $currency$formattedPrice
                             </h3>
+                            <h7 class='item-card-source'>
+                                $updatedAtText
+                            </h7>
                             <h7 class='item-card-source'>
                                 $sourceText
                             </h7>
@@ -447,7 +489,7 @@
                                 </a>
                             </div>
                             <h3 class='item-card-price'>
-                                $currency$price
+                                $currency$formattedPrice
                             </h3>
                             <h7 class='item-card-source'>
                                 $item->auction_name
@@ -475,7 +517,7 @@
 
         $buttonText = ($endDate < new DateTime()) ? 'CLOSED' : 'BID';
         echo "
-                <div class='item-card'> 
+                <div class='item-card auction'> 
                     <div class='item-card-desc'>
                         <div class='item-card-desc-brand'>
                             <h6>
@@ -520,6 +562,10 @@
             $auctionStatus = 'closed-bid';
         }
 
+        $formattedSoldPrice = number_format((int)$item->sold_price);
+        $formattedCurrentBid = number_format((int)$item->current_bid);
+        $formattedMinEst = number_format((int)$item->min_estimate_price);
+        $formattedMaxEst = number_format((int)$item->max_estimate_price);
         $priceHTML = '';
         if($item->sold_price != null) {
             $priceHTML = "
@@ -527,7 +573,7 @@
                             Sold Price:  
                         </h7>
                         <h5 class='item-card-price auction'>
-                             $currency$item->sold_price
+                             $currency$formattedSoldPrice
                         </h5>";
         } else if($item->current_bid != null) {
             $priceHTML = "
@@ -535,7 +581,7 @@
                             Current Bid:  
                         </h7>
                         <h5 class='item-card-price auction'>
-                             $currency$item->current_bid
+                             $currency$formattedCurrentBid
                         </h5>";
         }
         echo "
@@ -561,7 +607,7 @@
                         </div>
                     </div>
                     <h7 class='item-card-source'>
-                        Estimate Pricing: <br>$currency$item->min_estimate_price - $currency$item->max_estimate_price <br>
+                        Estimate Pricing: <br>$currency$formattedMinEst - $currency$formattedMaxEst <br>
                         Start date: $stringStartDate
                     </h7>
                     <div class='auction-watches'>

@@ -22,7 +22,6 @@ class Search_Widget extends Widget_Base {
 
 	
 	protected function render() {
-        wp_enqueue_script('slider');
         $current_user = wp_get_current_user();
 
         $q_query = $_GET['q'];
@@ -34,6 +33,8 @@ class Search_Widget extends Widget_Base {
         $q_priceTo = $_GET['priceTo'];
         $q_page = $_GET['pg'] == '' ? 1 : $_GET['pg'];
         $q_sortby = $_GET['sort'] == '' ? 0 : $_GET['sort'];
+        $q_acc = $_GET['acc'] == '' ? 0 : $_GET['sort'];
+        $q_lastUpdated = $_GET['lastUpdated'] == '' ? 0 : $_GET['sort'];
 
         $queryParam = $q_query == '' ? '' : "&q=$q_query";
         $priceFromQueryParam = $q_priceFrom == '' ? '' : "&product_price__gte=$q_priceFrom";
@@ -71,15 +72,18 @@ class Search_Widget extends Widget_Base {
                 <button class='button-main-1' onClick=\"window.location.href = '/log-in'\">SAVE THIS SEARCH</button> ";
         }
         echo "<div class='search-result-label'>";
-        if($q_query == ''){
-            
-            echo "<h1>Results</h1>";
-            
-        } else {
-            echo "<h1>Results For '$q_query'</h1>
-                $saveSearchHTML";
-        }
+        echo "<h1>Results</h1>";
+
         echo "<div class='search-result-filters'>";
+        if($_GET['q'] != '') {
+            echo "<div class='search-result-filters-card'>
+                    <div class='search-result-filters-card-name'>
+                        Search: $q_query
+                    </div>
+                    <a class='remove-search-result-filters-card' onclick='removeSearchFilter(\"query\", \"$q_query\");'>x
+                    </a>
+                </div>";
+        }
         if($_GET['brand'] != '') {
             $asdasd = explode(",", $_GET['brand']);
             foreach ($asdasd as $item) {
