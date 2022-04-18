@@ -33,14 +33,35 @@ class Search_Widget extends Widget_Base {
         $q_priceTo = $_GET['priceTo'];
         $q_page = $_GET['pg'] == '' ? 1 : $_GET['pg'];
         $q_sortby = $_GET['sort'] == '' ? 0 : $_GET['sort'];
-        $q_acc = $_GET['acc'] == '' ? 0 : $_GET['sort'];
-        $q_lastUpdated = $_GET['lastUpdated'] == '' ? 0 : $_GET['sort'];
+        $q_acc = $_GET['acc'] == '' ? 'false' : $_GET['acc'];
+        $q_lastUpdated = $_GET['lastUpdated'] == '' ? '6_m' : $_GET['lastUpdated'];
+
+        switch($q_lastUpdated){
+            case 'm_6':
+                $lastUpdateDate = date("Y-m-d", strtotime("-6 months"));
+                break;
+            case 'm_3':
+                $lastUpdateDate = date("Y-m-d", strtotime("-3 months"));
+                break;
+            case 'm_1':
+                $lastUpdateDate = date("Y-m-d", strtotime("-1 months"));
+                break;
+            case 'w_1':
+                $lastUpdateDate = date("Y-m-d", strtotime("-1 weeks"));
+                break;
+            default:
+                $lastUpdateDate = date("Y-m-d", strtotime("-6 months"));
+                break;
+        }
+        
 
         $queryParam = $q_query == '' ? '' : "&q=$q_query";
         $priceFromQueryParam = $q_priceFrom == '' ? '' : "&product_price__gte=$q_priceFrom";
         $priceToQueryParam = $q_priceTo == '' ? '' : "&product_price__lte=$q_priceTo";
         $pageQueryParam = $q_page == '' ? '' : "&page=$q_page";
         $sortQueryParam = $q_sortby == '' ? '' : "&sort_by=$q_sortby";
+        $accQueryParam = $q_acc == '' ? "&acc=false" : "&acc=$q_acc";
+        $lastUpdatedQueryParam = "&last_post_date__lte=$lastUpdateDate";
 
         $brandQueryParam = "";
         foreach ($q_brand as $brand) {
@@ -126,7 +147,7 @@ class Search_Widget extends Widget_Base {
         echo "</div>";
         echo "</div>"; 
 
-        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$sortQueryParam$pageQueryParam";
+        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$sortQueryParam$accQueryParam$lastUpdatedQueryParam$pageQueryParam";
         // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
         echo $url;
         $response = wp_remote_get($url);

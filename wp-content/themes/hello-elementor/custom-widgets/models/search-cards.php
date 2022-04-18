@@ -111,7 +111,7 @@
     // <div class='filter-divider'></div>";
         echo " <div class='filter-title'>
                 <h4>BRAND</h4>
-                <i class='clickable material-icons filter-brand-expandable'>&#xE5CE;</i>
+                <i class='clickable material-icons filter-expandable filter-brand-expandable'>&#xE5CE;</i>
             </div>
             <div class='filter-collapsible brand'>
                 <input type='text' id='brandFilterSearch' class='filterSearch' placeholder='Enter brand name here...'>
@@ -123,7 +123,7 @@
         if($_GET['brand'] != ''){
             echo "<div class='filter-title'>
                 <h4>MODEL</h4>
-                <i class='clickable material-icons filter-model-expandable'>&#xE5CE;</i>
+                <i class='clickable material-icons filter-expandable filter-model-expandable'>&#xE5CE;</i>
             </div>
             <div class='filter-collapsible model'>
                 <input type='text' id='modelFilterSearch' class='filterSearch' placeholder='Enter model here...'>
@@ -135,7 +135,7 @@
         } 
         echo "<div class='filter-title'>
                 <h4>SOURCE</h4>
-                <i class='clickable material-icons filter-source-expandable'>&#xE5CE;</i>
+                <i class='clickable material-icons filter-expandable filter-source-expandable'>&#xE5CE;</i>
             </div>
             <div class='filter-collapsible source'>
                 <div class='filter-section-container'> 

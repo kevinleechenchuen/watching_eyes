@@ -67,6 +67,9 @@ jQuery(document).ready(function () {
     }
 
     jQuery(".filter-brand-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
         if(jQuery(".filter-collapsible.brand").css("max-height") === "0px"){
             jQuery(".filter-brand-expandable").css("transform", "rotate(180deg)");
             jQuery(".filter-collapsible.brand").css("max-height", "250px");
@@ -76,6 +79,9 @@ jQuery(document).ready(function () {
         }
     });
     jQuery(".filter-model-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
         if(jQuery(".filter-collapsible.model").css("max-height") === "0px"){
             jQuery(".filter-model-expandable").css("transform", "rotate(180deg)");
             jQuery(".filter-collapsible.model").css("max-height", "250px");
@@ -85,6 +91,9 @@ jQuery(document).ready(function () {
         }
     });
     jQuery(".filter-source-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
         if(jQuery(".filter-collapsible.source").css("max-height") === "0px"){
             jQuery(".filter-source-expandable").css("transform", "rotate(180deg)");
             jQuery(".filter-collapsible.source").css("max-height", "250px");
@@ -323,23 +332,27 @@ function removeSearchFilter(type, value) {
     if (type === 'brand') {
         let brands;
         if (params.get('brand').indexOf(',') > 0) {
-            brands = params.get('brand').replace(`,${value}`, '');
+            brands = params.get('brand').replace(`${value},`, '');
+            brands = brands.replace(`,${value}`, '');
         } else {
             brands = params.get('brand').replace(`${value}`, '');
         }
         brandsParams = '&brand=' + encodeURIComponent(brands);
+
     } else if (type === 'model') {
         let models;
-        if (params.get('model').indexOf(',') > 0) {
-            models = params.get('model').replace(`,${value}`, '');
+        if (params.get('model').indexOf(',') >= 0) {
+            models = params.get('model').replace(`${value},`, '');
+            models = models.replace(`,${value}`, '');
         } else {
             models = params.get('model').replace(`${value}`, '');
         }
         modelsParams = '&model=' + encodeURIComponent(models);
     } else if (type === 'source') {
         let sources;
-        if (params.get('sourceName').indexOf(',') > 0) {
-            sources = params.get('sourceName').replace(`,${value}`, '');
+        if (params.get('sourceName').indexOf(',') >= 0) {
+            sources = params.get('sourceName').replace(`${value},`, '');
+            sources = sources.replace(`,${value}`, '');
         } else {
             sources = params.get('sourceName').replace(`${value}`, '');
         }
