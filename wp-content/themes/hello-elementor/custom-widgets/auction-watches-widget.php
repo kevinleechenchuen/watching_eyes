@@ -58,10 +58,9 @@ class Auction_Watches_Widget extends Widget_Base {
             $auctionStatusQueryParam = ($status == '') ? "$auctionStatusQueryParam" : "$auctionStatusQueryParam&status__in=$status";
         }
          
-        echo "<div class='search-result-label'>
+        echo "<div class='search-result-label auction'>
                 <h1>$q_auction_name</h1>
                 <h7>$q_auction_title</h7>
-                <br>
                 <h7>Start date: $q_auction_start_date | End date: $q_auction_end_date</h7>
             </div>";
 
@@ -73,7 +72,9 @@ class Auction_Watches_Widget extends Widget_Base {
             echo 'something went wrong!';
             return null;
         }
-        
+        echo "<div class='search-filter-mobile'>
+                <button class='button-main-3' onclick=\"toggleMobileFilter()\">FILTER & SORT</button>  
+            </div>";
         echo "<div class='item-card-desc-title'>
                 <h2>Filters</h2>
             </div>";

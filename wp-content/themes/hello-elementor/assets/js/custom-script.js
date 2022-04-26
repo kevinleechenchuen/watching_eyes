@@ -102,6 +102,58 @@ jQuery(document).ready(function () {
             jQuery(".filter-collapsible.source").css("max-height", "0px");
         }
     });
+    jQuery(".filter-sort-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
+        if(jQuery(".filter-collapsible.sort").css("max-height") === "0px"){
+            jQuery(".filter-sort-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.sort").css("max-height", "60px");
+        } else {
+            jQuery(".filter-sort-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.sort").css("max-height", "0px");
+        }
+    });
+    jQuery(".filter-last-updated-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
+        if(jQuery(".filter-collapsible.last-updated").css("max-height") === "0px"){
+            jQuery(".filter-last-updated-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.last-updated").css("max-height", "60px");
+        } else {
+            jQuery(".filter-last-updated-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.last-updated").css("max-height", "0px");
+        }
+    });
+    jQuery(".filter-acc-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
+        if(jQuery(".filter-collapsible.acc").css("max-height") === "0px"){
+            jQuery(".filter-acc-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.acc").css("max-height", "60px");
+        } else {
+            jQuery(".filter-acc-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.acc").css("max-height", "0px");
+        }
+    });
+    jQuery(".filter-price-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
+        if(jQuery(".filter-collapsible.price").css("max-height") === "0px"){
+            jQuery(".filter-price-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.price").css("max-height", "120px");
+        } else {
+            jQuery(".filter-price-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.price").css("max-height", "0px");
+        }
+    });
+
+    jQuery(".search-result-filter-mobile-close").on('click', function(){
+        toggleMobileFilter();
+    });
     
     jQuery('#brandFilterSearch').on('input', function () {
         let filter = jQuery(this).val();
@@ -584,6 +636,17 @@ function saveSearchWithoutQuery(userId) {
         }
     });
 }
+
+function toggleMobileFilter() {
+    var query = document.getElementsByClassName('filter-sticky')[0];
+    console.log(query.className);
+    if(query.className === 'filter-sticky mobile-hide'){
+        query.className = 'filter-sticky';
+    } else {
+        query.className = 'filter-sticky mobile-hide';
+    }
+}
+
 
 // function scrollContainer(container, direction) {
 //     console.log(container, direction);

@@ -61,7 +61,7 @@ class Search_Widget extends Widget_Base {
         $pageQueryParam = $q_page == '' ? '' : "&page=$q_page";
         $sortQueryParam = $q_sortby == '' ? '' : "&sort_by=$q_sortby";
         $accQueryParam = $q_acc == '' ? "&acc=false" : "&acc=$q_acc";
-        $lastUpdatedQueryParam = "&last_post_date__lte=$lastUpdateDate";
+        $lastUpdatedQueryParam = "&last_post_date__gte=$lastUpdateDate";
 
         $brandQueryParam = "";
         foreach ($q_brand as $brand) {
@@ -95,7 +95,8 @@ class Search_Widget extends Widget_Base {
         echo "<div class='search-result-label'>";
         echo "<h1>Results</h1>";
         echo "<a href='/search?page=1'>Clear all filters</a>";
-
+        echo "</div>";
+        
         echo "<div class='search-result-filters'>";
         if($_GET['q'] != '') {
             echo "<div class='search-result-filters-card'>
@@ -145,16 +146,20 @@ class Search_Widget extends Widget_Base {
         // if($_GET['sourceType'] != '') echo "<div><h7>Source type: ".$_GET['sourceType']."</h7></div>";
         // if($_GET['priceFrom'] != '') echo "<div><h7>Price from: ".$_GET['priceFrom']."</h7></div>";
         // if($_GET['priceTo'] != '') echo "<div><h7>Price to: ".$_GET['priceTo']."</h7></div>";
-        echo "</div>";
+        
         echo "</div>"; 
 
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$sortQueryParam$accQueryParam$lastUpdatedQueryParam$pageQueryParam";
         // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
+        // echo $url;
+        echo "<div class='search-filter-mobile'>
+                <button class='button-main-3' onclick=\"toggleMobileFilter()\">FILTER & SORT</button>  
+            </div>";
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);
         } else {
-            echo 'something went wrong!';
+            echo 'Something went wrong!';
             return null;
         }
         
