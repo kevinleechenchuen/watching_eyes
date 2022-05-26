@@ -57,13 +57,7 @@ class Auction_Widget extends Widget_Base {
             echo 'something went wrong!';
             return null;
         }
-        echo "<div class='search-filter-mobile'>
-                <button class='button-main-3' onclick=\"toggleMobileFilter()\">FILTER & SORT</button>  
-            </div>";
-        echo "<div class='item-card-desc-title'>
-                <h2>Filters</h2>
-            </div>";
-        renderAuctionResultsWithFilter($body->auctions);
+        renderAuctionResultsWithFilter($body->auctions, $body->filters);
 	}
 	
 	protected function _content_template() {

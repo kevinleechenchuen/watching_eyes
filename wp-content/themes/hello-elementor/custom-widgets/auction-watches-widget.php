@@ -29,42 +29,53 @@ class Auction_Watches_Widget extends Widget_Base {
 
         $q_auction_name = $_GET['auctionName'];
         $q_auction_type = $_GET['auctionType'];
-        $q_auction_title = $_GET['auctionTitle'];
-        $q_auction_min_estimate_price = $_GET['auctionMinEstPrice'];
-        $q_auction_max_estimate_price = $_GET['auctionMaxEstPrice'];
-        $q_auction_min_current_bid = $_GET['auctionMinBid'];
-        $q_auction_max_current_bid = $_GET['auctionMaxBid'];
+        $q_auction_title = $_GET['auctionTitle'] != '' ? explode(",", $_GET['auctionTitle']) : [];
         $q_auction_status = explode(",", $_GET['auctionStatus']);
+        $q_brand = explode(",", $_GET['brand']);
         $q_page = $_GET['pg'] == '' ? 1 : $_GET['pg'];
         
-
-        $emptyStartDate = date("Y-m-d");
-        $emptyEndDate = date("Y-m-d", strtotime('+ 6 month'));
-        
         $encoded_auction_name = encodeURIComponent($q_auction_name);
-        $encoded_auction_title = encodeURIComponent($q_auction_title);
 
         $auctionNameParam = $q_auction_name == '' ? '' : "&auction_name__in=$encoded_auction_name";
         $auctionTypeQueryParam = $q_auction_type == '' ? '' : "&auction_type__in=$q_auction_type";
-        $auctionTitleQueryParam = $q_auction_title == '' ? '' : "&auction_title__in=$encoded_auction_title";
-        $auctionMinEstPriceQueryParam = $q_auction_min_estimate_price == '' ? '' : "&min_estimate_price__gte=$q_auction_min_estimate_price&min_estimate_price__lte=$q_auction_min_estimate_price";
-        $auctionMaxEstPriceQueryParam = $q_auction_max_estimate_price == '' ? '' : "&max_estimate_price__gte=$q_auction_max_estimate_price&max_estimate_price__lte=$q_auction_max_estimate_price";
-        $auctionMinBidQueryParam = $q_auction_min_current_bid == '' ? '' : "&current_bid__gte=$q_auction_min_current_bid";
-        $auctionMaxBidQueryParam = $q_auction_max_current_bid == '' ? '' : "&current_bid__lte=$q_auction_max_current_bid";
         $pageQueryParam = $q_page == '' ? '' : "&page=$q_page";
+        $startDateQueryParam = $q_auction_start_date == '' ? '' : "&auction_start_date__gte=$q_auction_start_date";
+        $endDateQueryParam = $q_auction_end_date == '' ? '' : "&auction_end_date__lte=$q_auction_end_date";
 
         $auctionStatusQueryParam = "";
         foreach ($q_auction_status as $status) {
             $auctionStatusQueryParam = ($status == '') ? "$auctionStatusQueryParam" : "$auctionStatusQueryParam&status__in=$status";
         }
+        $auctionBrandQueryParam = "";
+        foreach ($q_brand as $brand) {
+            $encodedBrand = encodeURIComponent($brand);
+            $auctionBrandQueryParam = ($encodedBrand == '') ? "$auctionBrandQueryParam" : "$auctionBrandQueryParam&brand__in=$encodedBrand";
+        }
+        $auctionTitleQueryParam = "";
+        foreach ($q_auction_title as $title) {
+            $encodedTitle = encodeURIComponent($title);
+            $auctionTitleQueryParam = ($encodedTitle == '') ? "$auctionTitleQueryParam" : "$auctionTitleQueryParam&auction_title__in=$encodedTitle";
+        }
+
+        $auction_h1_title = ($q_auction_name == '') ? "Auction Lots" : $q_auction_name;
          
         echo "<div class='search-result-label auction'>
-                <h1>$q_auction_name</h1>
-                <h7>$q_auction_title</h7>
-                <h7>Start date: $q_auction_start_date | End date: $q_auction_end_date</h7>
-            </div>";
+                <h1>$auction_h1_title</h1>";
 
-        $url = "http://128.199.148.89:8000/api/v1/auction/watches?$auctionNameParam$auctionTypeQueryParam$auctionTitleQueryParam$auctionMinEstPriceQueryParam$auctionMaxEstPriceQueryParam$auctionMinBidQueryParam$auctionMaxBidQueryParam$auctionStatusQueryParam$pageQueryParam";
+        $auction_h7_title = "";
+        foreach ($q_auction_title as $title) {
+            $auction_h7_title = $auction_h7_title . $title . ", ";
+        }
+        echo "<h7>$auction_h7_title</h7>";
+
+        if($q_auction_start_date != '' && $auction_h7_title != '') {
+            echo "<h7>Start date: $q_auction_start_date | End date: $q_auction_end_date</h7>";
+        }
+
+        echo "</div>";
+
+        $url = "http://128.199.148.89:8000/api/v1/auction/watches?$auctionNameParam$auctionTypeQueryParam$auctionTitleQueryParam$auctionStatusQueryParam$auctionBrandQueryParam$pageQueryParam$startDateQueryParam$endDateQueryParam";
+        // echo $url;
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);
@@ -72,13 +83,28 @@ class Auction_Watches_Widget extends Widget_Base {
             echo 'something went wrong!';
             return null;
         }
-        echo "<div class='search-filter-mobile'>
-                <button class='button-main-3' onclick=\"toggleMobileFilter()\">FILTER & SORT</button>  
-            </div>";
-        echo "<div class='item-card-desc-title'>
-                <h2>Filters</h2>
-            </div>";
-        renderAuctionWatchesResultsWithFilter($body->auctionWatches, (int)$q_page, $body->pages);
+
+        $auctionTitleList=array();
+        if($auction_h7_title == '')
+        {
+            $startDate = date("Y-m-d");
+		    $endDate = date("Y-m-d", strtotime('+ 1 month'));
+            $url = "http://128.199.148.89:8000/api/v1/auction/?auction_start_date__gte=$startDate&auction_end_date__gte=$endDate";
+            $response = wp_remote_get($url);
+            if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+                $body2 = json_decode($response['body']);
+            } else {
+                return null;
+            }
+
+            foreach ($body2->auctions as $item) {
+                if (!in_array($item->auction_title, $auctionTitleList)) {
+                    array_push($auctionTitleList,$item->auction_title);
+                }
+            }
+        }
+
+        renderAuctionWatchesResultsWithFilter($body->auctionWatches, (int)$q_page, $body->filters, $body->pages, $auctionTitleList);
 	}
 	
 	protected function _content_template() {

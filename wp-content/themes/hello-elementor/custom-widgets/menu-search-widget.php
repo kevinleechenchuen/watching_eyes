@@ -27,20 +27,19 @@ class Menu_Search_Widget extends Widget_Base {
                 <button id='header-menu-search' class='header-search-button' onClick='search()'></button>
             </div>
             <div class='header-menu-filter'>
-            <label class=\"container\">All Watches
-                <input type=\"checkbox\" id=\"all-search-checkbox\" checked=\"checked\">
+            <label class=\"container\">
+                <p>Forums</p>
+                <input type=\"checkbox\" id=\"forum-search-checkbox\" class=\"source-search-checkbox\" name=\"source-forum-search-checkbox\" value=\"Forum\">
                 <span class=\"checkmark\"></span>
             </label>
-            <label class=\"container\">Forums
-                <input type=\"checkbox\" id=\"forum-search-checkbox\" name=\"source-search-checkbox\" value=\"Forum\">
+            <label class=\"container\">
+                <p>Dealers</p>
+                <input type=\"checkbox\" id=\"dealers-search-checkbox\" class=\"source-search-checkbox\" name=\"source-dealer-search-checkbox\" value=\"Retail\">
                 <span class=\"checkmark\"></span>
             </label>
-            <label class=\"container\">Auctions
-                <input type=\"checkbox\" id=\"auction-search-checkbox\" name=\"source-search-checkbox\" value=\"Auction\">
-                <span class=\"checkmark\"></span>
-            </label>
-            <label class=\"container\">Dealers
-                <input type=\"checkbox\" id=\"dealers-search-checkbox\" name=\"source-search-checkbox\" value=\"Retail\">
+            <label class=\"container\">
+                <p>Auctions</p>
+                <input type=\"checkbox\" id=\"auction-search-checkbox\" class=\"source-search-checkbox\" name=\"source-auction-search-checkbox\" value=\"Auction\">
                 <span class=\"checkmark\"></span>
             </label>
             </div>";

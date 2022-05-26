@@ -34,7 +34,8 @@ class Search_Widget extends Widget_Base {
         $q_page = $_GET['pg'] == '' ? 1 : $_GET['pg'];
         $q_sortby = $_GET['sort'] == '' ? 0 : $_GET['sort'];
         $q_acc = $_GET['acc'] == '' ? 'false' : $_GET['acc'];
-        $q_lastUpdated = $_GET['lastUpdated'] == '' ? '6_m' : $_GET['lastUpdated'];
+        $q_lastUpdated = $_GET['lastUpdated'] == '' ? '' : $_GET['lastUpdated'];
+        $q_status = $_GET['status'] == '' ? '' : $_GET['status'];
 
         switch($q_lastUpdated){
             case 'm_6':
@@ -49,9 +50,6 @@ class Search_Widget extends Widget_Base {
             case 'w_1':
                 $lastUpdateDate = date("Y-m-d", strtotime("-1 weeks"));
                 break;
-            default:
-                $lastUpdateDate = date("Y-m-d", strtotime("-6 months"));
-                break;
         }
         
 
@@ -60,8 +58,9 @@ class Search_Widget extends Widget_Base {
         $priceToQueryParam = $q_priceTo == '' ? '' : "&product_price__lte=$q_priceTo";
         $pageQueryParam = $q_page == '' ? '' : "&page=$q_page";
         $sortQueryParam = $q_sortby == '' ? '' : "&sort_by=$q_sortby";
-        $accQueryParam = $q_acc == '' ? "&acc=false" : "&acc=$q_acc";
-        $lastUpdatedQueryParam = "&last_post_date__gte=$lastUpdateDate";
+        $accQueryParam = $q_acc == 'true' ? "&acc__in=true" : "&acc__in=false";
+        $lastUpdatedQueryParam = $q_lastUpdated == '' ? '' : "&last_post_date__gte=$lastUpdateDate";
+        $statusQueryParam = $q_status == '' ? '' : "&status__in=$q_status";
 
         $brandQueryParam = "";
         foreach ($q_brand as $brand) {
@@ -96,6 +95,9 @@ class Search_Widget extends Widget_Base {
         echo "<h1>Results</h1>";
         echo "<a href='/search?page=1'>Clear all filters</a>";
         echo "</div>";
+        if($_GET['q'] != '') {
+            echo $saveSearchHTML;
+        }
         
         echo "<div class='search-result-filters'>";
         if($_GET['q'] != '') {
@@ -149,12 +151,9 @@ class Search_Widget extends Widget_Base {
         
         echo "</div>"; 
 
-        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$sortQueryParam$accQueryParam$lastUpdatedQueryParam$pageQueryParam";
+        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$sortQueryParam$accQueryParam$lastUpdatedQueryParam$pageQueryParam$statusQueryParam";
         // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
         // echo $url;
-        echo "<div class='search-filter-mobile'>
-                <button class='button-main-3' onclick=\"toggleMobileFilter()\">FILTER & SORT</button>  
-            </div>";
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);
@@ -162,11 +161,7 @@ class Search_Widget extends Widget_Base {
             echo 'Something went wrong!';
             return null;
         }
-        
-        echo "<div class='item-card-desc-title'>
-                <h2>Filters</h2>
-            </div>";
-        renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page, (int)$body->pages, $q_priceFrom, $q_priceTo);
+        renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page, (int)$body->pages, $q_priceFrom, $q_priceTo, $_GET['sourceType']);
 	}
 	
 	protected function _content_template() {

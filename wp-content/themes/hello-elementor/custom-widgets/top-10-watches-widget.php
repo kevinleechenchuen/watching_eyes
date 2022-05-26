@@ -26,7 +26,9 @@ class Top_10_Watches_Widget extends Widget_Base {
 		echo "<div class='flex-container home-section-heading'>
 				<h2>Latest Retail Watches</h2>
 				<div class='flex-to-right'>
-					<button class='orange-button' onclick=\"location.href='/search?q=&sourceType=Retail'\">VIEW ALL</button>
+					<a href='/search?q=&sourceType=Retail'>
+						<button class='orange-button'>VIEW ALL</button>
+					</a>
 				</div>
 			</div>";
         $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches/retail/top";

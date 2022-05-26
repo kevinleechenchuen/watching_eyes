@@ -226,5 +226,10 @@ require_once('custom-widgets/my-widgets.php');
 require_once('custom-widgets/utils/save-search.php');
 require_once('custom-widgets/utils/send-email.php');
 
-wp_register_script('custom_script', '/wp-content/themes/hello-elementor/assets/js/custom-script.js', array('jquery'),'1.1', true);
-wp_enqueue_script('custom_script');
+function enqueue_custom_script() {
+    wp_deregister_script( 'custom_script' );
+    wp_register_script('custom_script', "/wp-content/themes/hello-elementor/assets/js/custom-script.js", false, '2.0', true);
+    wp_enqueue_script( 'custom_script' );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_custom_script', 99 );
+

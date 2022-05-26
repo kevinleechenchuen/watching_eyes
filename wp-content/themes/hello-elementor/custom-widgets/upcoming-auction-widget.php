@@ -23,16 +23,18 @@ class Upcoming_Auction_Widget extends Widget_Base {
 
 	
 	protected function render() {
+		$startDate = date("Y-m-d");
+		$endDate = date("Y-m-d", strtotime('+ 1 month'));
 		echo "<div class='flex-container home-section-heading'>
 				<h2>Upcoming Auctions</h2>
 				<div class='flex-to-right'>
-					<button class='orange-button' onclick=\"location.href='/auction-calendar'\">VIEW ALL</button>
+					<a href='/auction-watches?sourceType=Auction&auctionStartDate=$startDate&auctionEndDate=$endDate'>
+						<button class='orange-button'>VIEW ALL</button>
+					</a>
 				</div>
 			</div>";
-		$startDate = date("Y-m-d");
-		$endDate = date("Y-m-d", strtotime('+ 1 month'));
+		
         $url = "http://128.199.148.89:8000/api/v1/auction/?auction_start_date__gte=$startDate&auction_end_date__gte=$endDate";
-        
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);

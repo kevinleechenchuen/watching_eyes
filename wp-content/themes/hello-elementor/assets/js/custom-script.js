@@ -16,8 +16,7 @@ jQuery(document).ready(function () {
     var sourceTypes = params.get('sourceType');
     if (sourceTypes) {
         var sourceTypesList = sourceTypes.split(',');
-        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-search-checkbox]');
-        jQuery('#all-search-checkbox').prop('checked', false);
+        var sourceTypeCheckedBoxes = document.querySelectorAll('input[class=source-search-checkbox]');
         sourceTypeCheckedBoxes.forEach((checkbox) => {
             if (sourceTypesList.includes(checkbox.value)) {
                 checkbox.checked = true;    
@@ -151,6 +150,45 @@ jQuery(document).ready(function () {
         }
     });
 
+    jQuery(".filter-auction-name-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
+        if(jQuery(".filter-collapsible.auction").css("max-height") === "0px"){
+            jQuery(".filter-auction-name-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.auction").css("max-height", "150px");
+        } else {
+            jQuery(".filter-auction-name-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.auction").css("max-height", "0px");
+        }
+    });
+
+    jQuery(".filter-auction-title-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
+        if(jQuery(".filter-collapsible.auction").css("max-height") === "0px"){
+            jQuery(".filter-auction-title-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.auction").css("max-height", "200px");
+        } else {
+            jQuery(".filter-auction-title-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.auction").css("max-height", "0px");
+        }
+    });
+
+    jQuery(".filter-status-expandable").on('click', function(){
+        jQuery(".filter-expandable").css("transform", "rotate(0deg)");
+        jQuery(".filter-collapsible").css("max-height", "0px");
+
+        if(jQuery(".filter-collapsible.status").css("max-height") === "0px"){
+            jQuery(".filter-status-expandable").css("transform", "rotate(180deg)");
+            jQuery(".filter-collapsible.status").css("max-height", "150px");
+        } else {
+            jQuery(".filter-status-expandable").css("transform", "rotate(0deg)");
+            jQuery(".filter-collapsible.status").css("max-height", "0px");
+        }
+    });
+
     jQuery(".search-result-filter-mobile-close").on('click', function(){
         toggleMobileFilter();
     });
@@ -191,6 +229,24 @@ jQuery(document).ready(function () {
         }
     });
 
+    jQuery('#auctionNameFilterSearch').on('input', function () {
+        let filter = jQuery(this).val();
+        if (filter === '') {
+            jQuery('div[class=auctionNameCheckbox]').each(function () {
+                jQuery(this).show();
+            });
+            
+        } else {    
+            jQuery('div[class=auctionNameCheckbox]').each(function () {
+                if (jQuery(this).attr("value").toLowerCase().indexOf(filter.toLowerCase()) === -1) {
+                    jQuery(this).hide();
+                } else {
+                    jQuery(this).show();
+                }
+            });
+        }
+    });
+
     jQuery(".scroll-arrow-left").click(function () {
         jQuery(".home-listing-container").animate({ scrollLeft: "-=" + 400 });
     });
@@ -198,15 +254,44 @@ jQuery(document).ready(function () {
         jQuery(".home-listing-container").animate({ scrollLeft: "+=" + 400 });
     });
 
-    jQuery('#forum-search-checkbox').on('change', function () {
-        jQuery('#all-search-checkbox').prop('checked', false);
+    jQuery('input[name=source-forum-search-checkbox]').on('change', function () {
+        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-auction-search-checkbox]');
+        sourceTypeCheckedBoxes.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
+        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-dealer-search-checkbox]');
+        sourceTypeCheckedBoxes.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
     });
-    jQuery('#auction-search-checkbox').on('change', function () {
-        jQuery('#all-search-checkbox').prop('checked', false);
+
+    jQuery('input[name=source-dealer-search-checkbox]').on('change', function () {
+        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-auction-search-checkbox]');
+        sourceTypeCheckedBoxes.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
+        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-forum-search-checkbox]');
+        sourceTypeCheckedBoxes.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
     });
-    jQuery('#dealers-search-checkbox').on('change', function () {
-        jQuery('#all-search-checkbox').prop('checked', false);
+
+    jQuery('input[name=source-auction-search-checkbox]').on('change', function () {
+        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-forum-search-checkbox]');
+        sourceTypeCheckedBoxes.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
+        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-dealer-search-checkbox]');
+        sourceTypeCheckedBoxes.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
     });
+    // jQuery('input[name=source-all-search-checkbox]').on('change', function () {
+    //     var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-search-checkbox]');
+    //     sourceTypeCheckedBoxes.forEach((checkbox) => {
+    //         checkbox.checked = false;
+    //     });
+    // });
 
     var sortInParam = params.get('sort');
     if (sortInParam) {
@@ -250,6 +335,12 @@ jQuery(document).ready(function () {
         url.searchParams.set("lastUpdated", lastUpdated);
         window.location.href = url.href;
     });
+    jQuery( "#filter-status" ).change(function() {
+        var status = jQuery('#filter-status').find(":selected").val();
+        var url = new URL(window.location.href);
+        url.searchParams.set("status", status);
+        window.location.href = url.href;
+    });
 });
 
 function filterCheckboxOnClick(type, value) {
@@ -286,8 +377,8 @@ function filterCheckboxOnClick(type, value) {
         }
         var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
         var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
-        var modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
-        var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
+        var modelsParams = (params.get('model') !== null) ? '&model=' + encodeURIComponent(params.get('model')) : '';
+        var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + encodeURIComponent(params.get('sourceName')) : '';
 
         console.log('brandsParams',brandsParams);
         console.log('modelsParams',modelsParams);
@@ -323,8 +414,8 @@ function filterCheckboxOnClick(type, value) {
         }
         var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
         var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
-        var brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
-        var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
+        var brandsParams = (params.get('brand') !== null) ? '&brand=' + encodeURIComponent(params.get('brand')) : '';
+        var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + encodeURIComponent(params.get('sourceName')) : '';
 
         console.log('brandsParams',brandsParams);
         console.log('modelsParams',modelsParams);
@@ -360,8 +451,8 @@ function filterCheckboxOnClick(type, value) {
         }
         var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
         var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
-        var brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
-        var modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
+        var brandsParams = (params.get('brand') !== null) ? '&brand=' + encodeURIComponent(params.get('brand')) : '';
+        var modelsParams = (params.get('model') !== null) ? '&model=' + encodeURIComponent(params.get('model')) : '';
 
         console.log('brandsParams',brandsParams);
         console.log('modelsParams',modelsParams);
@@ -483,7 +574,7 @@ function applyFilter() {
 
 function applyAuctionFilter() {
     var auctionTypeCheckBoxes = document.querySelectorAll('input[name=auctionTypeCheckbox]:checked');
-    var auctionName = document.getElementById("filter-auction-name").value;
+    var auctionNameCheckBoxes = document.querySelectorAll('input[name=auctionNameCheckbox]:checked');
     var auctionDateFrom = document.getElementById("auctionStartDate").value;
     var auctionDateTo = document.getElementById("auctionEndDate").value;
 
@@ -492,8 +583,14 @@ function applyAuctionFilter() {
         auctionTypeList.push(auctionTypeCheckBoxes[i].value);
     }
 
+    var auctionNameList = [];
+    for (var i = 0; auctionNameCheckBoxes[i]; ++i) {
+        auctionNameList.push(auctionNameCheckBoxes[i].value);
+    }
+
     var auctionTypeParams = auctionTypeList.length > 0 ? '&auctionType=' + auctionTypeList.join(',') : '';
-    var auctionNameParams = '&auctionName=' + auctionName;
+    var auctionNameParams = auctionNameList.length > 0 ? '&auctionName=' + auctionNameList.join(',') : '';
+    console.log(auctionNameParams);
     var auctionDateFromParams = '&auctionStartDate=' + auctionDateFrom;
     var auctionDateToParams = '&auctionEndDate=' + auctionDateTo;
 
@@ -503,38 +600,70 @@ function applyAuctionFilter() {
 function applyAuctionWatchFilter() {
     const params = new URLSearchParams(window.location.search)
     var auctionStatusCheckBoxes = document.querySelectorAll('input[name=auctionStatusCheckbox]:checked');
-    var estMinPriceFilter = document.getElementById("estMinPriceFilter").value;
-    var estMaxPriceFilter = document.getElementById("estMaxPriceFilter").value;
-    var minCurrentBidFilter = document.getElementById("minCurrentBidFilter").value;
-    var maxCurrentBidFilter = document.getElementById("maxCurrentBidFilter").value;
+    var auctionBrandsCheckBoxes = document.querySelectorAll('input[name=brandCheckbox]:checked');
+    var auctionTitleCheckBoxes = document.querySelectorAll('input[name=auctionTitleCheckbox]:checked');
 
     var auctionStatusList = [];
     for (var i = 0; auctionStatusCheckBoxes[i]; ++i) {
         auctionStatusList.push(auctionStatusCheckBoxes[i].value);
     }
+    var auctionBrandsList = [];
+    for (var i = 0; auctionBrandsCheckBoxes[i]; ++i) {
+        console.log(auctionBrandsCheckBoxes[i].value);
+        auctionBrandsList.push(auctionBrandsCheckBoxes[i].value);
+    }
+    var auctionTitleList = [];
+    for (var i = 0; auctionTitleCheckBoxes[i]; ++i) {
+        auctionTitleList.push(auctionTitleCheckBoxes[i].value);
+    }
 
     var auctionName = encodeURIComponent(params.get('auctionName'));
     var auctionType = encodeURIComponent(params.get('auctionType'));
-    var auctionTitle = encodeURIComponent(params.get('auctionTitle'));
+    var auctionStartDate = encodeURIComponent(params.get('auctionStartDate'));
+    var auctionEndDate = encodeURIComponent(params.get('auctionEndDate'));
 
     var auctionStatusParams = auctionStatusList.length > 0 ? '&auctionStatus=' + auctionStatusList.join(',') : '';
-    var auctionNameParams = '&auctionName=' + auctionName;
-    var auctionTypeParams = '&auctionType=' + auctionType;
-    var auctionTitleToParams = '&auctionTitle=' + auctionTitle;
-    var auctionMinEstPriceParams = '&auctionMinEstPrice=' + estMinPriceFilter;
-    var auctionMaxEstPriceParams = '&auctionMaxEstPrice=' + estMaxPriceFilter;
-    var auctionMinBidParams = '&auctionMinBid=' + minCurrentBidFilter;
-    var auctionMaxBidParams = '&auctionMaxBid=' + maxCurrentBidFilter;
+    var auctionBrandsParams = auctionBrandsList.length > 0 ? '&brand=' + encodeURIComponent(auctionBrandsList.join(',')) : '';
+    var auctionTitleParams = '';
+    if(!params.get('auctionTitle')) {
+        auctionTitleParams = auctionTitleList.length > 0 ? '&auctionTitle=' + encodeURIComponent(auctionTitleList.join(',')) : '';
+    }
+
+    var auctionNameParams = (auctionName !== 'null') ? '&auctionName=' + auctionName : '';
+    var auctionTypeParams = (auctionType !== 'null') ? '&auctionType=' + auctionType : '';
+    var auctionStartDateParams = (auctionStartDate !== 'null') ? '&auctionStartDate=' + auctionStartDate : '';
+    var auctionEndDateParams = (auctionEndDate !== 'null') ? '&auctionEndDate=' + auctionEndDate : '';
 
     window.location.href = '/auction-watches?'
         + auctionStatusParams
+        + auctionBrandsParams
         + auctionNameParams
         + auctionTypeParams
-        + auctionTitleToParams
-        + auctionMinEstPriceParams
-        + auctionMaxEstPriceParams
-        + auctionMinBidParams
-        + auctionMaxBidParams;
+        + auctionTitleParams
+        + auctionStartDateParams
+        + auctionEndDateParams
+        + '&pg=1';
+}
+
+function clearAuctionWatchFilter() {
+    const params = new URLSearchParams(window.location.search)
+
+    var auctionName = encodeURIComponent(params.get('auctionName'));
+    var auctionType = encodeURIComponent(params.get('auctionType'));
+    var auctionStartDate = encodeURIComponent(params.get('auctionStartDate'));
+    var auctionEndDate = encodeURIComponent(params.get('auctionEndDate'));
+
+    var auctionNameParams = (auctionName !== 'null') ? '&auctionName=' + auctionName : '';
+    var auctionTypeParams = (auctionType !== 'null') ? '&auctionType=' + auctionType : '';
+    var auctionStartDateParams = (auctionStartDate !== 'null') ? '&auctionStartDate=' + auctionStartDate : '';
+    var auctionEndDateParams = (auctionEndDate !== 'null') ? '&auctionEndDate=' + auctionEndDate : '';
+
+    window.location.href = '/auction-watches?'
+        + auctionNameParams
+        + auctionTypeParams
+        + auctionStartDateParams
+        + auctionEndDateParams
+        + '&pg=1';
 }
 
 function clearFilter() {
@@ -556,17 +685,16 @@ function clearFilter() {
 
 function search(){
     var searchParam = encodeURIComponent(document.getElementById('header-search-textbox').value);
-    var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-search-checkbox]:checked');
+    var sourceTypeCheckedBoxes = document.querySelectorAll('input[class=source-search-checkbox]:checked');
     var sourceTypes = [];
 
     for(var i=0; sourceTypeCheckedBoxes[i]; ++i){
         sourceTypes.push(sourceTypeCheckedBoxes[i].value);
     }
 
-    var sourceParams = sourceTypes.length > 0 ? '&sourceType='+encodeURIComponent(sourceTypes.join(',')) : '';
+    var sourceParams = sourceTypes.length > 0 ? '&sourceType='+sourceTypeCheckedBoxes[0].value : '';
 
-    console.log('/search?q='+searchParam+sourceParams);
-    window.location.href = '/search?q='+searchParam+sourceParams;
+    window.location.href = '/search?q='+searchParam+sourceParams+'&pg=1';
 }
 
 function clearSpecificFilter(name) {
