@@ -370,7 +370,6 @@ function filterCheckboxOnClick(type, value) {
             }
             brandsParams = '&brand=' + encodeURIComponent(brands);
         }
-        console.log(brandsParams);
         let sourceTypeParams = '';
         if (sourceType) {
             sourceTypeParams = '&sourceType=' + encodeURIComponent(sourceType);
@@ -380,13 +379,13 @@ function filterCheckboxOnClick(type, value) {
         var modelsParams = (params.get('model') !== null) ? '&model=' + encodeURIComponent(params.get('model')) : '';
         var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + encodeURIComponent(params.get('sourceName')) : '';
 
-        console.log('brandsParams',brandsParams);
-        console.log('modelsParams',modelsParams);
-        console.log('sourceParams',sourceParams);
-        console.log('queryParams',queryParams);
-        console.log('minPriceParams',minPriceParams);
-        console.log('maxPriceParams',maxPriceParams);
-        console.log('sourceTypeParams',sourceTypeParams);
+        // console.log('brandsParams',brandsParams);
+        // console.log('modelsParams',modelsParams);
+        // console.log('sourceParams',sourceParams);
+        // console.log('queryParams',queryParams);
+        // console.log('minPriceParams',minPriceParams);
+        // console.log('maxPriceParams',maxPriceParams);
+        // console.log('sourceTypeParams',sourceTypeParams);
 
         window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
     } else if (type === 'model') {
@@ -417,13 +416,13 @@ function filterCheckboxOnClick(type, value) {
         var brandsParams = (params.get('brand') !== null) ? '&brand=' + encodeURIComponent(params.get('brand')) : '';
         var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + encodeURIComponent(params.get('sourceName')) : '';
 
-        console.log('brandsParams',brandsParams);
-        console.log('modelsParams',modelsParams);
-        console.log('sourceParams',sourceParams);
-        console.log('queryParams',queryParams);
-        console.log('minPriceParams',minPriceParams);
-        console.log('maxPriceParams',maxPriceParams);
-        console.log('sourceTypeParams',sourceTypeParams);
+        // console.log('brandsParams',brandsParams);
+        // console.log('modelsParams',modelsParams);
+        // console.log('sourceParams',sourceParams);
+        // console.log('queryParams',queryParams);
+        // console.log('minPriceParams',minPriceParams);
+        // console.log('maxPriceParams',maxPriceParams);
+        // console.log('sourceTypeParams',sourceTypeParams);
 
         window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
     } else if (type === 'source') {
@@ -454,13 +453,13 @@ function filterCheckboxOnClick(type, value) {
         var brandsParams = (params.get('brand') !== null) ? '&brand=' + encodeURIComponent(params.get('brand')) : '';
         var modelsParams = (params.get('model') !== null) ? '&model=' + encodeURIComponent(params.get('model')) : '';
 
-        console.log('brandsParams',brandsParams);
-        console.log('modelsParams',modelsParams);
-        console.log('sourceParams',sourceParams);
-        console.log('queryParams',queryParams);
-        console.log('minPriceParams',minPriceParams);
-        console.log('maxPriceParams',maxPriceParams);
-        console.log('sourceTypeParams',sourceTypeParams);
+        // console.log('brandsParams',brandsParams);
+        // console.log('modelsParams',modelsParams);
+        // console.log('sourceParams',sourceParams);
+        // console.log('queryParams',queryParams);
+        // console.log('minPriceParams',minPriceParams);
+        // console.log('maxPriceParams',maxPriceParams);
+        // console.log('sourceTypeParams',sourceTypeParams);
 
         window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
     }
@@ -519,13 +518,13 @@ function removeSearchFilter(type, value) {
     }
     var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
     var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
-    console.log('brandsParams',brandsParams);
-    console.log('modelsParams',modelsParams);
-    console.log('sourceParams',sourceParams);
-    console.log('queryParams',queryParams);
-    console.log('minPriceParams',minPriceParams);
-    console.log('maxPriceParams',maxPriceParams);
-    console.log('sourceTypeParams',sourceTypeParams);
+    // console.log('brandsParams',brandsParams);
+    // console.log('modelsParams',modelsParams);
+    // console.log('sourceParams',sourceParams);
+    // console.log('queryParams',queryParams);
+    // console.log('minPriceParams',minPriceParams);
+    // console.log('maxPriceParams',maxPriceParams);
+    // console.log('sourceTypeParams',sourceTypeParams);
     window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
 
 }
@@ -633,7 +632,6 @@ function applyAuctionWatchFilter() {
     }
     var auctionBrandsList = [];
     for (var i = 0; auctionBrandsCheckBoxes[i]; ++i) {
-        console.log(auctionBrandsCheckBoxes[i].value);
         auctionBrandsList.push(auctionBrandsCheckBoxes[i].value);
     }
     var auctionTitleList = [];
@@ -649,7 +647,6 @@ function applyAuctionWatchFilter() {
     var auctionStatusParams = auctionStatusList.length > 0 ? '&auctionStatus=' + auctionStatusList.join(',') : '';
     var auctionBrandsParams = auctionBrandsList.length > 0 ? '&brand=' + encodeURIComponent(auctionBrandsList.join(',')) : '';
     var auctionTitleParams = '';
-    console.log(params.get('auctionTitle'));
     if(params.get('auctionTitle') != null) {
         auctionTitleParams = '&auctionTitle=' + encodeURIComponent(params.get('auctionTitle'));
     } else {
@@ -747,7 +744,6 @@ function removeSaveSearch(id, name) {
             data: { id: id },
 
             success: function (data) {
-                console.log(data);
                 if (data == 'success') {
                     location.reload();
                 } else {
@@ -770,7 +766,6 @@ function saveSearch(userId) {
             data: { userid: userId, query: saveQuery, name: saveQuery },
 
             success: function (data) {
-                console.log(data);
                 if (data == 'success') {
                     location.reload();
                 } else {
@@ -791,7 +786,6 @@ function saveSearchWithoutQuery(userId) {
         data: { userid: userId, query: query, name: query },
 
         success: function (data) {
-            console.log(data);
             if (data == 'success') {
                 window.location.href = `https://${window.location.hostname}/profile-saved-search/`;
             }
@@ -801,7 +795,6 @@ function saveSearchWithoutQuery(userId) {
 
 function toggleMobileFilter() {
     var query = document.getElementsByClassName('filter-sticky')[0];
-    console.log(query.className);
     if(query.className === 'filter-sticky mobile-hide'){
         query.className = 'filter-sticky';
     } else {
