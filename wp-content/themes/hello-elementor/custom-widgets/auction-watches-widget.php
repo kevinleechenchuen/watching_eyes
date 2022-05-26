@@ -62,13 +62,28 @@ class Auction_Watches_Widget extends Widget_Base {
         echo "<div class='search-result-label auction'>
                 <h1>$auction_h1_title</h1>";
 
+        echo "<div class='search-result-filters'>";
+        if($_GET['brand'] != '') {
+            $asdasd = explode(",", $_GET['brand']);
+            foreach ($asdasd as $item) {
+                echo "<div class='search-result-filters-card'>
+                            <div class='search-result-filters-card-name'>
+                                $item
+                            </div>
+                            <a class='remove-search-result-filters-card' onclick='removeAuctionWatchesSearchFilter(\"brand\", \"$item\");'>x
+                            </a>
+                        </div>";
+            }
+        }
+        echo "</div>";
+
         $auction_h7_title = "";
         foreach ($q_auction_title as $title) {
             $auction_h7_title = $auction_h7_title . $title . ", ";
         }
         echo "<h7>$auction_h7_title</h7>";
 
-        if($q_auction_start_date != '' && $auction_h7_title != '') {
+        if($_GET['isAll'] != '1') {
             echo "<h7>Start date: $q_auction_start_date | End date: $q_auction_end_date</h7>";
         }
 

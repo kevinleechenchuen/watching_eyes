@@ -117,19 +117,19 @@
             </div>
         </div>
         <div class='filter-divider'></div>";
-        if($_GET['brand'] != ''){
-            echo "<div class='filter-title'>
-                <h4>MODEL</h4>
-                <i class='clickable material-icons filter-expandable filter-model-expandable'>&#xE5CE;</i>
-            </div>
-            <div class='filter-collapsible model'>
-                <input type='text' id='modelFilterSearch' class='filterSearch' placeholder='Enter model here...'>
-                <div class='filter-section-container'>
-                    $modelHTML
-                </div>
-            </div>
-            <div class='filter-divider'></div>";
-        }
+        // if($_GET['brand'] != ''){
+        //     echo "<div class='filter-title'>
+        //         <h4>MODEL</h4>
+        //         <i class='clickable material-icons filter-expandable filter-model-expandable'>&#xE5CE;</i>
+        //     </div>
+        //     <div class='filter-collapsible model'>
+        //         <input type='text' id='modelFilterSearch' class='filterSearch' placeholder='Enter model here...'>
+        //         <div class='filter-section-container'>
+        //             $modelHTML
+        //         </div>
+        //     </div>
+        //     <div class='filter-divider'></div>";
+        // }
         echo "<div class='filter-title'>
                 <h4>SOURCE</h4>
                 <i class='clickable material-icons filter-expandable filter-source-expandable'>&#xE5CE;</i>

@@ -530,6 +530,31 @@ function removeSearchFilter(type, value) {
 
 }
 
+function removeAuctionWatchesSearchFilter(type, value) {
+    const params = new URLSearchParams(window.location.search);
+    let brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
+
+    if (type === 'brand') {
+        let brands;
+        if (params.get('brand').indexOf(',') > 0) {
+            brands = params.get('brand').replace(`${value},`, '');
+            brands = brands.replace(`,${value}`, '');
+        } else {
+            brands = params.get('brand').replace(`${value}`, '');
+        }
+        brandsParams = '&brand=' + encodeURIComponent(brands);
+
+    } 
+
+    var startDateParams = (params.get('auctionStartDate') !== null) ? '&auctionStartDate=' + params.get('auctionStartDate') : '';
+    var endDateParams = (params.get('auctionEndDate') !== null) ? '&auctionEndDate=' + params.get('auctionEndDate') : '';
+    var auctionNameParams = (params.get('auctionName') !== null) ? '&auctionName=' + params.get('auctionName') : '';
+    var auctionTypeParams = (params.get('auctionType') !== null) ? '&auctionType=' + params.get('auctionType') : '';
+    var auctionTitleParams = (params.get('auctionTitle') !== null) ? '&auctionTitle=' + params.get('auctionTitle') : '';
+
+    window.location.href = '/auction-watches?' + brandsParams + startDateParams + endDateParams + auctionNameParams + auctionTypeParams + auctionTitleParams;
+}
+
 function applyFilter() {
     var minPrice = document.getElementById("search-filter-price-range-min").value;
     var maxPrice = document.getElementById("search-filter-price-range-max").value;
@@ -590,7 +615,6 @@ function applyAuctionFilter() {
 
     var auctionTypeParams = auctionTypeList.length > 0 ? '&auctionType=' + auctionTypeList.join(',') : '';
     var auctionNameParams = auctionNameList.length > 0 ? '&auctionName=' + auctionNameList.join(',') : '';
-    console.log(auctionNameParams);
     var auctionDateFromParams = '&auctionStartDate=' + auctionDateFrom;
     var auctionDateToParams = '&auctionEndDate=' + auctionDateTo;
 
@@ -625,7 +649,10 @@ function applyAuctionWatchFilter() {
     var auctionStatusParams = auctionStatusList.length > 0 ? '&auctionStatus=' + auctionStatusList.join(',') : '';
     var auctionBrandsParams = auctionBrandsList.length > 0 ? '&brand=' + encodeURIComponent(auctionBrandsList.join(',')) : '';
     var auctionTitleParams = '';
-    if(!params.get('auctionTitle')) {
+    console.log(params.get('auctionTitle'));
+    if(params.get('auctionTitle') != null) {
+        auctionTitleParams = '&auctionTitle=' + encodeURIComponent(params.get('auctionTitle'));
+    } else {
         auctionTitleParams = auctionTitleList.length > 0 ? '&auctionTitle=' + encodeURIComponent(auctionTitleList.join(',')) : '';
     }
 
@@ -645,22 +672,29 @@ function applyAuctionWatchFilter() {
         + '&pg=1';
 }
 
+function clearAuctionFilter() {
+    window.location.href = '/auction-calendar?';
+}
+
 function clearAuctionWatchFilter() {
     const params = new URLSearchParams(window.location.search)
 
     var auctionName = encodeURIComponent(params.get('auctionName'));
     var auctionType = encodeURIComponent(params.get('auctionType'));
+    var auctionTitle = encodeURIComponent(params.get('auctionTitle'));
     var auctionStartDate = encodeURIComponent(params.get('auctionStartDate'));
     var auctionEndDate = encodeURIComponent(params.get('auctionEndDate'));
 
     var auctionNameParams = (auctionName !== 'null') ? '&auctionName=' + auctionName : '';
     var auctionTypeParams = (auctionType !== 'null') ? '&auctionType=' + auctionType : '';
+    var auctionTitleParams = (auctionTitle !== 'null') ? '&auctionTitle=' + auctionTitle : '';
     var auctionStartDateParams = (auctionStartDate !== 'null') ? '&auctionStartDate=' + auctionStartDate : '';
     var auctionEndDateParams = (auctionEndDate !== 'null') ? '&auctionEndDate=' + auctionEndDate : '';
 
     window.location.href = '/auction-watches?'
         + auctionNameParams
         + auctionTypeParams
+        + auctionTitleParams
         + auctionStartDateParams
         + auctionEndDateParams
         + '&pg=1';
