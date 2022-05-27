@@ -681,12 +681,14 @@ function clearAuctionWatchFilter() {
     var auctionTitle = encodeURIComponent(params.get('auctionTitle'));
     var auctionStartDate = encodeURIComponent(params.get('auctionStartDate'));
     var auctionEndDate = encodeURIComponent(params.get('auctionEndDate'));
+    var auctionIsAll = encodeURIComponent(params.get('isAll'));
 
     var auctionNameParams = (auctionName !== 'null') ? '&auctionName=' + auctionName : '';
     var auctionTypeParams = (auctionType !== 'null') ? '&auctionType=' + auctionType : '';
     var auctionTitleParams = (auctionTitle !== 'null') ? '&auctionTitle=' + auctionTitle : '';
     var auctionStartDateParams = (auctionStartDate !== 'null') ? '&auctionStartDate=' + auctionStartDate : '';
     var auctionEndDateParams = (auctionEndDate !== 'null') ? '&auctionEndDate=' + auctionEndDate : '';
+    var auctionIsAllParams = (auctionIsAll !== 'null') ? '&isAll=' + auctionIsAll : '';
 
     window.location.href = '/auction-watches?'
         + auctionNameParams
@@ -694,6 +696,7 @@ function clearAuctionWatchFilter() {
         + auctionTitleParams
         + auctionStartDateParams
         + auctionEndDateParams
+        + auctionIsAllParams
         + '&pg=1';
 }
 
