@@ -156,20 +156,43 @@
         }
 
         if ($sourceType == 'Retail') {
-            echo " <div class='filter-title' style='margin-bottom: 5px;'>
+
+            echo " <div class='filter-title'>
                 <h4>STATUS</h4>
                 <i class='clickable material-icons filter-expandable filter-status-expandable'>&#xE5CE;</i>
-            </div>      
+            </div>
             <div class='filter-collapsible status'>
-                <select name='filter-status' id='filter-status'>
-                    <option value='' selected='selected'>All</option>
-                    <option value='Available'>Available</option>
-                    <option value='Sold'>Sold</option>
-                    <option value='Reserved'>Reserved</option>
-                </select>
+                <div class='filter-section-container'>
+                    <div class=\"statusCheckbox\" value='Available'>
+                        <label class=\"container\">
+                            <p>Available</p>
+                            <input type=\"checkbox\" id='Available' name=\"statusCheckbox\" value='Available'>
+                            <span class=\"checkmark\"></span>
+                        </label>
+                    </div>
+                    <div class=\"statusCheckbox\" value='Sold'>
+                        <label class=\"container\">
+                            <p>Sold</p>
+                            <input type=\"checkbox\" id='Sold' name=\"statusCheckbox\" value='Sold'>
+                            <span class=\"checkmark\"></span>
+                        </label>
+                    </div>
+                    <div class=\"statusCheckbox\" value='Reserved'>
+                        <label class=\"container\">
+                            <p>Reserved</p>
+                            <input type=\"checkbox\" id='Reserved' name=\"statusCheckbox\" value='Reserved'>
+                            <span class=\"checkmark\"></span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
+                </div>
             </div>
             <div class='filter-divider'></div>";
         }
+
+        
 
         echo "<div class='filter-title'>
             <h4>PRICES RANGE</h4>
@@ -345,7 +368,7 @@
         echo "</div>";
     }
 
-    function renderAuctionWatchesResultsWithFilter($data, $page, $filter, $maxPage, $auctionTitleList)
+    function renderAuctionWatchesResultsWithFilter($data, $page, $filter, $maxPage, $auctionTitleList, $currencies)
     {
         if(count($data) == 0)
         {
@@ -404,6 +427,29 @@
         </div>
         <div class='filter-divider'></div>";
 
+        if(count($currencies) > 0){
+            $currencyListHTML = "";
+            foreach ($currencies as $curr) {
+                $currencyListHTML = "$currencyListHTML<div class=\"currencyCheckbox\" value='$curr'><label class=\"container\">
+                    <p>$curr</p>
+                    <input type=\"checkbox\" id='$curr' name=\"currencyCheckbox\" value='$curr'>
+                    <span class=\"checkmark\"></span>
+                </label></div>";
+            }
+
+            echo " <div class='filter-title'>
+                    <h4>CURRENCY</h4>
+                    <i class='clickable material-icons filter-expandable filter-currency-expandable'>&#xE5CE;</i>
+                </div>
+                <div class='filter-collapsible currency'>
+                    <div class='filter-section-container'>
+                        $currencyListHTML
+                    </div>
+                </div>
+                ";
+        }
+        echo "<div class='filter-divider'></div>";
+
         if(count($auctionTitleList) > 0){
             $auctionTitleListHTML = "";
             foreach ($auctionTitleList as $auction) {
@@ -423,25 +469,9 @@
                         $auctionTitleListHTML
                     </div>
                 </div>
-                <div class='filter-divider'></div>
                 ";
         }
-        // echo " <div class='filter-title'>
-        //     <h4>STATUS</h4>
-        //     </div>  
-        //     <div class='filter-section-container'>
-        //         <div class=\"modelCheckbox\" value='Open Bid'><label class=\"container\">
-        //             <p>Open Bid</p>
-        //             <input type=\"checkbox\" id='Open Bid' name=\"auctionStatusCheckbox\" value='Open Bid'>
-        //             <span class=\"checkmark\"></span>
-        //         </label></div>
-        //         <div class=\"modelCheckbox\" value='Closed Bid'><label class=\"container\">
-        //             <p>Closed Bid</p>
-        //             <input type=\"checkbox\" id='Closed Bid' name=\"auctionStatusCheckbox\" value='Closed Bid'>
-        //             <span class=\"checkmark\"></span>
-        //         </label></div>
-        //     </div>  
-        //     ";
+        
         echo "  
         <div class='filter-button-container'>
             <button class='button-main-1' onclick=\"clearAuctionWatchFilter()\" style='margin-bottom: 10px; width:100%;'>CLEAR ALL FILTERS</button>
@@ -612,6 +642,7 @@
     function renderAuctionCard($item){
         $startDate    = new DateTime($item->auction_start_date);
         $endDate    = new DateTime($item->auction_end_date);
+        $endDate->modify('+1 day');
         $stringStartDate = $startDate->format('Y-m-d');
         $stringEndDate = $endDate->format('Y-m-d');
 
@@ -724,7 +755,8 @@
                         </div>
                     </div>
                     <h7 class='item-card-source'>
-                        Estimate Pricing: <br>$currency$formattedMinEst - $currency$formattedMaxEst <br>
+                        $item->auction_name($item->currency)
+                        <br>$currency$formattedMinEst - $currency$formattedMaxEst <br>
                         Start date: $stringStartDate
                     </h7>
                     <div class='auction-watches'>

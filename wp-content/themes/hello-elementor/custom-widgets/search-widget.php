@@ -35,7 +35,7 @@ class Search_Widget extends Widget_Base {
         $q_sortby = $_GET['sort'] == '' ? 0 : $_GET['sort'];
         $q_acc = $_GET['acc'] == '' ? 'false' : $_GET['acc'];
         $q_lastUpdated = $_GET['lastUpdated'] == '' ? '' : $_GET['lastUpdated'];
-        $q_status = $_GET['status'] == '' ? '' : $_GET['status'];
+        $q_status = explode(",", $_GET['status']);
 
         switch($q_lastUpdated){
             case 'm_6':
@@ -60,7 +60,6 @@ class Search_Widget extends Widget_Base {
         $sortQueryParam = $q_sortby == '' ? '' : "&sort_by=$q_sortby";
         $accQueryParam = $q_acc == 'true' ? "&acc__in=true" : "&acc__in=false";
         $lastUpdatedQueryParam = $q_lastUpdated == '' ? '' : "&last_post_date__gte=$lastUpdateDate";
-        $statusQueryParam = $q_status == '' ? '' : "&status__in=$q_status";
 
         $brandQueryParam = "";
         foreach ($q_brand as $brand) {
@@ -81,6 +80,10 @@ class Search_Widget extends Widget_Base {
         foreach ($q_sourceType as $sourceType) {
             $sourceType = encodeURIComponent($sourceType);
             $sourceTypeQueryParam = ($sourceType == '') ? "$sourceTypeQueryParam" : "$sourceTypeQueryParam&source_type__in=$sourceType";
+        }
+        $statusQueryParam = "";
+        foreach ($q_status as $status) {
+            $statusQueryParam = ($status == '') ? "$statusQueryParam" : "$statusQueryParam&status__in=$status";
         }
 
         $saveSearchHTML = "";

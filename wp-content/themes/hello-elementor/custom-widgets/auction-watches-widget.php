@@ -29,8 +29,9 @@ class Auction_Watches_Widget extends Widget_Base {
 
         $q_auction_name = $_GET['auctionName'];
         $q_auction_type = $_GET['auctionType'];
-        $q_auction_title = $_GET['auctionTitle'] != '' ? explode(",", $_GET['auctionTitle']) : [];
+        $q_auction_title = $_GET['auctionTitle'] != '' ? explode("|", $_GET['auctionTitle']) : [];
         $q_auction_status = explode(",", $_GET['auctionStatus']);
+        $q_currency = explode(",", $_GET['currency']);
         $q_brand = explode(",", $_GET['brand']);
         $q_page = $_GET['pg'] == '' ? 1 : $_GET['pg'];
         
@@ -56,6 +57,10 @@ class Auction_Watches_Widget extends Widget_Base {
             $encodedTitle = encodeURIComponent($title);
             $auctionTitleQueryParam = ($encodedTitle == '') ? "$auctionTitleQueryParam" : "$auctionTitleQueryParam&auction_title__in=$encodedTitle";
         }
+        $currencyQueryParam = "";
+        foreach ($q_currency as $currency) {
+            $currencyQueryParam = ($currency == '') ? "$currencyQueryParam" : "$currencyQueryParam&currency__in=$currency";
+        }
 
         $auction_h1_title = ($q_auction_name == '') ? "Auction Lots" : $q_auction_name;
          
@@ -79,17 +84,17 @@ class Auction_Watches_Widget extends Widget_Base {
 
         $auction_h7_title = "";
         foreach ($q_auction_title as $title) {
-            $auction_h7_title = $auction_h7_title . $title . ", ";
+            $auction_h7_title = $auction_h7_title . $title . " | ";
         }
         echo "<h7>$auction_h7_title</h7>";
 
-        if($_GET['isAll'] != '1') {
+        if($_GET['isAll'] != '1' || $auction_h7_title != "") {
             echo "<h7>Start date: $q_auction_start_date | End date: $q_auction_end_date</h7>";
         }
 
         echo "</div>";
 
-        $url = "http://128.199.148.89:8000/api/v1/auction/watches?$auctionNameParam$auctionTypeQueryParam$auctionTitleQueryParam$auctionStatusQueryParam$auctionBrandQueryParam$pageQueryParam$startDateQueryParam$endDateQueryParam";
+        $url = "http://128.199.148.89:8000/api/v1/auction/watches?$auctionNameParam$auctionTypeQueryParam$auctionTitleQueryParam$auctionStatusQueryParam$auctionBrandQueryParam$pageQueryParam$startDateQueryParam$endDateQueryParam$currencyQueryParam";
         // echo $url;
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
@@ -119,7 +124,13 @@ class Auction_Watches_Widget extends Widget_Base {
             }
         }
 
-        renderAuctionWatchesResultsWithFilter($body->auctionWatches, (int)$q_page, $body->filters, $body->pages, $auctionTitleList);
+        $currencies = array();
+        array_push($currencies,'USD');
+        array_push($currencies,'GBP');
+        array_push($currencies,'EUR');
+        array_push($currencies,'CHF');
+
+        renderAuctionWatchesResultsWithFilter($body->auctionWatches, (int)$q_page, $body->filters, $body->pages, $auctionTitleList, $currencies);
 	}
 	
 	protected function _content_template() {
