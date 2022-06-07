@@ -92,20 +92,20 @@
             </select>
         </div>
         <div class='filter-divider'></div>";
-        echo "<div class='filter-title' style='margin-bottom: 5px;'>
-            <h4>LAST UPDATED</h4>
-            <i class='clickable material-icons filter-expandable filter-last-updated-expandable'>&#xE5CE;</i>
-        </div>      
-        <div class='filter-collapsible last-updated'>
-            <select name='filter-last-updated' id='filter-last-updated'>
-                <option value='m_6' selected='selected'>6 Months</option>
-                <option value='m_3'>3 Months</option>
-                <option value='m_1'>1 Months</option>
-                <option value='w_1'>1 Week</option>
-            </select>
-        </div>
-        <div class='filter-divider'></div>
-        ";
+        // echo "<div class='filter-title' style='margin-bottom: 5px;'>
+        //     <h4>LAST UPDATED</h4>
+        //     <i class='clickable material-icons filter-expandable filter-last-updated-expandable'>&#xE5CE;</i>
+        // </div>      
+        // <div class='filter-collapsible last-updated'>
+        //     <select name='filter-last-updated' id='filter-last-updated'>
+        //         <option value='m_6' selected='selected'>6 Months</option>
+        //         <option value='m_3'>3 Months</option>
+        //         <option value='m_1'>1 Months</option>
+        //         <option value='w_1'>1 Week</option>
+        //     </select>
+        // </div>
+        // <div class='filter-divider'></div>
+        // ";
         echo " <div class='filter-title'>
             <h4>BRAND</h4>
             <i class='clickable material-icons filter-expandable filter-brand-expandable'>&#xE5CE;</i>
@@ -155,44 +155,32 @@
             <div class='filter-divider'></div>";
         }
 
-        if ($sourceType == 'Retail') {
+        if ($sourceType == 'Retail' || $sourceType == 'Auction') {
+            $statusHTML = "";
+            foreach ($filter->status as $status) {
+                $statusHTML = "$statusHTML<div class=\"statusCheckbox\" value='$status'>
+                    <label class=\"container\">
+                        <p>$status</p>
+                        <input type=\"checkbox\" id='$status' name=\"statusCheckbox\" value='$status'>
+                        <span class=\"checkmark\"></span>
+                    </label>
+                </div>";
+            }
 
             echo " <div class='filter-title'>
-                <h4>STATUS</h4>
-                <i class='clickable material-icons filter-expandable filter-status-expandable'>&#xE5CE;</i>
-            </div>
-            <div class='filter-collapsible status'>
-                <div class='filter-section-container'>
-                    <div class=\"statusCheckbox\" value='Available'>
-                        <label class=\"container\">
-                            <p>Available</p>
-                            <input type=\"checkbox\" id='Available' name=\"statusCheckbox\" value='Available'>
-                            <span class=\"checkmark\"></span>
-                        </label>
+                    <h4>STATUS</h4>
+                    <i class='clickable material-icons filter-expandable filter-status-expandable'>&#xE5CE;</i>
+                </div>
+                <div class='filter-collapsible status'>
+                    <div class='filter-section-container'>
+                        $statusHTML
                     </div>
-                    <div class=\"statusCheckbox\" value='Sold'>
-                        <label class=\"container\">
-                            <p>Sold</p>
-                            <input type=\"checkbox\" id='Sold' name=\"statusCheckbox\" value='Sold'>
-                            <span class=\"checkmark\"></span>
-                        </label>
-                    </div>
-                    <div class=\"statusCheckbox\" value='Reserved'>
-                        <label class=\"container\">
-                            <p>Reserved</p>
-                            <input type=\"checkbox\" id='Reserved' name=\"statusCheckbox\" value='Reserved'>
-                            <span class=\"checkmark\"></span>
-                        </label>
+                    <div>
+                        <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
                     </div>
                 </div>
-                <div>
-                    <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
-                </div>
-            </div>
-            <div class='filter-divider'></div>";
+                <div class='filter-divider'></div>";
         }
-
-        
 
         echo "<div class='filter-title'>
             <h4>PRICES RANGE</h4>
@@ -328,20 +316,20 @@
             </label></div>
         </div>
         ";
-        // echo " <div class='filter-divider'></div>";
-        // echo " <div class='filter-title'>
-        //             <h4>AUCTION NAME</h4>
-        //             <i class='clickable material-icons filter-expandable filter-auction-name-expandable'>&#xE5CE;</i>
-        //         </div>
-        //         <div class='filter-section-container'>
-        //             <div class='filter-collapsible auction'>
-        //                 <input type='text' id='auctionNameFilterSearch' class='filterSearch' placeholder='Enter auction name here...'>
-        //                 <div class='filter-section-container'>
-        //                     $auctionListHTML
-        //                 </div>
-        //             </div>
-        //         </div>   
-        //         ";
+        echo " <div class='filter-divider'></div>";
+        echo " <div class='filter-title'>
+                    <h4>AUCTION NAME</h4>
+                    <i class='clickable material-icons filter-expandable filter-auction-name-expandable'>&#xE5CE;</i>
+                </div>
+                <div class='filter-section-container'>
+                    <div class='filter-collapsible auction'>
+                        <input type='text' id='auctionNameFilterSearch' class='filterSearch' placeholder='Enter auction name here...'>
+                        <div class='filter-section-container'>
+                            $auctionListHTML
+                        </div>
+                    </div>
+                </div>   
+                ";
         echo "<div class='filter-divider'></div>";
         echo "<div class='filter-section-container'>
                     <label class='filter-auction-label' for='auctionStartDate'>Start Date</label>
@@ -426,6 +414,33 @@
             </div>
         </div>
         <div class='filter-divider'></div>";
+
+
+
+        $statusHTML = "";
+        foreach ($filter->status as $status) {
+            $statusHTML = "$statusHTML<div class=\"statusCheckbox\" value='$status'>
+                <label class=\"container\">
+                    <p>$status</p>
+                    <input type=\"checkbox\" id='$status' name=\"statusCheckbox\" value='$status'>
+                    <span class=\"checkmark\"></span>
+                </label>
+            </div>";
+        }
+
+        echo " <div class='filter-title'>
+                <h4>STATUS</h4>
+                <i class='clickable material-icons filter-expandable filter-status-expandable'>&#xE5CE;</i>
+            </div>
+            <div class='filter-collapsible status'>
+                <div class='filter-section-container'>
+                    $statusHTML
+                </div>
+                <div>
+                    <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
+                </div>
+            </div>
+            <div class='filter-divider'></div>";
 
         if(count($currencies) > 0){
             $currencyListHTML = "";
@@ -565,13 +580,18 @@
             $itemStatusHTML = "<div class='item-card-status'>$item->status</div>";
         }
         if(strcasecmp($item->source_type, 'Auction') != 0) {
+            $imageUrl = $item->main_img_url;
+            if($item->forum_name == 'Ponti') {
+                $imageUrl = "http://128.199.148.89/full/retail/$item->forum_name/$item->img_local_path";
+            }
+
             echo "
                 <div class='item-card'>
                         <a href='$item->post_link' target='_blank'>
                             <div>
                                 $itemStatusHTML
                                 <div class='item-card-image-container'>
-                                    <img class='item-card-img-top' src='$item->main_img_url' alt=''>
+                                    <img class='item-card-img-top' src='$imageUrl' alt=''>
                                 </div>
                             </div>
                         </a>
@@ -755,7 +775,7 @@
                         </div>
                     </div>
                     <h7 class='item-card-source'>
-                        $item->auction_name($item->currency)
+                        $item->auction_name ($item->currency)
                         <br>$currency$formattedMinEst - $currency$formattedMaxEst <br>
                         Start date: $stringStartDate
                     </h7>

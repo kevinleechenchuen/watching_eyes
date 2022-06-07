@@ -108,7 +108,7 @@ class Auction_Watches_Widget extends Widget_Base {
         if($auction_h7_title == '')
         {
             $startDate = date("Y-m-d");
-		    $endDate = date("Y-m-d", strtotime('+ 1 month'));
+		    $endDate = date("Y-m-d", strtotime('+ 6 month'));
             $url = "http://128.199.148.89:8000/api/v1/auction/?auction_start_date__gte=$startDate&auction_end_date__gte=$endDate";
             $response = wp_remote_get($url);
             if ( is_array( $response ) && ! is_wp_error( $response ) ) {
@@ -128,9 +128,10 @@ class Auction_Watches_Widget extends Widget_Base {
         array_push($currencies,'USD');
         array_push($currencies,'GBP');
         array_push($currencies,'EUR');
+        array_push($currencies,'HKD');
         array_push($currencies,'CHF');
 
-        renderAuctionWatchesResultsWithFilter($body->auctionWatches, (int)$q_page, $body->filters, $body->pages, $auctionTitleList, $currencies);
+        renderAuctionWatchesResultsWithFilter($body->auctionWatches, (int)$q_page, $body->filters, $body->pages, $auctionTitleList, $body->filters->currency);
 	}
 	
 	protected function _content_template() {
