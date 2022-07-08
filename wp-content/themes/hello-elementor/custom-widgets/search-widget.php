@@ -24,18 +24,18 @@ class Search_Widget extends Widget_Base {
 	protected function render() {
         $current_user = wp_get_current_user();
 
-        $q_query = $_GET['q'];
-        $q_brand = explode(",", $_GET['brand']);
-        $q_model = explode(",", $_GET['model']);
-        $q_sourceName = explode(",", $_GET['sourceName']);
-        $q_sourceType = explode(",", $_GET['sourceType']);
-        $q_priceFrom = $_GET['priceFrom'];
-        $q_priceTo = $_GET['priceTo'];
-        $q_page = $_GET['pg'] == '' ? 1 : $_GET['pg'];
-        $q_sortby = $_GET['sort'] == '' ? 0 : $_GET['sort'];
-        $q_acc = $_GET['acc'] == '' ? 'false' : $_GET['acc'];
-        $q_lastUpdated = $_GET['lastUpdated'] == '' ? '' : $_GET['lastUpdated'];
-        $q_status = explode(",", $_GET['status']);
+        $q_query = isset($_GET['q']) ? $_GET['q'] : '';
+        $q_brand = isset($_GET['brand']) ? explode(",", $_GET['brand']) : array();
+        $q_model = isset($_GET['model']) ? explode(",", $_GET['model']) : array();
+        $q_sourceName = isset($_GET['sourceName']) ? explode(",", $_GET['sourceName']) : array();
+        $q_sourceType = isset($_GET['sourceType']) ? $_GET['sourceType'] : '';
+        $q_priceFrom = isset($_GET['priceFrom']) ? $_GET['priceFrom'] : '';
+        $q_priceTo = isset($_GET['priceTo']) ? $_GET['priceTo'] : '';
+        $q_page = isset($_GET['pg']) ? $_GET['pg'] : 1;
+        $q_sortby = isset($_GET['sort']) ? $_GET['sort'] : 0;
+        $q_acc = isset($_GET['acc']) ? $_GET['acc'] : 'false';
+        $q_lastUpdated = isset($_GET['lastUpdated']) ? $_GET['lastUpdated'] : '';
+        $q_status = isset($_GET['status']) ? explode(",", $_GET['status']) : array();
 
         switch($q_lastUpdated){
             case 'm_6':
@@ -60,6 +60,7 @@ class Search_Widget extends Widget_Base {
         $sortQueryParam = $q_sortby == '' ? '' : "&sort_by=$q_sortby";
         $accQueryParam = $q_acc == 'true' ? "&acc__in=true" : "&acc__in=false";
         $lastUpdatedQueryParam = $q_lastUpdated == '' ? '' : "&last_post_date__gte=$lastUpdateDate";
+        $sourceTypeQueryParam = $q_sourceType == '' ? '' : "&source_type__in=$q_sourceType";
 
         $brandQueryParam = "";
         foreach ($q_brand as $brand) {
@@ -76,11 +77,6 @@ class Search_Widget extends Widget_Base {
             $sourceName = encodeURIComponent($sourceName);
             $sourceNameQueryParam = ($sourceName == '') ? "$sourceNameQueryParam" : "$sourceNameQueryParam&source__in=$sourceName";
         }
-        $sourceTypeQueryParam = "";
-        foreach ($q_sourceType as $sourceType) {
-            $sourceType = encodeURIComponent($sourceType);
-            $sourceTypeQueryParam = ($sourceType == '') ? "$sourceTypeQueryParam" : "$sourceTypeQueryParam&source_type__in=$sourceType";
-        }
         $statusQueryParam = "";
         foreach ($q_status as $status) {
             $statusQueryParam = ($status == '') ? "$statusQueryParam" : "$statusQueryParam&status__in=$status";
@@ -89,7 +85,7 @@ class Search_Widget extends Widget_Base {
         $saveSearchHTML = "";
         if(is_user_logged_in()){
             $saveSearchHTML = "
-                <button class='button-main-1' onClick='saveSearchWithoutQuery($current_user->ID)'>SAVE THIS SEARCH</button> ";
+                <button class='button-main-1' onClick='saveSearch($current_user->ID)'>SAVE THIS SEARCH</button> ";
         } else {
             $saveSearchHTML = "
                 <button class='button-main-1' onClick=\"window.location.href = '/log-in'\">SAVE THIS SEARCH</button> ";
@@ -98,9 +94,7 @@ class Search_Widget extends Widget_Base {
         echo "<h1>Results</h1>";
         echo "<a href='/search?page=1'>Clear all filters</a>";
         echo "</div>";
-        if($_GET['q'] != '') {
-            echo $saveSearchHTML;
-        }
+        echo $saveSearchHTML;
         
         echo "<div class='search-result-filters'>";
         if($_GET['q'] != '') {
@@ -112,7 +106,7 @@ class Search_Widget extends Widget_Base {
                     </a>
                 </div>";
         }
-        if($_GET['brand'] != '') {
+        if(isset($_GET['brand'])) {
             $asdasd = explode(",", $_GET['brand']);
             foreach ($asdasd as $item) {
                 echo "<div class='search-result-filters-card'>
@@ -124,7 +118,7 @@ class Search_Widget extends Widget_Base {
                         </div>";
             }
         }
-        if($_GET['model'] != '') {
+        if(isset($_GET['model'])) {
             $asdasd = explode(",", $_GET['model']);
             foreach ($asdasd as $item) {
                 echo "<div class='search-result-filters-card'>
@@ -136,7 +130,7 @@ class Search_Widget extends Widget_Base {
                         </div>";
             }
         }
-        if($_GET['sourceName'] != '') {
+        if(isset($_GET['sourceName'])) {
             $asdasd = explode(",", $_GET['sourceName']);
             foreach ($asdasd as $item) {
                 echo "<div class='search-result-filters-card'>
@@ -144,6 +138,18 @@ class Search_Widget extends Widget_Base {
                                 $item
                             </div>
                             <a class='remove-search-result-filters-card' onclick='removeSearchFilter(\"source\", \"$item\");'>x
+                            </a>
+                        </div>";
+            }
+        }
+        if(isset($_GET['status'])) {
+            $asdasd = explode(",", $_GET['status']);
+            foreach ($asdasd as $item) {
+                echo "<div class='search-result-filters-card'>
+                            <div class='search-result-filters-card-name'>
+                                $item
+                            </div>
+                            <a class='remove-search-result-filters-card' onclick='removeSearchFilter(\"status\", \"$item\");'>x
                             </a>
                         </div>";
             }
@@ -161,10 +167,11 @@ class Search_Widget extends Widget_Base {
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);
         } else {
+            echo json_encode($response);
             echo 'Something went wrong!';
             return null;
         }
-        renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page, (int)$body->pages, $q_priceFrom, $q_priceTo, $_GET['sourceType']);
+        renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page, (int)$body->pages, $q_priceFrom, $q_priceTo, $q_sourceType);
 	}
 	
 	protected function _content_template() {

@@ -38,6 +38,8 @@ class Login_Widget extends Widget_Base {
                 echo "<a href='/log-in'>Login</a> | <a href='/register'>Signup</a>";
 			}
 		echo  "</div>";
+		echo  "</div>";
+		echo  "</div>";
 	}
 	
 	protected function _content_template() {

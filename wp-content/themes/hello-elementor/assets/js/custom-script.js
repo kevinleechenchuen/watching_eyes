@@ -1,7 +1,7 @@
 jQuery(document).ready(function () {
     var input = document.getElementById('header-search-textbox');
     var isMobile = false
-    if(window.matchMedia("(max-width: 600px)").matches){
+    if(window.matchMedia("(max-width: 1024px)").matches){
         jQuery('#header-search-textbox').removeAttr('id');
         isMobile = true;
     }
@@ -76,6 +76,25 @@ jQuery(document).ready(function () {
                 checkbox.checked = false;
             }
         });
+    }
+
+    var auctionStatusInParams = params.get('auctionStatus');
+    if (auctionStatusInParams) {
+        var auctionStatusInParamsList = auctionStatusInParams.split(',');
+        var statusCheckboxes = document.querySelectorAll('input[name=statusCheckbox]');
+        statusCheckboxes.forEach((checkbox) => {
+            if (auctionStatusInParamsList.includes(checkbox.value)) {
+                checkbox.checked = true;
+            } else {
+                checkbox.checked = false;
+            }
+        });
+    }
+
+    var bookmarkQuery = params.get('bookmarkQuery');
+    if (bookmarkQuery) {
+        var bookmarkQueryTextBox = document.getElementById('bookmark-search-textbox');
+        bookmarkQueryTextBox.value = bookmarkQuery;
     }
 
     jQuery(".filter-brand-expandable").on('click', function(){
@@ -528,6 +547,15 @@ function removeSearchFilter(type, value) {
             sources = params.get('sourceName').replace(`${value}`, '');
         }
         sourceParams = '&sourceName=' + encodeURIComponent(sources);
+    } else if (type === 'status') {
+        let status;
+        if (params.get('status').indexOf(',') >= 0) {
+            status = params.get('status').replace(`${value},`, '');
+            status = status.replace(`,${value}`, '');
+        } else {
+            status = params.get('status').replace(`${value}`, '');
+        }
+        sourceParams = '&status=' + encodeURIComponent(status);
     } 
     var q = params.get('q');
     var sourceType = params.get('sourceType');
@@ -657,7 +685,7 @@ function applyAuctionFilter() {
 
 function applyAuctionWatchFilter() {
     const params = new URLSearchParams(window.location.search)
-    var auctionStatusCheckBoxes = document.querySelectorAll('input[name=auctionStatusCheckbox]:checked');
+    var auctionStatusCheckBoxes = document.querySelectorAll('input[name=statusCheckbox]:checked');
     var auctionBrandsCheckBoxes = document.querySelectorAll('input[name=brandCheckbox]:checked');
     var auctionTitleCheckBoxes = document.querySelectorAll('input[name=auctionTitleCheckbox]:checked');
     var currencyCheckBoxes = document.querySelectorAll('input[name=currencyCheckbox]:checked');
@@ -767,6 +795,7 @@ function search(){
     var searchParam = encodeURIComponent(document.getElementById('header-search-textbox').value);
     var sourceTypeCheckedBoxes = document.querySelectorAll('input[class=source-search-checkbox]:checked');
     var sourceTypes = [];
+    console.log(searchParam);
 
     for(var i=0; sourceTypeCheckedBoxes[i]; ++i){
         sourceTypes.push(sourceTypeCheckedBoxes[i].value);
@@ -785,7 +814,6 @@ function clearSpecificFilter(name) {
     }
 }
 function removeSaveSearch(id, name) {
-
     if (confirm(`Are you sure you want to remove ${name} from your saved search?`)) {
         jQuery.ajax({
             type: 'DELETE',
@@ -802,8 +830,54 @@ function removeSaveSearch(id, name) {
         });
     }
 }
+
+function bookmarkWatch(userId, watchId, sourceType) {
+    console.log(userId, watchId, sourceType);
+    if (userId == 0){
+        if(confirm(`Kindly log in to proceed.`))
+        {
+            location.href = '/register';
+        }
+        return;
+    } 
+
+    var bookmarkElement = document.getElementsByClassName(`item-card-bookmark ${watchId}`)[0];
+
+    var isRemove = bookmarkElement.className.includes("active");
+    console.log({userId: userId, watchId: watchId, sourceType: sourceType, isRemove: `${isRemove}`});
+    jQuery.ajax({
+        type: 'POST',
+        url: `https://${window.location.hostname}/wp-json/custom/v1/bookmark/`,
+        data: { userId: userId, watchId: watchId, sourceType: sourceType, isRemove: `${isRemove}` },
+
+        success: function (data) {
+            if (data.response.code == 201 || data.response.code == 200) {
+                if(isRemove) {
+                    bookmarkElement.classList.remove("active");
+                    alert("Removed bookmark!");
+                } else {
+                    bookmarkElement.classList.add("active");
+                    alert("Bookmark successful!");
+                }
+            } else {
+                confirm(`Something went wrong! Please try again.`)
+            }
+        }
+    });
+    return;
+}
+function searchBookmark(sourceType) {
+    var query = document.getElementsByName('bookmark-search-textbox')[0].value;
+
+    var href = new URL(window.location.href);
+    href.searchParams.set('bookmarkQuery', query);
+
+    window.location.href = href;
+}
+
 function saveSearch(userId) {
-    var saveQuery = document.getElementsByName('save-search-textbox')[0].value;
+    var saveQuery = window.location.search;
+    var name = prompt("Please name the save search!");
 
     if (saveQuery === '') {
         jQuery('#save-search-textbox-error').html('Keyword cannot be empty!');
@@ -812,7 +886,7 @@ function saveSearch(userId) {
         jQuery.ajax({
             type: 'POST',
             url: `https://${window.location.hostname}/wp-json/custom/v1/save_search`,
-            data: { userid: userId, query: saveQuery, name: saveQuery },
+            data: { userid: userId, query: saveQuery, name: name },
 
             success: function (data) {
                 if (data == 'success') {

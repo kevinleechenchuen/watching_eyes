@@ -224,6 +224,7 @@ add_shortcode('year', 'year_shortcode');
 
 require_once('custom-widgets/my-widgets.php');
 require_once('custom-widgets/utils/save-search.php');
+require_once('custom-widgets/utils/bookmark-item.php');
 require_once('custom-widgets/utils/send-email.php');
 
 function enqueue_custom_script() {
@@ -232,4 +233,51 @@ function enqueue_custom_script() {
     wp_enqueue_script( 'custom_script' );
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_custom_script', 99 );
+
+function signup_hook($userId, $userData) {
+
+	$metaData = get_user_meta($userId);
+
+	error_log( json_encode($userId) );
+	error_log( json_encode($userData) );
+	error_log( json_encode($metaData) );
+	error_log( $_POST['address-1-country'] );
+
+	$country = isset($_POST['address-1-country']) ? $_POST['address-1-country'] : '';
+	
+	$result = wp_remote_post("http://128.199.148.89:8000/api/v1/users/register/$userId", array(
+		'method' => 'POST',
+		'body' => array(
+		  'first_name' => $userData['first_name'],
+		  'last_name' => $userData['last_name'],
+		  'username' => $userData['user_login'],
+		  'email' => $userData['user_email'],
+		  'password' => $userData['user_pass'],
+		  'phone_number' => $userData['user_url'], //user_url used as phone number due to default meta datas
+		  'country' => $country,
+		)
+	  ));
+	error_log( json_encode($result) );
+}
+add_action('user_register','signup_hook', 50, 2);
+
+function update_profile_hook($userId, $userData_OLD, $userData_NEW) {
+	error_log( $userId );
+	error_log( json_encode($userData_OLD) );
+	error_log( json_encode($userData_NEW) );
+}
+add_action('profile_update','update_profile_hook', 50, 3);
+
+add_action('wp_logout','auto_redirect_after_logout');
+
+function auto_redirect_after_logout(){
+  wp_safe_redirect( home_url() );
+  exit;
+}
+
+// function custom_hooks() {
+// 	add_action( 'user_register', array($this, 'testtttttttt'), 10, 1 );
+// 	// add_action( 'profile_update', array($this, 'eddpremium_register_fields_save'), 10, 1 );
+// }
+// add_action( 'wp_custom_hooks', 'custom_hooks', 10 );
 

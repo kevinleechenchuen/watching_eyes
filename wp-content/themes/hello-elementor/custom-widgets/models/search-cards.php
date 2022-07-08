@@ -2,6 +2,7 @@
     include(get_template_directory() . '/custom-widgets/utils/currencyChecker.php');
     function renderSearchResultsWithFilter($data, $filter, $page, $maxPage, $minPrice, $maxPrice, $sourceType)
     {
+        $current_user = wp_get_current_user();
         if(count($data) == 0)
         {
             echo "<div class='search-results-no-result'>No results found!</div>";
@@ -63,19 +64,30 @@
         //     $models = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}watching_models ORDER BY Name ASC", OBJECT );
         // }
 
-        foreach ($models as $model) {
-            $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model->Name'><label class=\"container\">
-                <p>$model->Name</p>
-                <input type=\"checkbox\" id='$model->Name' name=\"modelCheckbox\" value='$model->Name' onclick='filterCheckboxOnClick(\"model\", \"$model->Name\")'>
-                <span class=\"checkmark\"></span>
-            </label></div>";
-        }
+        // foreach ($models as $model) {
+        //     $modelHTML = "$modelHTML<div class=\"modelCheckbox\" value='$model->Name'><label class=\"container\">
+        //         <p>$model->Name</p>
+        //         <input type=\"checkbox\" id='$model->Name' name=\"modelCheckbox\" value='$model->Name' onclick='filterCheckboxOnClick(\"model\", \"$model->Name\")'>
+        //         <span class=\"checkmark\"></span>
+        //     </label></div>";
+        // }
         foreach ($filter->sources as $source) {
             $sourceHTML = "$sourceHTML<div class=\"sourceCheckbox\" value='$source'><label class=\"container\">
                 <p>$source</p>
                 <input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source' onclick='filterCheckboxOnClick(\"source\", \"$source\")'>
                 <span class=\"checkmark\"></span>
             </label></div>";
+        }
+
+
+        if ($sourceType == 'Auction') {
+            $sortOptions = "<option value='price_asc'>Price lowest to highest</option>
+            <option value='price_desc'>Price highest to lowest</option>";
+        } else {
+            $sortOptions = "<option value='created_at' selected='selected'>Latest entry</option>
+            <option value='updated_at'>Latest updated</option>
+            <option value='price_asc'>Price lowest to highest</option>
+            <option value='price_desc'>Price highest to lowest</option>";
         }
 
         echo "
@@ -85,10 +97,7 @@
         </div>      
         <div class='filter-collapsible sort'>
             <select name='filter-sortby' id='filter-sortby'>
-                <option value='created_at' selected='selected'>Latest entry</option>
-                <option value='updated_at'>Latest updated</option>
-                <option value='price_asc'>Price lowest to highest</option>
-                <option value='price_desc'>Price highest to lowest</option>
+                $sortOptions
             </select>
         </div>
         <div class='filter-divider'></div>";
@@ -212,12 +221,20 @@
         echo "</div>";
         echo "</div>";
         echo "<div class='search-results'>";
-        foreach ($data as $item) {
 
+        if($current_user->data->ID == ''){
+            $userId = 0;
+        } else {
+            $userId = $current_user->data->ID;
+        }
+        global $wpdb;
+        $bookmarkedWatches = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}bookmarked_watches WHERE UserID = $userId;", OBJECT );
+        // echo json_encode($bookmarkedWatches);
+        foreach ($data as $item) {
             if(strcasecmp($item->source_type, 'Auction') == 0){
-                renderAuctionWatchesCard($item);
+                renderAuctionWatchesCard($item, $userId, $bookmarkedWatches);
             } else {
-                renderCard($item);
+                renderCard($item, $userId, $bookmarkedWatches);
             }
         }   
         echo "</div>";
@@ -436,9 +453,6 @@
                 <div class='filter-section-container'>
                     $statusHTML
                 </div>
-                <div>
-                    <button class='button-main-2' onclick=\"applyFilter()\" style='width:100%;'>APPLY FILTER</button>
-                </div>
             </div>
             <div class='filter-divider'></div>";
 
@@ -496,8 +510,17 @@
         echo "</div>";
         echo "</div>";
         echo "<div class='search-results'>";
+        $current_user = wp_get_current_user();
+        if($current_user->data->ID == ''){
+            $userId = 0;
+        } else {
+            $userId = $current_user->data->ID;
+        }
+        global $wpdb;
+        $bookmarkedWatches = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}bookmarked_watches WHERE UserID = $userId;", OBJECT );
+        
         foreach ($data as $item) {
-            renderAuctionWatchesCard($item);
+            renderAuctionWatchesCard($item, $userId, $bookmarkedWatches);
         }   
         echo "</div>";
         echo "</div>";
@@ -538,26 +561,95 @@
     }
 
     function renderHorizontalListing($data, $class){
+        $current_user = wp_get_current_user();
+        if($current_user->data->ID == ''){
+            $userId = 0;
+        } else {
+            $userId = $current_user->data->ID;
+        }
+        global $wpdb;
+        $bookmarkedWatches = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}bookmarked_watches WHERE UserID = $userId;", OBJECT );
+
         echo "<div class='home-listing-container $class'>";
         foreach ($data as $item) {
-            renderCard($item);
+            renderCard($item, $current_user->data->ID, $bookmarkedWatches);
         }
         echo "</div>";
 
     }
 
+    function renderBookmarkedWatches($data, $userId, $page, $maxPage){
+        global $wpdb;
+        $bookmarkedWatches = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}bookmarked_watches WHERE UserID = $userId;", OBJECT );
+
+        echo "<div class='bookmark-results'>";
+        foreach ($data as $item) {
+            if(strcasecmp($item->source_type, 'Auction') == 0){
+                renderAuctionWatchesCard($item, $userId, $bookmarkedWatches);
+            } else {
+                renderCard($item, $userId, $bookmarkedWatches);
+            }
+        }   
+        echo "</div>";
+
+
+        if(count($data) > 0){
+            echo "<div class='search-pagination'>Page: ";
+            $domain = $_SERVER['HTTP_HOST'];
+            $paginateUrl = "https://" . $domain . $_SERVER['REQUEST_URI'];
+            $paginateUrl = str_replace("&pg=$page","",$paginateUrl);
+    
+            if($page <= 3)
+            {
+                for ($i = 1; $i <= $maxPage && $i <= 7; $i++) {
+                    if($i == $page)
+                    {
+                        echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
+                    } else {
+                        echo "<a href='$paginateUrl&pg=$i' class='pagination-number'>$i</a>";
+                    }
+                } 
+            } else {
+                for ($i = $page-3; $i <= $page; $i++) {
+                    if($i == $page)
+                    {
+                        echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
+                    } else {
+                        echo "<a href='$paginateUrl&pg=$i' class='pagination-number'>$i</a>";
+                    }
+                } 
+    
+                for ($i = $page+1; $i <= $page+3 && $i < $maxPage; $i++) {
+                    if($i == $page)
+                    {
+                        echo "<a href='$paginateUrl&pg=$i' class='pagination-number current-page'>$i</a>";
+                    } else {
+                        echo "<a href='$paginateUrl&pg=$i' class='pagination-number'>$i</a>";
+                    }
+                } 
+            }
+            echo "</div>";
+        }
+    }
+
+    
+
     function renderUpcomingAuction($data){
         echo "<div class='home-listing-container'>";
         if($data != null) {
             foreach ($data as $item) {
-                renderAuctionCard($item);
+                $endDate = new DateTime($item->auction_end_date);
+                $endDate->modify('+1 day');
+                if ($endDate >= new DateTime()) {
+                    renderAuctionCard($item);
+                }
             }
         }
         echo "</div>";
 
     }
 
-    function renderCard($item){
+    function renderCard($item, $userId, $bookmarkedWatches){
         $currency = convertCurrency($item->currency);
 
         $sourceText = '';
@@ -585,10 +677,31 @@
                 $imageUrl = "http://128.199.148.89/full/retail/$item->forum_name/$item->img_local_path";
             }
 
+            $post_title = strip_tags($item->post_title);
+
+            $hasBookmarkedClass = "";
+            if(existsInBookmarkArray($item->id, $bookmarkedWatches)) {
+                $hasBookmarkedClass = "active";
+            }
+
+            // <svg version='1.1' class='bookmark-icon $item->id $hasBookmarkedClass' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'
+            //                                 viewBox='0 0 512 512' xml:space='preserve'>
+            //                             <g>
+            //                                 <g>
+            //                                     <polygon points='68.267,0 68.267,512 85.333,512 256,341.333 426.667,512 443.733,512 443.733,0'/>
+            //                                 </g>
+            //                             </g>
+            //                         </svg>
             echo "
                 <div class='item-card'>
+                        <div class='item-card-bookmark $item->id $hasBookmarkedClass'>
+                            <a class='item-card-bookmark-action' onclick='bookmarkWatch($userId, $item->id, \"$item->source_type\");'>
+                                <div style='width: 40px; height:40px;cursor: pointer;'>
+                                </div>
+                            </a>
+                        </div>
                         <a href='$item->post_link' target='_blank'>
-                            <div>
+                            <div class='item-card-top'>
                                 $itemStatusHTML
                                 <div class='item-card-image-container'>
                                     <img class='item-card-img-top' src='$imageUrl' alt=''>
@@ -599,7 +712,7 @@
                             <div class='item-card-desc-title'>
                                 <a href='$item->post_link' target='_blank'>
                                     <h3>
-                                        $item->post_title
+                                        $post_title
                                     </h3>
                                 </a>
                             </div>
@@ -669,14 +782,18 @@
         $cleanAuctionName = encodeURIComponent($item->auction_name);
         $cleanAuctionTitle = encodeURIComponent($item->auction_title);
 
-        $post_link = '';
-        if($post_link != null) {
-            $post_link = $item->post_link;
-        }
-        $post_title ='';
-        if($post_title != null) {
-            $post_title = $item->post_title;
-        }
+        // $post_link = '';
+        // if($post_link != null) {
+        //     $post_link = $item->post_link;
+        // }
+        // $post_title ='';
+        // if($post_title != null) {
+        //     $post_title = $item->post_title;
+        // }
+
+        $post_link = isset($item->post_link) ? strip_tags($item->post_link) : '';
+        $post_title = isset($item->post_title) ? strip_tags($item->post_title) : '';
+
         // $liveAuctionClass = '';
         // if($item->auction_type == 'Live Auction')
         // {
@@ -715,7 +832,7 @@
             </div>";
     }
 
-    function renderAuctionWatchesCard($item){
+    function renderAuctionWatchesCard($item, $userId, $bookmarkedWatches){
         $currency = convertCurrency($item->currency);
         $startDate    = new DateTime($item->auction_start_date);
         $endDate    = new DateTime($item->auction_end_date);
@@ -752,8 +869,24 @@
                              $currency$formattedCurrentBid
                         </h5>";
         }
+
+        $post_title = strip_tags($item->post_title);
+        $hasBookmarkedClass = "";
+        if(existsInBookmarkArray($item->id, $bookmarkedWatches)) {
+            $hasBookmarkedClass = "active";
+        }
+
+        if($userId == ''){
+            $userId = 0;
+        }
         echo "
                 <div class='item-card'> 
+                    <div class='item-card-bookmark $item->id $hasBookmarkedClass'>
+                        <a class='item-card-bookmark-action' onclick='bookmarkWatch($userId, $item->id, \"$item->source_type\");'>
+                            <div style='width: 40px; height:40px;cursor: pointer;'>
+                            </div>
+                        </a>
+                    </div>
                     <a href='$item->watch_link' target='_blank'>
                         <div>
                             <div class='item-card-status $auctionStatus'>$item->status</div>
@@ -765,7 +898,7 @@
                     <div class='item-card-desc'>
                         <div class='item-card-desc-title'>
                             <h3>
-                                $item->reference_id: $item->model
+                                $item->reference_id: $item->lot_title
                             </h3>
                         </div>
                         <div class='item-card-desc-brand'>
@@ -774,9 +907,14 @@
                             </h6>
                         </div>
                     </div>
+                    <div>
+                        <h7 class='item-card-model'>
+                            $item->model
+                        </h7>
+                    </div>
                     <h7 class='item-card-source'>
-                        $item->auction_name ($item->currency)
-                        <br>$currency$formattedMinEst - $currency$formattedMaxEst <br>
+                        $item->auction_name ($item->currency) <br>
+                        $currency$formattedMinEst - $currency$formattedMaxEst <br>
                         Start date: $stringStartDate
                     </h7>
                     <div class='auction-watches'>
@@ -784,7 +922,7 @@
                     </div>
                     <a href='$item->post_link' target='_blank'>
                                 <h5>
-                                    $item->post_title
+                                    $post_title
                                 </h5>
                     </a>
                     <a href='$item->watch_link' target='_blank'>
@@ -795,4 +933,12 @@
 
     function encodeURIComponent($str) {
         return str_replace('&', '%26', $str);
+    }
+
+    function existsInBookmarkArray($watchId, $array) {
+        foreach ($array as $compare) {
+            if ($compare->watchId == $watchId) {
+                return true;
+            }
+        }
     }

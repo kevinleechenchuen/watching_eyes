@@ -23,6 +23,8 @@ class My_Elementor_Widgets {
 		require_once('saved-search-widget.php');
 		require_once('auction-widget.php');
 		require_once('auction-watches-widget.php');
+		require_once('bookmarked-watches-widget.php');
+		require_once('bookmarked-lots-widget.php');
 		add_action( 'elementor/widgets/widgets_registered', [ $this, 'register_widgets' ] );
 	}
 
@@ -37,6 +39,8 @@ class My_Elementor_Widgets {
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Saved_Search_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Auction_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Auction_Watches_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Bookmarked_Watches_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Elementor\Bookmarked_Lots_Widget() );
 	}
 
 }
