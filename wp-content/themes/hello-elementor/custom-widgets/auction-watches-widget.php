@@ -94,7 +94,13 @@ class Auction_Watches_Widget extends Widget_Base {
 
         echo "</div>";
 
-        $url = "http://128.199.148.89:8000/api/v1/auction/watches?$auctionNameParam$auctionTypeQueryParam$auctionTitleQueryParam$auctionStatusQueryParam$auctionBrandQueryParam$pageQueryParam$startDateQueryParam$endDateQueryParam$currencyQueryParam";
+        if (wp_get_environment_type() == 'production') {
+            $apiDomain = "http://128.199.148.89:8000";
+        } else {
+            $apiDomain = "http://159.89.196.67:8000";
+        }
+
+        $url = "$apiDomain/api/v1/auction/watches?$auctionNameParam$auctionTypeQueryParam$auctionTitleQueryParam$auctionStatusQueryParam$auctionBrandQueryParam$pageQueryParam$startDateQueryParam$endDateQueryParam$currencyQueryParam";
         // echo $url;
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
@@ -109,7 +115,7 @@ class Auction_Watches_Widget extends Widget_Base {
         {
             $startDate = date("Y-m-d");
 		    $endDate = date("Y-m-d", strtotime('+ 6 month'));
-            $url = "http://128.199.148.89:8000/api/v1/auction/?auction_start_date__gte=$startDate&auction_end_date__gte=$endDate";
+            $url = "$apiDomain/api/v1/auction/?auction_start_date__gte=$startDate&auction_end_date__gte=$endDate";
             $response = wp_remote_get($url);
             if ( is_array( $response ) && ! is_wp_error( $response ) ) {
                 $body2 = json_decode($response['body']);

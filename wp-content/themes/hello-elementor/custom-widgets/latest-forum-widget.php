@@ -31,7 +31,13 @@ class Latest_Forum_Widget extends Widget_Base {
 					</a>
 				</div>
 			</div>";
-        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?source_type__in=Forum";
+
+		if (wp_get_environment_type() == 'production') {
+			$apiDomain = "http://128.199.148.89:8000";
+		} else {
+			$apiDomain = "http://159.89.196.67:8000";
+		}
+        $url = "$apiDomain/api/v1/forum_retail/watches?source_type__in=Forum";
         
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {

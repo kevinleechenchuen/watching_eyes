@@ -45,8 +45,14 @@
         global $wpdb;
         $table_name = $wpdb->prefix.'bookmarked_watches';
 
+        if (wp_get_environment_type() == 'production') {
+			$apiDomain = "http://128.199.148.89:8000";
+		} else {
+			$apiDomain = "http://159.89.196.67:8000";
+		}
+
         if($isRemove == 'true') {
-            $result = wp_remote_post("http://128.199.148.89:8000/api/v1/users/$userId/bookmark/delete?watchid=$watchId", array(
+            $result = wp_remote_post("$apiDomain/api/v1/users/$userId/bookmark/delete?watchid=$watchId", array(
                 'method' => 'DELETE'
               ));
               error_log( json_encode($result) );
@@ -61,7 +67,7 @@
                 );
             }
         } else {
-            $result = wp_remote_post("http://128.199.148.89:8000/api/v1/users/$userId/bookmark/add", array(
+            $result = wp_remote_post("$apiDomain/api/v1/users/$userId/bookmark/add", array(
                 'method' => 'POST',
                 'body' => array(
                   'source_type' => $sourceType,

@@ -33,7 +33,14 @@ class Bookmarked_Lots_Widget extends Widget_Base {
 		if(isset($current_user->data->ID))
 		{
 			$userId = $current_user->data->ID;
-			$url = "http://128.199.148.89:8000/api/v1/users/$userId/bookmark?$pageQueryParam$searchQueryParam&source_type=auction";
+
+			if (wp_get_environment_type() == 'production') {
+				$apiDomain = "http://128.199.148.89:8000";
+			} else {
+				$apiDomain = "http://159.89.196.67:8000";
+			}
+
+			$url = "$apiDomain/api/v1/users/$userId/bookmark?$pageQueryParam$searchQueryParam&source_type=auction";
 			// echo $url;
 			$response = wp_remote_get($url);
 			if ( is_array( $response ) && ! is_wp_error( $response ) ) {

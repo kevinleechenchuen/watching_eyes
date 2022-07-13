@@ -244,8 +244,12 @@ function signup_hook($userId, $userData) {
 	error_log( $_POST['address-1-country'] );
 
 	$country = isset($_POST['address-1-country']) ? $_POST['address-1-country'] : '';
-	
-	$result = wp_remote_post("http://128.199.148.89:8000/api/v1/users/register/$userId", array(
+	if (wp_get_environment_type() == 'production') {
+		$apiDomain = "http://128.199.148.89:8000";
+	} else {
+		$apiDomain = "http://159.89.196.67:8000";
+	}
+	$result = wp_remote_post("$apiDomain/api/v1/users/register/$userId", array(
 		'method' => 'POST',
 		'body' => array(
 		  'first_name' => $userData['first_name'],
@@ -265,6 +269,18 @@ function update_profile_hook($userId, $userData_OLD, $userData_NEW) {
 	error_log( $userId );
 	error_log( json_encode($userData_OLD) );
 	error_log( json_encode($userData_NEW) );
+
+	$result = wp_remote_post("$apiDomain/api/v1/users/update/$userId", array(
+		'method' => 'PUT',
+		'body' => array(
+		  'first_name' => $userData_NEW['first_name'],
+		  'last_name' => $userData_NEW['last_name'],
+		  'username' => $userData_NEW['user_login'],
+		  'email' => $userData_NEW['user_email'],
+		  'password' => $userData_NEW['user_pass'],
+		)
+	  ));
+	error_log( json_encode($result) );
 }
 add_action('profile_update','update_profile_hook', 50, 3);
 

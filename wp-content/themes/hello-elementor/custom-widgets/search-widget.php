@@ -27,6 +27,7 @@ class Search_Widget extends Widget_Base {
         $q_query = isset($_GET['q']) ? $_GET['q'] : '';
         $q_brand = isset($_GET['brand']) ? explode(",", $_GET['brand']) : array();
         $q_model = isset($_GET['model']) ? explode(",", $_GET['model']) : array();
+        $q_currency = isset($_GET['currency']) ? explode(",", $_GET['currency']) : array(); 
         $q_sourceName = isset($_GET['sourceName']) ? explode(",", $_GET['sourceName']) : array();
         $q_sourceType = isset($_GET['sourceType']) ? $_GET['sourceType'] : '';
         $q_priceFrom = isset($_GET['priceFrom']) ? $_GET['priceFrom'] : '';
@@ -80,6 +81,10 @@ class Search_Widget extends Widget_Base {
         $statusQueryParam = "";
         foreach ($q_status as $status) {
             $statusQueryParam = ($status == '') ? "$statusQueryParam" : "$statusQueryParam&status__in=$status";
+        }
+        $currencyQueryParam = "";
+        foreach ($q_currency as $currency) {
+            $currencyQueryParam = ($currency == '') ? "$currencyQueryParam" : "$currencyQueryParam&currency__in=$currency";
         }
 
         $saveSearchHTML = "";
@@ -160,8 +165,13 @@ class Search_Widget extends Widget_Base {
         
         echo "</div>"; 
 
-        $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$sortQueryParam$accQueryParam$lastUpdatedQueryParam$pageQueryParam$statusQueryParam";
-        // $url = "http://128.199.148.89:8000/api/v1/forum_retail/watches?brand__in=rolex";
+        if (wp_get_environment_type() == 'production') {
+            $apiDomain = "http://128.199.148.89:8000";
+        } else {
+            $apiDomain = "http://159.89.196.67:8000";
+        }
+
+        $url = "$apiDomain/api/v1/forum_retail/watches?$queryParam$brandQueryParam$modelQueryParam$sourceNameQueryParam$sourceTypeQueryParam$priceFromQueryParam$priceToQueryParam$sortQueryParam$accQueryParam$lastUpdatedQueryParam$pageQueryParam$statusQueryParam$currencyQueryParam";
         // echo $url;
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {

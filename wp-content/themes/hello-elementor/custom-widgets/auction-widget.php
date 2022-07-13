@@ -49,7 +49,12 @@ class Auction_Widget extends Widget_Base {
                 <h1>Auction Calendar</h1>
             </div>";
 
-        $url = "http://128.199.148.89:8000/api/v1/auction?$auctionNameParam$auctionTypeQueryParam$auctionStartQueryParam$auctionEndQueryParam";
+        if (wp_get_environment_type() == 'production') {
+            $apiDomain = "http://128.199.148.89:8000";
+        } else {
+            $apiDomain = "http://159.89.196.67:8000";
+        }
+        $url = "$apiDomain/api/v1/auction?$auctionNameParam$auctionTypeQueryParam$auctionStartQueryParam$auctionEndQueryParam";
         $response = wp_remote_get($url);
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);

@@ -33,8 +33,12 @@ class Upcoming_Auction_Widget extends Widget_Base {
 					</a>
 				</div>
 			</div>";
-		
-        $url = "http://128.199.148.89:8000/api/v1/auction/?auction_start_date__gte=$startDate&auction_end_date__gte=$endDate";
+		if (wp_get_environment_type() == 'production') {
+			$apiDomain = "http://128.199.148.89:8000";
+		} else {
+			$apiDomain = "http://159.89.196.67:8000";
+		}
+        $url = "$apiDomain/api/v1/auction/?auction_start_date__gte=$startDate&auction_end_date__gte=$endDate";
         $response = wp_remote_get($url);
 		// echo $url;
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
