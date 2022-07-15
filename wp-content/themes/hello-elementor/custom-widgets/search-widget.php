@@ -159,6 +159,18 @@ class Search_Widget extends Widget_Base {
                         </div>";
             }
         }
+        if(isset($_GET['currency'])) {
+            $asdasd = explode(",", $_GET['currency']);
+            foreach ($asdasd as $item) {
+                echo "<div class='search-result-filters-card'>
+                            <div class='search-result-filters-card-name'>
+                                $item
+                            </div>
+                            <a class='remove-search-result-filters-card' onclick='removeSearchFilter(\"currency\", \"$item\");'>x
+                            </a>
+                        </div>";
+            }
+        }
         // if($_GET['sourceType'] != '') echo "<div><h7>Source type: ".$_GET['sourceType']."</h7></div>";
         // if($_GET['priceFrom'] != '') echo "<div><h7>Price from: ".$_GET['priceFrom']."</h7></div>";
         // if($_GET['priceTo'] != '') echo "<div><h7>Price to: ".$_GET['priceTo']."</h7></div>";

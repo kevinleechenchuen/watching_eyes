@@ -91,6 +91,19 @@ jQuery(document).ready(function () {
         });
     }
 
+    var currencyInParams = params.get('currency');
+    if (currencyInParams) {
+        var currencyInParamsList = currencyInParams.split(',');
+        var currencyCheckboxes = document.querySelectorAll('input[name=currencyCheckbox]');
+        currencyCheckboxes.forEach((checkbox) => {
+            if (currencyInParamsList.includes(checkbox.value)) {
+                checkbox.checked = true;
+            } else {
+                checkbox.checked = false;
+            }
+        });
+    }
+
     var bookmarkQuery = params.get('bookmarkQuery');
     if (bookmarkQuery) {
         var bookmarkQueryTextBox = document.getElementById('bookmark-search-textbox');
@@ -424,6 +437,7 @@ function filterCheckboxOnClick(type, value) {
         var modelsParams = (params.get('model') !== null) ? '&model=' + encodeURIComponent(params.get('model')) : '';
         var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + encodeURIComponent(params.get('sourceName')) : '';
         var statusParams = (params.get('status') !== null) ? '&status=' + encodeURIComponent(params.get('status')) : '';
+        var currencyParams = (params.get('currency') !== null) ? '&currency=' + encodeURIComponent(params.get('currency')) : '';
 
         // console.log('brandsParams',brandsParams);
         // console.log('modelsParams',modelsParams);
@@ -433,7 +447,7 @@ function filterCheckboxOnClick(type, value) {
         // console.log('maxPriceParams',maxPriceParams);
         // console.log('sourceTypeParams',sourceTypeParams);
 
-        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams + statusParams;
+        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams + statusParams + currencyParams;
     } else if (type === 'model') {
         var modelCheckedBox = document.getElementById(value);
         let modelsParams;
@@ -462,6 +476,7 @@ function filterCheckboxOnClick(type, value) {
         var brandsParams = (params.get('brand') !== null) ? '&brand=' + encodeURIComponent(params.get('brand')) : '';
         var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + encodeURIComponent(params.get('sourceName')) : '';
         var statusParams = (params.get('status') !== null) ? '&status=' + encodeURIComponent(params.get('status')) : '';
+        var currencyParams = (params.get('currency') !== null) ? '&currency=' + encodeURIComponent(params.get('currency')) : '';
 
         // console.log('brandsParams',brandsParams);
         // console.log('modelsParams',modelsParams);
@@ -471,7 +486,7 @@ function filterCheckboxOnClick(type, value) {
         // console.log('maxPriceParams',maxPriceParams);
         // console.log('sourceTypeParams',sourceTypeParams);
 
-        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams + statusParams;
+        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams + statusParams + currencyParams;
     } else if (type === 'source') {
         var sourceCheckedBox = document.getElementById(value);
         let sourceParams;
@@ -500,6 +515,7 @@ function filterCheckboxOnClick(type, value) {
         var brandsParams = (params.get('brand') !== null) ? '&brand=' + encodeURIComponent(params.get('brand')) : '';
         var modelsParams = (params.get('model') !== null) ? '&model=' + encodeURIComponent(params.get('model')) : '';
         var statusParams = (params.get('status') !== null) ? '&status=' + encodeURIComponent(params.get('status')) : '';
+        var currencyParams = (params.get('currency') !== null) ? '&currency=' + encodeURIComponent(params.get('currency')) : '';
 
         // console.log('brandsParams',brandsParams);
         // console.log('modelsParams',modelsParams);
@@ -509,7 +525,48 @@ function filterCheckboxOnClick(type, value) {
         // console.log('maxPriceParams',maxPriceParams);
         // console.log('sourceTypeParams',sourceTypeParams);
 
-        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams + statusParams;
+        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams + statusParams + currencyParams;
+    } else if (type === 'currency') {
+        var currencyCheckedBox = document.getElementById('currency'+value);
+        let currencyParams;
+        if (currencyCheckedBox.checked) {
+            const currency = params.get('currency');
+            if (currency == null || currency === '') {
+                currencyParams = '&currency=' + encodeURIComponent(value);
+            } else {
+                currencyParams = '&currency=' + encodeURIComponent(currency) + `,${value}`;
+            }
+        } else {
+            let currency;
+            if (params.get('currency').indexOf(',') > 0) {
+                currency = params.get('currency').replace(`,${value}`, '');
+            } else {
+                currency = params.get('currency').replace(`${value}`, '');
+            }
+            currencyParams = '&currency=' + encodeURIComponent(currency);
+        }
+
+        let sourceTypeParams = '';
+        if (sourceType) {
+            sourceTypeParams = '&sourceType=' + encodeURIComponent(sourceType);
+        }
+
+        var minPriceParams = (params.get('priceFrom') !== null) ? '&priceFrom=' + params.get('priceFrom') : '';
+        var maxPriceParams = (params.get('priceTo') !== null) ? '&priceTo=' + params.get('priceTo') : '';
+        var brandsParams = (params.get('brand') !== null) ? '&brand=' + encodeURIComponent(params.get('brand')) : '';
+        var modelsParams = (params.get('model') !== null) ? '&model=' + encodeURIComponent(params.get('model')) : '';
+        var statusParams = (params.get('status') !== null) ? '&status=' + encodeURIComponent(params.get('status')) : '';
+        var sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + encodeURIComponent(params.get('sourceName')) : '';
+
+        // console.log('brandsParams',brandsParams);
+        // console.log('modelsParams',modelsParams);
+        // console.log('sourceParams',sourceParams);
+        // console.log('queryParams',queryParams);
+        // console.log('minPriceParams',minPriceParams);
+        // console.log('maxPriceParams',maxPriceParams);
+        // console.log('sourceTypeParams',sourceTypeParams);
+
+        window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams + statusParams + currencyParams;
     }
 }
 
@@ -518,6 +575,8 @@ function removeSearchFilter(type, value) {
     let brandsParams = (params.get('brand') !== null) ? '&brand=' + params.get('brand') : '';
     let modelsParams = (params.get('model') !== null) ? '&model=' + params.get('model') : '';
     let sourceParams = (params.get('sourceName') !== null) ? '&sourceName=' + params.get('sourceName') : '';
+    let statusParams = (params.get('status') !== null) ? '&status=' + params.get('status') : '';
+    let currencyParams = (params.get('currency') !== null) ? '&currency=' + params.get('currency') : '';
 
     if (type === 'brand') {
         let brands;
@@ -528,7 +587,9 @@ function removeSearchFilter(type, value) {
             brands = params.get('brand').replace(`${value}`, '');
         }
         brandsParams = '&brand=' + encodeURIComponent(brands);
-
+        if(brandsParams == '&brand=') {
+            brandsParams = '';
+        }
     } else if (type === 'model') {
         let models;
         if (params.get('model').indexOf(',') >= 0) {
@@ -538,6 +599,9 @@ function removeSearchFilter(type, value) {
             models = params.get('model').replace(`${value}`, '');
         }
         modelsParams = '&model=' + encodeURIComponent(models);
+        if(modelsParams == '&model=') {
+            modelsParams = '';
+        }
     } else if (type === 'source') {
         let sources;
         if (params.get('sourceName').indexOf(',') >= 0) {
@@ -547,6 +611,9 @@ function removeSearchFilter(type, value) {
             sources = params.get('sourceName').replace(`${value}`, '');
         }
         sourceParams = '&sourceName=' + encodeURIComponent(sources);
+        if(sourceParams == '&sourceName=') {
+            sourceParams = '';
+        }
     } else if (type === 'status') {
         let status;
         if (params.get('status').indexOf(',') >= 0) {
@@ -555,7 +622,23 @@ function removeSearchFilter(type, value) {
         } else {
             status = params.get('status').replace(`${value}`, '');
         }
-        sourceParams = '&status=' + encodeURIComponent(status);
+        statusParams = '&status=' + encodeURIComponent(status);
+        if(statusParams == '&status=') {
+            statusParams = '';
+        }
+    } 
+    else if (type === 'currency') {
+        let currency;
+        if (params.get('currency').indexOf(',') >= 0) {
+            currency = params.get('currency').replace(`${value},`, '');
+            currency = currency.replace(`,${value}`, '');
+        } else {
+            currency = params.get('currency').replace(`${value}`, '');
+        }
+        currencyParams = '&currency=' + encodeURIComponent(currency);
+        if(currencyParams == '&currency=') {
+            currencyParams = '';
+        }
     } 
     var q = params.get('q');
     var sourceType = params.get('sourceType');
@@ -582,7 +665,7 @@ function removeSearchFilter(type, value) {
     // console.log('minPriceParams',minPriceParams);
     // console.log('maxPriceParams',maxPriceParams);
     // console.log('sourceTypeParams',sourceTypeParams);
-    window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams;
+    window.location.href = '/search?' + brandsParams + modelsParams + sourceParams + queryParams + minPriceParams + maxPriceParams + sourceTypeParams + statusParams + currencyParams;
 
 }
 

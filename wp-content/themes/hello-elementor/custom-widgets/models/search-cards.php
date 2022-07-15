@@ -6,6 +6,9 @@
         if(count($data) == 0)
         {
             echo "<div class='search-results-no-result'>No results found!</div>";
+            echo "<div style='display:flex; justify-content:center;'>
+                <button class='button-main-2' onclick=\"history.back()\">Back</button>
+            </div>";
             return;
         }
         echo "<div class='search-filter-mobile'>
@@ -191,6 +194,52 @@
                 <div class='filter-divider'></div>";
         }
 
+        echo " <div class='filter-title'>
+                <h4>CURRENCY</h4>
+                <i class='clickable material-icons filter-expandable filter-currency-expandable'>&#xE5CE;</i>
+            </div>
+            <div class='filter-collapsible currency'>
+                <div class='filter-section-container'>
+                    <div class=\"currencyCheckbox\" value='USD'>
+                        <label class=\"container\">
+                            <p>USD</p>
+                            <input type=\"checkbox\" id='currencyUSD' name=\"currencyCheckbox\" value='USD' onclick='filterCheckboxOnClick(\"currency\", \"USD\")'>
+                            <span class=\"checkmark\"></span>
+                        </label>
+                    </div>
+                    <div class=\"currencyCheckbox\" value='HKD'>
+                        <label class=\"container\">
+                            <p>HKD</p>
+                            <input type=\"checkbox\" id='currencyHKD' name=\"currencyCheckbox\" value='HKD' onclick='filterCheckboxOnClick(\"currency\", \"HKD\")'>
+                            <span class=\"checkmark\"></span>
+                        </label>
+                    </div>
+                    <div class=\"currencyCheckbox\" value='EUR'>
+                        <label class=\"container\">
+                            <p>EUR</p>
+                            <input type=\"checkbox\" id='currencyEUR' name=\"currencyCheckbox\" value='EUR' onclick='filterCheckboxOnClick(\"currency\", \"EUR\")'>
+                            <span class=\"checkmark\"></span>
+                        </label>
+                    </div>
+                    <div class=\"currencyCheckbox\" value='GBP'>
+                        <label class=\"container\">
+                            <p>GBP</p>
+                            <input type=\"checkbox\" id='currencyGBP' name=\"currencyCheckbox\" value='GBP' onclick='filterCheckboxOnClick(\"currency\", \"GBP\")'>
+                            <span class=\"checkmark\"></span>
+                        </label>
+                    </div>
+                    <div class=\"currencyCheckbox\" value='CHF'>
+                        <label class=\"container\">
+                            <p>CHF</p>
+                            <input type=\"checkbox\" id='currencyCHF' name=\"currencyCheckbox\" value='CHF' onclick='filterCheckboxOnClick(\"currency\", \"CHF\")'>
+                            <span class=\"checkmark\"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>  
+            ";
+        echo "<div class='filter-divider'></div>";
+
         echo "<div class='filter-title'>
             <h4>PRICES RANGE</h4>
             <i class='clickable material-icons filter-expandable filter-price-expandable'>&#xE5CE;</i>
@@ -281,6 +330,9 @@
         if(count($data) == 0)
         {
             echo "<div class='search-results-no-result'>No results found!</div>";
+            echo "<div style='display:flex; justify-content:center;'>
+                <button class='button-main-2' onclick=\"history.back()\">Back</button>
+            </div>";
             return;
         }
         echo "<div class='search-filter-mobile'>
@@ -378,6 +430,9 @@
         if(count($data) == 0)
         {
             echo "<div class='search-results-no-result'>No results found!</div>";
+            echo "<div style='display:flex; justify-content:center;'>
+                <button class='button-main-2' onclick=\"history.back()\">Back</button>
+            </div>";
             return;
         }
         echo "<div class='search-filter-mobile'>
