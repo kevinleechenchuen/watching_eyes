@@ -51,6 +51,9 @@ class Bookmarked_Watches_Widget extends Widget_Base {
                 <input type='text' class='bookmark-search-textbox' id='bookmark-search-textbox' name='bookmark-search-textbox' placeholder='Enter keyword...'>
                 <button class='header-search-button' onClick='searchBookmark(\"forum_retail\")'>SEARCH</button>
                 </div>
+				<div>
+					<a href='/profile-bookmarked-watches'>Watches</a> | <a href='/profile-bookmarked-lots'>Lots</a>
+                </div>
                 <div>
                     <label id='bookmark-search-textbox-error' class='error-msg'></label>
                 </div>
@@ -58,8 +61,8 @@ class Bookmarked_Watches_Widget extends Widget_Base {
 			renderBookmarkedWatches($body->bookmarkedWatches, $userId, $body->page, $body->pages);
 		} else {
 			echo "<div class='flex-container'>
-					<h4>Log in to view bookmarked watches</h4>
-				</div>";
+				<h4><a href='/log-in'>Log in</a> to view bookmarked watches</h4>
+			</div>";
 		}
 		
 	}

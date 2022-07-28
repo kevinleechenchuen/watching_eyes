@@ -28,7 +28,7 @@ class Upcoming_Auction_Widget extends Widget_Base {
 		echo "<div class='flex-container home-section-heading'>
 				<h2>Upcoming Auctions</h2>
 				<div class='flex-to-right'>
-					<a href='/auction-watches?sourceType=Auction&auctionStartDate=$startDate&auctionEndDate=$endDate&isAll=1&auctionStatus=Upcoming'>
+					<a href='/auction-watches?sourceType=Auction&isAll=1&auctionStatus=Open Bid,Upcoming'>
 						<button class='orange-button'>VIEW ALL</button>
 					</a>
 				</div>

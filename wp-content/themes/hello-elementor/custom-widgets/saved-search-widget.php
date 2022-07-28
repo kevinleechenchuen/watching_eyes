@@ -46,7 +46,9 @@ class Saved_Search_Widget extends Widget_Base {
                 }
                 echo "</div>";
             } else {
-                echo "not signed in";
+                echo "<div class='flex-container'>
+                    <h4><a href='/log-in'>Log in</a> to view your saved search</h4>
+                </div>";
             }
     }
 	

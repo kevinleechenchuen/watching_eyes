@@ -934,6 +934,8 @@
         if($userId == ''){
             $userId = 0;
         }
+
+        $buttonText = ($item->status == 'Closed Bid' || $item->status == 'Unsold') ? 'VIEW LOT' : 'PLACE BID';
         echo "
                 <div class='item-card'> 
                     <div class='item-card-bookmark $item->id $hasBookmarkedClass'>
@@ -981,7 +983,7 @@
                                 </h5>
                     </a>
                     <a href='$item->watch_link' target='_blank'>
-                        <button class='button-main-1'>PLACE BID</button>
+                        <button class='button-main-1'>$buttonText</button>
                     </a>
             </div>";
     }

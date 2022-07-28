@@ -1,10 +1,6 @@
 jQuery(document).ready(function () {
     var input = document.getElementById('header-search-textbox');
-    var isMobile = false
-    if(window.matchMedia("(max-width: 1024px)").matches){
-        jQuery('#header-search-textbox').removeAttr('id');
-        isMobile = true;
-    }
+
     input.addEventListener('keyup', function(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
