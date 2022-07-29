@@ -297,3 +297,21 @@ function auto_redirect_after_logout(){
 // }
 // add_action( 'wp_custom_hooks', 'custom_hooks', 10 );
 
+function remove_menu_items( $items, $args ) {
+
+    // If you need to remove several menu items, then it's good practice to set a variable for the check beforehand so that it's not running the same check function repeatedly.
+    $logged_in = is_user_logged_in();
+
+    foreach ( $items as $item_index => $item ) {
+        // Remove "Downloads" menu item when not logged in
+        if ( $item->title == 'Logout' ) {
+            if ( !$logged_in ) {
+                unset($items[$item_index]);
+            }
+        }
+    }
+    return $items;
+}
+
+add_filter( 'wp_nav_menu_objects', 'remove_menu_items', 1, 2 );
+
