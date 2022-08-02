@@ -308,38 +308,41 @@ jQuery(document).ready(function () {
         jQuery(".home-listing-container").animate({ scrollLeft: "+=" + 400 });
     });
 
-    jQuery('input[name=source-forum-search-checkbox]').on('change', function () {
-        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-auction-search-checkbox]');
-        sourceTypeCheckedBoxes.forEach((checkbox) => {
-            checkbox.checked = false;
-        });
-        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-dealer-search-checkbox]');
-        sourceTypeCheckedBoxes.forEach((checkbox) => {
-            checkbox.checked = false;
-        });
-    });
+    // jQuery('input[name=source-forum-search-checkbox]').on('change', function () {
+    //     var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-auction-search-checkbox]');
+    //     sourceTypeCheckedBoxes.forEach((checkbox) => {
+    //         checkbox.checked = false;
+    //     });
+    //     var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-dealer-search-checkbox]');
+    //     sourceTypeCheckedBoxes.forEach((checkbox) => {
+    //         checkbox.checked = false;
+    //     });
+    // });
 
-    jQuery('input[name=source-dealer-search-checkbox]').on('change', function () {
-        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-auction-search-checkbox]');
-        sourceTypeCheckedBoxes.forEach((checkbox) => {
-            checkbox.checked = false;
-        });
-        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-forum-search-checkbox]');
-        sourceTypeCheckedBoxes.forEach((checkbox) => {
-            checkbox.checked = false;
-        });
-    });
+    // jQuery('input[name=source-dealer-search-checkbox]').on('change', function () {
+    //     var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-auction-search-checkbox]');
+    //     sourceTypeCheckedBoxes.forEach((checkbox) => {
+    //         checkbox.checked = false;
+    //     });
+    //     var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-forum-search-checkbox]');
+    //     sourceTypeCheckedBoxes.forEach((checkbox) => {
+    //         checkbox.checked = false;
+    //     });
+    // });
 
-    jQuery('input[name=source-auction-search-checkbox]').on('change', function () {
-        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-forum-search-checkbox]');
-        sourceTypeCheckedBoxes.forEach((checkbox) => {
-            checkbox.checked = false;
-        });
-        var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-dealer-search-checkbox]');
-        sourceTypeCheckedBoxes.forEach((checkbox) => {
-            checkbox.checked = false;
-        });
-    });
+    // jQuery('input[name=source-auction-search-checkbox]').on('change', function () {
+    //     var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-forum-search-checkbox]');
+    //     sourceTypeCheckedBoxes.forEach((checkbox) => {
+    //         checkbox.checked = false;
+    //     });
+    //     var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-dealer-search-checkbox]');
+    //     sourceTypeCheckedBoxes.forEach((checkbox) => {
+    //         checkbox.checked = false;
+    //     });
+    // });
+
+
+
     // jQuery('input[name=source-all-search-checkbox]').on('change', function () {
     //     var sourceTypeCheckedBoxes = document.querySelectorAll('input[name=source-search-checkbox]');
     //     sourceTypeCheckedBoxes.forEach((checkbox) => {
@@ -880,7 +883,7 @@ function search(){
         sourceTypes.push(sourceTypeCheckedBoxes[i].value);
     }
 
-    var sourceParams = sourceTypes.length > 0 ? '&sourceType='+sourceTypeCheckedBoxes[0].value : '';
+    var sourceParams = sourceTypes.length > 0 ? '&sourceType='+sourceTypes.join(',') : '';
 
     window.location.href = '/search?q='+searchParam+sourceParams+'&pg=1';
 }

@@ -29,7 +29,7 @@ class Search_Widget extends Widget_Base {
         $q_model = isset($_GET['model']) ? explode(",", $_GET['model']) : array();
         $q_currency = isset($_GET['currency']) ? explode(",", $_GET['currency']) : array(); 
         $q_sourceName = isset($_GET['sourceName']) ? explode(",", $_GET['sourceName']) : array();
-        $q_sourceType = isset($_GET['sourceType']) ? $_GET['sourceType'] : '';
+        $q_sourceType = isset($_GET['sourceType']) ?explode(",", $_GET['sourceType']) : array();
         $q_priceFrom = isset($_GET['priceFrom']) ? $_GET['priceFrom'] : '';
         $q_priceTo = isset($_GET['priceTo']) ? $_GET['priceTo'] : '';
         $q_page = isset($_GET['pg']) ? $_GET['pg'] : 1;
@@ -61,7 +61,6 @@ class Search_Widget extends Widget_Base {
         $sortQueryParam = $q_sortby == '' ? '' : "&sort_by=$q_sortby";
         $accQueryParam = $q_acc == 'true' ? "&acc__in=true" : "&acc__in=false";
         $lastUpdatedQueryParam = $q_lastUpdated == '' ? '' : "&last_post_date__gte=$lastUpdateDate";
-        $sourceTypeQueryParam = $q_sourceType == '' ? '' : "&source_type__in=$q_sourceType";
 
         $brandQueryParam = "";
         foreach ($q_brand as $brand) {
@@ -77,6 +76,11 @@ class Search_Widget extends Widget_Base {
         foreach ($q_sourceName as $sourceName) {
             $sourceName = encodeURIComponent($sourceName);
             $sourceNameQueryParam = ($sourceName == '') ? "$sourceNameQueryParam" : "$sourceNameQueryParam&source__in=$sourceName";
+        }
+        $sourceTypeQueryParam = "";
+        foreach ($q_sourceType as $sourceType) {
+            $sourceType = encodeURIComponent($sourceType);
+            $sourceTypeQueryParam = ($sourceType == '') ? "$sourceTypeQueryParam" : "$sourceTypeQueryParam&source_type__in=$sourceType";
         }
         $statusQueryParam = "";
         foreach ($q_status as $status) {
