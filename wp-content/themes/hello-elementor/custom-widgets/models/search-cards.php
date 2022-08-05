@@ -74,14 +74,193 @@
         //         <span class=\"checkmark\"></span>
         //     </label></div>";
         // }
-        foreach ($filter->sources as $source) {
-            $sourceHTML = "$sourceHTML<div class=\"sourceCheckbox\" value='$source'><label class=\"container\">
-                <p>$source</p>
-                <input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source' onclick='filterCheckboxOnClick(\"source\", \"$source\")'>
-                <span class=\"checkmark\"></span>
-            </label></div>";
+        if (count($sourceType) > 1) {  
+            $sourceHTML = "
+<div class='sourceCheckbox' value='ACollectedMan'><label class='container'>
+                <p>ACollectedMan</p>
+                <input type='checkbox' id='ACollectedMan' name='sourceCheckbox' value='ACollectedMan' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;ACollectedMan&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Amsterdamvintage'><label class='container'>
+                <p>Amsterdamvintage</p>
+                <input type='checkbox' id='Amsterdamvintage' name='sourceCheckbox' value='Amsterdamvintage' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Amsterdamvintage&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='AnalogShift'><label class='container'>
+                <p>AnalogShift</p>
+                <input type='checkbox' id='AnalogShift' name='sourceCheckbox' value='AnalogShift' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;AnalogShift&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Antiquorum'><label class='container'>
+                <p>Antiquorum</p>
+                <input type='checkbox' id='Antiquorum' name='sourceCheckbox' value='Antiquorum' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Antiquorum&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Bobswatches'><label class='container'>
+                <p>Bobswatches</p>
+                <input type='checkbox' id='Bobswatches' name='sourceCheckbox' value='Bobswatches' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Bobswatches&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Christies'><label class='container'>
+                <p>Christies</p>
+                <input type='checkbox' id='Christies' name='sourceCheckbox' value='Christies' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Christies&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Chronotrader'><label class='container'>
+                <p>Chronotrader</p>
+                <input type='checkbox' id='Chronotrader' name='sourceCheckbox' value='Chronotrader' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Chronotrader&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='CraftAndTailored'><label class='container'>
+                <p>CraftAndTailored</p>
+                <input type='checkbox' id='CraftAndTailored' name='sourceCheckbox' value='CraftAndTailored' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;CraftAndTailored&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='CrownandCaliber'><label class='container'>
+                <p>CrownandCaliber</p>
+                <input type='checkbox' id='CrownandCaliber' name='sourceCheckbox' value='CrownandCaliber' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;CrownandCaliber&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='CrownInOysterCase'><label class='container'>
+                <p>CrownInOysterCase</p>
+                <input type='checkbox' id='CrownInOysterCase' name='sourceCheckbox' value='CrownInOysterCase' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;CrownInOysterCase&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Europeanwatch'><label class='container'>
+                <p>Europeanwatch</p>
+                <input type='checkbox' id='Europeanwatch' name='sourceCheckbox' value='Europeanwatch' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Europeanwatch&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='FogCityVintage'><label class='container'>
+                <p>FogCityVintage</p>
+                <input type='checkbox' id='FogCityVintage' name='sourceCheckbox' value='FogCityVintage' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;FogCityVintage&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='GreyandPatina'><label class='container'>
+                <p>GreyandPatina</p>
+                <input type='checkbox' id='GreyandPatina' name='sourceCheckbox' value='GreyandPatina' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;GreyandPatina&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Hodinkee'><label class='container'>
+                <p>Hodinkee</p>
+                <input type='checkbox' id='Hodinkee' name='sourceCheckbox' value='Hodinkee' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Hodinkee&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Hodinkee Pre-Own'><label class='container'>
+                <p>Hodinkee Pre-Own</p>
+                <input type='checkbox' id='Hodinkee Pre-Own' name='sourceCheckbox' value='Hodinkee Pre-Own' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Hodinkee Pre-Own&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='HQmilton'><label class='container'>
+                <p>HQmilton</p>
+                <input type='checkbox' id='HQmilton' name='sourceCheckbox' value='HQmilton' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;HQmilton&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Mrwatchley'><label class='container'>
+                <p>Mrwatchley</p>
+                <input type='checkbox' id='Mrwatchley' name='sourceCheckbox' value='Mrwatchley' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Mrwatchley&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Omegaforum'><label class='container'>
+                <p>Omegaforum</p>
+                <input type='checkbox' id='Omegaforum' name='sourceCheckbox' value='Omegaforum' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Omegaforum&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Omegaforum_private'><label class='container'>
+                <p>Omegaforum_private</p>
+                <input type='checkbox' id='Omegaforum_private' name='sourceCheckbox' value='Omegaforum_private' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Omegaforum_private&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Philips'><label class='container'>
+                <p>Philips</p>
+                <input type='checkbox' id='Philips' name='sourceCheckbox' value='Philips' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Philips&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Ponti'><label class='container'>
+                <p>Ponti</p>
+                <input type='checkbox' id='Ponti' name='sourceCheckbox' value='Ponti' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Ponti&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Reddit'><label class='container'>
+                <p>Reddit</p>
+                <input type='checkbox' id='Reddit' name='sourceCheckbox' value='Reddit' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Reddit&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Rolexforum'><label class='container'>
+                <p>Rolexforum</p>
+                <input type='checkbox' id='Rolexforum' name='sourceCheckbox' value='Rolexforum' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Rolexforum&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='RoySachaDavidoff'><label class='container'>
+                <p>RoySachaDavidoff</p>
+                <input type='checkbox' id='RoySachaDavidoff' name='sourceCheckbox' value='RoySachaDavidoff' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;RoySachaDavidoff&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Shucktheoyster'><label class='container'>
+                <p>Shucktheoyster</p>
+                <input type='checkbox' id='Shucktheoyster' name='sourceCheckbox' value='Shucktheoyster' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Shucktheoyster&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Sothebys'><label class='container'>
+                <p>Sothebys</p>
+                <input type='checkbox' id='Sothebys' name='sourceCheckbox' value='Sothebys' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Sothebys&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Ssongwatches'><label class='container'>
+                <p>Ssongwatches</p>
+                <input type='checkbox' id='Ssongwatches' name='sourceCheckbox' value='Ssongwatches' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Ssongwatches&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='TheKeyStone'><label class='container'>
+                <p>TheKeyStone</p>
+                <input type='checkbox' id='TheKeyStone' name='sourceCheckbox' value='TheKeyStone' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;TheKeyStone&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Timezoneforum'><label class='container'>
+                <p>Timezoneforum</p>
+                <input type='checkbox' id='Timezoneforum' name='sourceCheckbox' value='Timezoneforum' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Timezoneforum&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='TropicalWatch'><label class='container'>
+                <p>TropicalWatch</p>
+                <input type='checkbox' id='TropicalWatch' name='sourceCheckbox' value='TropicalWatch' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;TropicalWatch&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Vintagerolexforum'><label class='container'>
+                <p>Vintagerolexforum</p>
+                <input type='checkbox' id='Vintagerolexforum' name='sourceCheckbox' value='Vintagerolexforum' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Vintagerolexforum&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='WatchBox'><label class='container'>
+                <p>WatchBox</p>
+                <input type='checkbox' id='WatchBox' name='sourceCheckbox' value='WatchBox' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;WatchBox&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='WatchFinder'><label class='container'>
+                <p>WatchFinder</p>
+                <input type='checkbox' id='WatchFinder' name='sourceCheckbox' value='WatchFinder' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;WatchFinder&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+<div class='sourceCheckbox' value='Watchnet'><label class='container'>
+                <p>Watchnet</p>
+                <input type='checkbox' id='Watchnet' name='sourceCheckbox' value='Watchnet' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Watchnet&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+            <div class='sourceCheckbox' value='Watchuseek'><label class='container'>
+                <p>Watchuseek</p>
+                <input type='checkbox' id='Watchuseek' name='sourceCheckbox' value='Watchuseek' onclick='filterCheckboxOnClick(&quot;source&quot;, &quot;Watchuseek&quot;)'>
+                <span class='checkmark'></span>
+            </label></div>
+            ";          
+        } else {
+            foreach ($filter->sources as $source) {
+                $sourceHTML = "$sourceHTML<div class=\"sourceCheckbox\" value='$source'><label class=\"container\">
+                    <p>$source</p>
+                    <input type=\"checkbox\" id='$source' name=\"sourceCheckbox\" value='$source' onclick='filterCheckboxOnClick(\"source\", \"$source\")'>
+                    <span class=\"checkmark\"></span>
+                </label></div>";
+            }
         }
-
 
         if ($sourceType == 'Auction') {
             $sortOptions = "<option value='price_asc'>Price lowest to highest</option>
