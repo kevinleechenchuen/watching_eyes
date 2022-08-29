@@ -44,9 +44,10 @@
         // }
 
         foreach ($filter->brands as $brand) {
+            $encodedBrand = urlencode($brand);
             $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value=\"$brand\"><label class=\"container\">
                 <p>$brand</p>
-                <input type=\"checkbox\" id=\"$brand\" name=\"brandCheckbox\" value=\"$brand\" onclick='filterCheckboxOnClick(\"brand\", \"$brand\")'>
+                <input type=\"checkbox\" id=\"$brand\" name=\"brandCheckbox\" value=\"$encodedBrand\" onclick='filterCheckboxOnClick(\"brand\", \"$brand\")'>
                 <span class=\"checkmark\"></span>
             </label></div>";
         }       
@@ -629,9 +630,11 @@
         $brandHTML = "";
 
         foreach ($filter->brands as $brand) {
-            $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value=\"$brand\"><label class=\"container\">
+            $encodedBrand = urlencode($brand);
+
+            $brandHTML = "$brandHTML<div class=\"brandCheckbox\" value=\"$encodedBrand\"><label class=\"container\">
                 <p>$brand</p>
-                <input type=\"checkbox\" id=\"$brand\" name=\"brandCheckbox\" value=\"$brand\">
+                <input type=\"checkbox\" id=\"$brand\" name=\"brandCheckbox\" value=\"$encodedBrand\">
                 <span class=\"checkmark\"></span>
             </label></div>";
         }

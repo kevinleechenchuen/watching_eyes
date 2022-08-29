@@ -41,7 +41,7 @@ class Auction_Watches_Widget extends Widget_Base {
         $auctionTypeQueryParam = $q_auction_type == '' ? '' : "&auction_type__in=$q_auction_type";
         $pageQueryParam = $q_page == '' ? '' : "&page=$q_page";
         $startDateQueryParam = $q_auction_start_date == '' ? '' : "&auction_start_date__gte=$q_auction_start_date";
-        $endDateQueryParam = $q_auction_end_date == '' ? '' : "&auction_end_date__lte=$q_auction_end_date";
+        $endDateQueryParam = $q_auction_end_date == '' ? '' : "&auction_end_date__gte=$q_auction_end_date";
 
         $auctionStatusQueryParam = "";
         foreach ($q_auction_status as $status) {
@@ -71,9 +71,10 @@ class Auction_Watches_Widget extends Widget_Base {
         if($_GET['brand'] != '') {
             $asdasd = explode(",", $_GET['brand']);
             foreach ($asdasd as $item) {
+                $decodedItem = urldecode($item);
                 echo "<div class='search-result-filters-card'>
                             <div class='search-result-filters-card-name'>
-                                $item
+                                $decodedItem
                             </div>
                             <a class='remove-search-result-filters-card' onclick='removeAuctionWatchesSearchFilter(\"brand\", \"$item\");'>x
                             </a>
@@ -113,8 +114,8 @@ class Auction_Watches_Widget extends Widget_Base {
         $auctionTitleList=array();
         if($auction_h7_title == '')
         {
-            $startDate = date("Y-m-d");
-		    $endDate = date("Y-m-d", strtotime('+ 6 month'));
+            $startDate = date("Y-m-d", strtotime('- 1 month'));
+		    $endDate = date("Y-m-d", strtotime('+ 1 month'));
             $url = "$apiDomain/api/v1/auction/?auction_start_date__gte=$startDate&auction_end_date__gte=$endDate";
             $response = wp_remote_get($url);
             if ( is_array( $response ) && ! is_wp_error( $response ) ) {
