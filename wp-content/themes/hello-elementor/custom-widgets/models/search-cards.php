@@ -49,9 +49,7 @@
                 <input type=\"checkbox\" id=\"$brand\" name=\"brandCheckbox\" value=\"$brand\" onclick='filterCheckboxOnClick(\"brand\", \"$brand\")'>
                 <span class=\"checkmark\"></span>
             </label></div>";
-        }
-
-       
+        }       
 
         // if($_GET['brand'] != ''){
         //     $q_brand = explode(",", $_GET['brand']);
@@ -262,7 +260,7 @@
             }
         }
 
-        if ($sourceType == 'Auction') {
+        if (in_array('Auction', $sourceType)) {
             $sortOptions = "<option value='price_asc'>Price lowest to highest</option>
             <option value='price_desc'>Price highest to lowest</option>";
         } else {
@@ -332,7 +330,7 @@
             </div>
             <div class='filter-divider'></div>";
 
-        if ($sourceType == 'Forum') {
+        if (in_array('ReForumtail', $sourceType)) {
             echo " <div class='filter-title' style='margin-bottom: 5px;'>
                 <h4>ACCESSORIES</h4>
                 <i class='clickable material-icons filter-expandable filter-acc-expandable'>&#xE5CE;</i>
@@ -346,7 +344,7 @@
             <div class='filter-divider'></div>";
         }
 
-        if ($sourceType == 'Retail' || $sourceType == 'Auction') {
+        if (in_array('Retail', $sourceType) || in_array('Auction', $sourceType)) {
             $statusHTML = "";
             foreach ($filter->status as $status) {
                 $statusHTML = "$statusHTML<div class=\"statusCheckbox\" value='$status'>
@@ -608,9 +606,9 @@
     {
         if(count($data) == 0)
         {
-            echo "<div class='search-results-no-result'>No results found!</div>";
+            echo "<div class='search-results-no-result' style='margin-bottom: 15px;'>No upcoming lots available!</div>";
             echo "<div style='display:flex; justify-content:center;'>
-                <button class='button-main-2' onclick=\"history.back()\">Back</button>
+                <a class='button-main-2' style='border-radius: 5px; padding: 7px 30px; border: 1px solid #2255FB;' href=\"auction-calendar/\">View auction calendar</a>
             </div>";
             return;
         }

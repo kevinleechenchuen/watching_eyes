@@ -94,18 +94,20 @@ class Search_Widget extends Widget_Base {
         $saveSearchHTML = "";
         if(is_user_logged_in()){
             $saveSearchHTML = "
-                <button class='button-main-1' onClick='saveSearch($current_user->ID)'>SAVE THIS SEARCH</button> ";
+                <button class='button-main-1 save-search' onClick='saveSearch($current_user->ID)'>SAVE THIS SEARCH</button> ";
         } else {
             $saveSearchHTML = "
-                <button class='button-main-1' onClick=\"window.location.href = '/log-in'\">SAVE THIS SEARCH</button> ";
+                <button class='button-main-1 save-search' onClick=\"window.location.href = '/log-in'\">SAVE THIS SEARCH</button> ";
         }
         echo "<div class='search-result-label'>";
         echo "<h1>Results</h1>";
+
+
         echo "<a href='/search?page=1'>Clear all filters</a>";
         echo "</div>";
-        echo $saveSearchHTML;
-        
+
         echo "<div class='search-result-filters'>";
+        echo $saveSearchHTML;
         if($_GET['q'] != '') {
             echo "<div class='search-result-filters-card'>
                     <div class='search-result-filters-card-name'>
@@ -175,10 +177,6 @@ class Search_Widget extends Widget_Base {
                         </div>";
             }
         }
-        // if($_GET['sourceType'] != '') echo "<div><h7>Source type: ".$_GET['sourceType']."</h7></div>";
-        // if($_GET['priceFrom'] != '') echo "<div><h7>Price from: ".$_GET['priceFrom']."</h7></div>";
-        // if($_GET['priceTo'] != '') echo "<div><h7>Price to: ".$_GET['priceTo']."</h7></div>";
-        
         echo "</div>"; 
 
         if (wp_get_environment_type() == 'production') {
