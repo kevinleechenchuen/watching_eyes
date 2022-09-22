@@ -274,7 +274,7 @@
         echo "
         <div class='filter-title' style='margin-bottom: 5px;'>
             <h4>SORT BY</h4>
-            <i class='clickable material-icons filter-expandable filter-sort-expandable'>&#xE5CE;</i>
+            <i class='clickable material-icons filter-expandable filter-sort-expandable' style='font-style: normal;'>v</i>
         </div>      
         <div class='filter-collapsible sort'>
             <select name='filter-sortby' id='filter-sortby'>
@@ -284,7 +284,7 @@
         <div class='filter-divider'></div>";
         // echo "<div class='filter-title' style='margin-bottom: 5px;'>
         //     <h4>LAST UPDATED</h4>
-        //     <i class='clickable material-icons filter-expandable filter-last-updated-expandable'>&#xE5CE;</i>
+        //     <i class='clickable material-icons filter-expandable filter-last-updated-expandable'>v</i>
         // </div>      
         // <div class='filter-collapsible last-updated'>
         //     <select name='filter-last-updated' id='filter-last-updated'>
@@ -298,7 +298,7 @@
         // ";
         echo " <div class='filter-title'>
             <h4>BRAND</h4>
-            <i class='clickable material-icons filter-expandable filter-brand-expandable'>&#xE5CE;</i>
+            <i class='clickable material-icons filter-expandable filter-brand-expandable' style='font-style: normal;'>v</i>
         </div>
         <div class='filter-collapsible brand'>
             <input type='text' id='brandFilterSearch' class='filterSearch' placeholder='Enter brand name here...'>
@@ -310,7 +310,7 @@
         // if($_GET['brand'] != ''){
         //     echo "<div class='filter-title'>
         //         <h4>MODEL</h4>
-        //         <i class='clickable material-icons filter-expandable filter-model-expandable'>&#xE5CE;</i>
+        //         <i class='clickable material-icons filter-expandable filter-model-expandable'>v</i>
         //     </div>
         //     <div class='filter-collapsible model'>
         //         <input type='text' id='modelFilterSearch' class='filterSearch' placeholder='Enter model here...'>
@@ -322,7 +322,7 @@
         // }
         echo "<div class='filter-title'>
                 <h4>SOURCE</h4>
-                <i class='clickable material-icons filter-expandable filter-source-expandable'>&#xE5CE;</i>
+                <i class='clickable material-icons filter-expandable filter-source-expandable' style='font-style: normal;'>v</i>
             </div>
             <div class='filter-collapsible source'>
                 <div class='filter-section-container'> 
@@ -334,7 +334,7 @@
         if (in_array('ReForumtail', $sourceType)) {
             echo " <div class='filter-title' style='margin-bottom: 5px;'>
                 <h4>ACCESSORIES</h4>
-                <i class='clickable material-icons filter-expandable filter-acc-expandable'>&#xE5CE;</i>
+                <i class='clickable material-icons filter-expandable filter-acc-expandable' style='font-style: normal;'>v</i>
             </div>      
             <div class='filter-collapsible acc'>
                 <select name='filter-acc' id='filter-acc'>
@@ -359,7 +359,7 @@
 
             echo " <div class='filter-title'>
                     <h4>STATUS</h4>
-                    <i class='clickable material-icons filter-expandable filter-status-expandable'>&#xE5CE;</i>
+                    <i class='clickable material-icons filter-expandable filter-status-expandable' style='font-style: normal;'>v</i>
                 </div>
                 <div class='filter-collapsible status'>
                     <div class='filter-section-container'>
@@ -374,7 +374,7 @@
 
         echo " <div class='filter-title'>
                 <h4>CURRENCY</h4>
-                <i class='clickable material-icons filter-expandable filter-currency-expandable'>&#xE5CE;</i>
+                <i class='clickable material-icons filter-expandable filter-currency-expandable' style='font-style: normal;'>v</i>
             </div>
             <div class='filter-collapsible currency'>
                 <div class='filter-section-container'>
@@ -420,7 +420,7 @@
 
         echo "<div class='filter-title'>
             <h4>PRICES RANGE</h4>
-            <i class='clickable material-icons filter-expandable filter-price-expandable'>&#xE5CE;</i>
+            <i class='clickable material-icons filter-expandable filter-price-expandable' style='font-style: normal;'>v</i>
         </div>      
         <div class='filter-collapsible price'>
             <div class='price-input'>
@@ -566,7 +566,7 @@
         echo " <div class='filter-divider'></div>";
         echo " <div class='filter-title'>
                     <h4>AUCTION NAME</h4>
-                    <i class='clickable material-icons filter-expandable filter-auction-name-expandable'>&#xE5CE;</i>
+                    <i class='clickable material-icons filter-expandable filter-auction-name-expandable' style='font-style: normal;'>v</i>
                 </div>
                 <div class='filter-section-container'>
                     <div class='filter-collapsible auction'>
@@ -657,7 +657,7 @@
         ";
         echo "<div class='filter-title'>
             <h4>BRAND</h4>
-            <i class='clickable material-icons filter-expandable filter-brand-expandable'>&#xE5CE;</i>
+            <i class='clickable material-icons filter-expandable filter-brand-expandable' style='font-style: normal;'>v</i>
         </div>
         <div class='filter-collapsible brand'>
             <input type='text' id='brandFilterSearch' class='filterSearch' placeholder='Enter brand name here...'>
@@ -682,7 +682,7 @@
 
         echo " <div class='filter-title'>
                 <h4>STATUS</h4>
-                <i class='clickable material-icons filter-expandable filter-status-expandable'>&#xE5CE;</i>
+                <i class='clickable material-icons filter-expandable filter-status-expandable' style='font-style: normal;'>v</i>
             </div>
             <div class='filter-collapsible status'>
                 <div class='filter-section-container'>
@@ -703,7 +703,7 @@
 
             echo " <div class='filter-title'>
                     <h4>CURRENCY</h4>
-                    <i class='clickable material-icons filter-expandable filter-currency-expandable'>&#xE5CE;</i>
+                    <i class='clickable material-icons filter-expandable filter-currency-expandable' style='font-style: normal;'>v</i>
                 </div>
                 <div class='filter-collapsible currency'>
                     <div class='filter-section-container'>
@@ -726,7 +726,7 @@
 
             echo " <div class='filter-title'>
                     <h4>AUCTION TITLE</h4>
-                    <i class='clickable material-icons filter-expandable filter-auction-title-expandable'>&#xE5CE;</i>
+                    <i class='clickable material-icons filter-expandable filter-auction-title-expandable' style='font-style: normal;'>v</i>
                 </div>
                 <div class='filter-collapsible auction'>
                     <div class='filter-section-container'>
@@ -903,11 +903,16 @@
 
         $formattedPrice = number_format((int)$item->product_price);
         $itemStatusHTML = "";
+
         if(strcasecmp($item->source_type, 'Forum') != 0) {
             $itemStatusHTML = "<div class='item-card-status'>$item->status</div>";
         }
         if(strcasecmp($item->source_type, 'Auction') != 0) {
             $imageUrl = $item->main_img_url;
+            if(strcasecmp($item->source_type, 'Retail') != 0) {
+                $imageUrl = "http://128.199.148.89/full/forum/$item->forum_name/$item->img_local_path";
+            }
+
             if($item->forum_name == 'Ponti') {
                 $imageUrl = "http://128.199.148.89/full/retail/$item->forum_name/$item->img_local_path";
             }
