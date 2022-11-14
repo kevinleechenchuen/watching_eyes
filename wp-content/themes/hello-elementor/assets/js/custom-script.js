@@ -1008,6 +1008,48 @@ function toggleMobileFilter() {
 }
 
 
+function addAlert(userId, keywordFromUI) {
+    var keyword = keywordFromUI;
+    if(!keywordFromUI) {
+        keyword = document.getElementsByName('alert-search-textbox')[0].value;
+    }
+    
+    if (keyword === '') {
+        jQuery('#alert-textbox-error').html('Keyword cannot be empty!');
+        return null;
+    } else {
+        jQuery.ajax({
+            type: 'POST',
+            url: `https://${window.location.hostname}/wp-json/custom/v1/alert`,
+            data: { userid: userId, keyword: keyword },
+
+            success: function (data) {
+                if (data == 'success') {
+                    alert("Added to alert keywords!");
+                    location.reload();
+                } else {
+                    jQuery('#alert-textbox-error').html('Something went wrong! Please try again.');
+                }
+            }
+        });
+        jQuery('#alert-textbox-error').html('');
+    }
+}
+
+function removeAlert(userId, keywordId) {
+    jQuery.ajax({
+        type: 'POST',
+        url: `https://${window.location.hostname}/wp-json/custom/v1/remove_alert`,
+        data: { user_id: userId, keyword_id: keywordId },
+
+        success: function (data) {
+            if (data == 'success') {
+                window.location.href = `https://${window.location.hostname}/profile-alert-keywords/`;
+            }
+        }
+    });
+}
+
 // function scrollContainer(container, direction) {
 //     console.log(container, direction);
 //     if (direction === 'left') {

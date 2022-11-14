@@ -226,6 +226,7 @@ require_once('custom-widgets/my-widgets.php');
 require_once('custom-widgets/utils/save-search.php');
 require_once('custom-widgets/utils/bookmark-item.php');
 require_once('custom-widgets/utils/send-email.php');
+require_once('custom-widgets/utils/alert-keywords.php');
 
 function enqueue_custom_script() {
     wp_deregister_script( 'custom_script' );

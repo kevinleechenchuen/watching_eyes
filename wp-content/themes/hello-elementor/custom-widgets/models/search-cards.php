@@ -797,6 +797,7 @@
 
     function renderHorizontalListing($data, $class){
         $current_user = wp_get_current_user();
+        $userId = 0;
         if($current_user->data->ID == ''){
             $userId = 0;
         } else {
@@ -807,7 +808,7 @@
 
         echo "<div class='home-listing-container $class'>";
         foreach ($data as $item) {
-            renderCard($item, $current_user->data->ID, $bookmarkedWatches);
+            renderCard($item, $userId, $bookmarkedWatches);
         }
         echo "</div>";
 
@@ -909,9 +910,9 @@
         }
         if(strcasecmp($item->source_type, 'Auction') != 0) {
             $imageUrl = $item->main_img_url;
-            if(strcasecmp($item->source_type, 'Retail') != 0) {
-                $imageUrl = "http://128.199.148.89/full/forum/$item->forum_name/$item->img_local_path";
-            }
+            // if(strcasecmp($item->source_type, 'Retail') != 0) {
+            //     $imageUrl = "http://128.199.148.89/full/forum/$item->forum_name/$item->img_local_path";
+            // }
 
             if($item->forum_name == 'Ponti') {
                 $imageUrl = "http://128.199.148.89/full/retail/$item->forum_name/$item->img_local_path";

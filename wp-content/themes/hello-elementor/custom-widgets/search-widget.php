@@ -99,6 +99,15 @@ class Search_Widget extends Widget_Base {
             $saveSearchHTML = "
                 <button class='button-main-1 save-search' onClick=\"window.location.href = '/log-in'\">SAVE THIS SEARCH</button> ";
         }
+
+        $saveToAlertsHTML = "";
+        if(is_user_logged_in()){
+            $saveToAlertsHTML = "
+                <button class='button-main-1 save-search' onClick='addAlert($current_user->ID, \"$q_query\")'>ADD TO ALERTS</button> ";
+        } else {
+            $saveToAlertsHTML = "
+                <button class='button-main-1 save-search' onClick=\"window.location.href = '/log-in'\">ADD TO ALERTS</button> ";
+        }
         echo "<div class='search-result-label'>";
         echo "<h1>Results</h1>";
 
@@ -108,6 +117,7 @@ class Search_Widget extends Widget_Base {
 
         echo "<div class='search-result-filters'>";
         echo $saveSearchHTML;
+        echo $saveToAlertsHTML;
         if($_GET['q'] != '') {
             echo "<div class='search-result-filters-card'>
                     <div class='search-result-filters-card-name'>
@@ -196,6 +206,21 @@ class Search_Widget extends Widget_Base {
             return null;
         }
         renderSearchResultsWithFilter($body->forumWatches, $body->filters, (int)$q_page, (int)$body->pages, $q_priceFrom, $q_priceTo, $q_sourceType);
+
+        if($q_query != '')
+        {
+            $userId = get_current_user_id();
+
+            global $wpdb;
+            $table_name = $wpdb->prefix.'search_tracker';
+            $wpdb->insert(
+                    $table_name,
+                    array(
+                        'UserID'     => $userId,  
+                        'SearchTerm'       => $q_query),
+            array( '%d', '%s')
+            );
+        }
 	}
 	
 	protected function _content_template() {
