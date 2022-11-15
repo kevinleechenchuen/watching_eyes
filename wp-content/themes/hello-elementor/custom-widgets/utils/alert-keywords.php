@@ -49,13 +49,17 @@
           ));
         if ( is_array( $response ) && ! is_wp_error( $response ) ) {
             $body = json_decode($response['body']);
+
+            if($body->details == 'Duplicate keyword. Please try a new keyword.') {
+                echo json_encode('duplicate');
+            } else {
+                echo json_encode('success');
+            }
         } else {
             echo json_encode($response);
             echo 'Something went wrong!';
             return null;
         }
-
-        echo json_encode('success');
     }
 
     function remove_alert( $data ) {

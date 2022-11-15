@@ -1027,7 +1027,10 @@ function addAlert(userId, keywordFromUI) {
                 if (data == 'success') {
                     alert("Added to alert keywords!");
                     location.reload();
-                } else {
+                } else if (data == 'duplicate') {
+                    alert("This keyword was already added before!");
+                }
+                else {
                     jQuery('#alert-textbox-error').html('Something went wrong! Please try again.');
                 }
             }
